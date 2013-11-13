@@ -27,4 +27,5 @@ configure :build do
   # First: gem install middleman-smusher
   # require "middleman-smusher"
   # activate :smusher
+  # activate :gzip, :exts => %w(.atom .css .html .js .rss .svg .txt .xhtml .xml)
 end

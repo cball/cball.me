@@ -8,44 +8,30 @@ html
     meta name="description" content=""
     meta name="viewport" content="width=device-width, initial-scale=1"
 
-    / Le HTML5 shim, for IE6-8 support of HTML elements
     /[if lt IE 9]
-      script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.2/html5shiv.js"
+      script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"
+      script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"
 
     = stylesheet_link_tag "application", media: "all"
 
   body class=page_classes
-    .navbar.navbar-static-top.navbar-inverse
-      .navbar-inner
-        .container
-          a.btn.btn-navbar data-target=".nav-collapse" data-toggle="collapse"
-            span.icon-bar
-            span.icon-bar
-            span.icon-bar
-          a.brand href="/" Middleman
-          .container.nav-collapse
-            ul.nav
-              li= link_to "Link 1", "path1"
-              li= link_to "Link 2", "path2"
-              li= link_to "Link 3", "path3"
+    #wrap
+      .container
+        header
+          h2 cball.me
 
-    .container
-      .row
-        .span9
-          = yield
+      .container
+        .row
+          #main.col-md-8
+            h1 Main stuff
 
-        .span3
-          .well.sidebar-nav
-            ul.nav.nav-list
-              li.nav-header Sidebar
-              li= link_to "Link 1", "path1"
-              li= link_to "Link 2", "path2"
-              li= link_to "Link 3", "path3"
+            = yield
 
-      footer
-        p © 2013
+          #sidebar.col-md-4
+            = partial 'sidebar'
 
-    /! JavaScripts
-    / Placed at the end of the document so the pages load faster
-    script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"
-    = javascript_include_tag "application"
+    footer
+      .container
+        p.text-muted
+
+    = partial 'javascript'
