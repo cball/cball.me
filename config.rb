@@ -10,6 +10,7 @@ activate :blog do |blog|
   blog.sources = "content/:title.html"
   blog.summary_separator = /(READMORE)/
   blog.summary_length = 250
+  blog.layout = "article_layout"
 
   blog.tag_template = "tag.html"
   blog.calendar_template = "calendar.html"

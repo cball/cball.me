@@ -1,5 +1,38 @@
 .row
-  .col-md-4
-    = image_tag 'https://1.gravatar.com/avatar/d3cc1542f7fb242f0e73fd70810c0ac5?r=x&s=100', class: 'img-circle'
+  #image-and-social-links.col-md-4
+    = image_tag 'https://1.gravatar.com/avatar/d3cc1542f7fb242f0e73fd70810c0ac5?r=x&s=100', class: 'img-circle', width: 100, height: 100
+
+    .twitter
+      = link_to "Follow @cball_", "https://twitter.com/cball_", class: "twitter-follow-button", data: { show_count: "false", dnt: "true" }
+      javascript:
+        !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+
+    .github
+      iframe src="http://ghbtns.com/github-btn.html?user=cball&type=follow" allowtransparency="true" frameborder="0" scrolling="0" width="132" height="20"
+
   .col-md-8
     h4 Hi, I'm Chris Ball.
+
+    p My main goal is to help you (or your team) <strong>level up</strong>.
+    p Over the years I've learned a lot about development and consulting and I'd love to share my experiences with you.
+
+.row
+  .col-md-12
+    .well#newsletter-signup
+      h4 Level up Each Week
+      p Get free advice on improving your development skills and consulting services.
+
+      #mc_embed_signup
+        = form_tag 'http://cball.us2.list-manage.com/subscribe/post?u=77f728de5b4d60eb74dfc0e34&amp;id=0e0c66ae59', id:"subscribe-form", target: '_blank' do
+          .form-group
+            = text_field_tag :email, name: 'EMAIL', class: 'required email form-control', id: 'email', placeholder: 'Email address'
+          .form-group
+            = text_field_tag :first_name, name: 'FNAME', id: 'first_name', class: 'form-control', placeholder: 'First name'
+          .form-group
+            = submit_tag 'Subscribe', class: "btn btn-default"
+
+.row
+  .col-md-12
+    .echobind.center
+      = link_to image_tag('echobind.png'), 'http://echobind.com', target: '_blank'
+      p Founder / Principal

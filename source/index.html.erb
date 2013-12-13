@@ -11,11 +11,23 @@ per_page: 10
 <% end %>
 
 <% page_articles.each_with_index do |article, i| %>
-  <h2><%= link_to article.title, article %> <span><%= article.date.strftime('%b %e') %></span></h2>
-  <!-- use article.summary(250) if you have Nokogiri available to show just
-       the first 250 characters -->
-  <%= article.body %>
+  <article>
+    <%= partial(:article_header, :locals => { :article => article }) %>
+    <div class="post-body">
+      <h2 class="title"><%= link_to article.title, article %></h2>
+
+      <div class="date">
+        <%= article.date.strftime "%B %e, %Y" %>
+      </div>
+
+      <%= article.summary %>
+      <%= link_to 'Continue Reading', article %>
+    </div>
+  </article>
+
+  <hr />
 <% end %>
+
 
 <% if paginate %>
   <% if next_page %>

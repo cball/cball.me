@@ -1,15 +1,108 @@
-header {
-  margin: 20px 0;
-  padding: 9px;
-  border-bottom: 2px solid #eee;
+html {
+  height: 100%;
+}
 
-  h2 {
-    margin-top: 0;
+body {
+  height: 100%;
+  font-family: 'Archer SSm A', 'Archer SSm B';
+  font-weight: 600;
+  background: #f5f5f5;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Archer SSm A', 'Archer SSm B';
+}
+
+strong, b, h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+}
+
+a {
+  color: $electric-blue;
+  &:hover, &:active {
+    text-decoration: none;
   }
 }
 
-html, body {
-  height: 100%;
+header {
+  padding: 9px 15px;
+  border-bottom: 1px solid darken($electric-blue, 10%);
+  background: $electric-blue;
+
+  @media (min-width: 768px) {
+    height: 300px;
+  }
+
+  #my-picture {
+    text-align: center;
+
+    img {
+      border: 1px solid lighten($electric-blue, 10%);
+      padding: 4px;
+    }
+  }
+
+  a {
+    color: #fefefe;
+    text-decoration: none;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    margin-top: 0;
+    font-size: 34px;
+  }
+
+  h3 {
+    font-weight: 800;
+    margin-top: 0;
+    margin-bottom: 2px;
+  }
+
+  h5 {
+    font-size: 11px;
+    margin-top: 0;
+    padding-top: 2px;
+  }
+}
+
+.nav > li {
+  text-align: center;
+}
+
+.nav > li > a:hover, .nav > li > a:focus {
+  color: #59787F;
+  background: #fff;
+  text-decoration: none;
+}
+
+.nav {
+  margin-top: 24px;
+}
+
+@media (min-width: 768px) {
+  .nav > li {
+    float: left;
+    text-align: left;
+  }
+}
+
+#main {
+  margin-top: 0;
+  margin-bottom: 80px;
+  padding: 0;
+}
+
+@media (min-width: 768px) {
+  #main {
+    margin-top: -100px;
+  }
+}
+
+@media (min-width: 992px) {
+  #main {
+    margin-top: -200px;
+  }
 }
 
 #wrap {
@@ -21,5 +114,48 @@ html, body {
 
 footer {
   height: $footer-height;
-  background-color: #f5f5f5;
+  background-color: #59787F;
+}
+
+#sidebar {
+  font-size: 14px;
+}
+
+#newsletter-signup {
+  margin-top: 12px;
+}
+
+.center {
+  text-align: center;
+}
+
+.caption {
+  font-size: 11px;
+  font-style: italic;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+#image-and-social-links {
+  text-align: center;
+}
+
+.twitter {
+  margin-top: 12px;
+}
+
+.github {
+  margin-top: 4px;
+}
+
+.echobind {
+  margin-top: 24px;
+
+  img {
+    width: 50%;
+    margin-bottom: 2px;
+  }
 }

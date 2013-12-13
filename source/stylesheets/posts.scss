@@ -1,0 +1,121 @@
+pre {
+  background: none;
+  border: none;
+  color: #333;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: none;
+}
+
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace;
+  font-weight: normal;
+}
+
+article {
+  background: #fff;
+  border: 1px solid lighten(#59787F, 40%);
+  // box-shadow: 0 0 12px 0 #888;
+  margin-bottom: 32px;
+
+  h3 {
+    font-size: 24px;
+  }
+
+  h2.title {
+    margin: 12px 0 0 0;
+
+    a {
+      // color: #333;
+    }
+  }
+}
+
+.post-header {
+  h2 {
+    font-size: 32px;
+    margin-top: 0;
+    margin-bottom: 2px;
+
+    a {
+      color: #333;
+    }
+  }
+
+  .date {
+    color: #236574;
+    padding: 14px;
+    background: #fefefe;
+    border-radius: 4px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    line-height: 1;
+    text-align: center;
+
+    .month {
+      text-transform:uppercase;
+      font-size: 13px;
+      color: #C1844D;
+    }
+
+    .day {
+      font-size: 34px;
+    }
+
+    .year {
+      color: #236574;
+      margin-top: 2px;
+    }
+  }
+
+  .inner {
+    position: relative;
+
+    &.no-image {
+      background: #59787F;
+      color: #fefefe;
+    }
+  }
+}
+
+
+.post-body, #comments {
+  padding: 20px;
+}
+
+@media (min-width: 768px) {
+  .post-body, #comments {
+    padding: 40px 80px;
+  }
+}
+
+@media (min-width: 992px) {
+  .post-body, #comments {
+    padding: 60px 120px;
+  }
+}
+
+#comments {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+.tags {
+  margin-bottom: 24px;
+
+  &> li > a {
+    color: #ddd;
+    font-size: 14px;
+    font-style: italic;
+    padding: 2px 4px;
+
+    .name {
+      padding: 0 4px;
+      color: #aaa;
+    }
+  }
+}

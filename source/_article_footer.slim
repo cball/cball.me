@@ -1,0 +1,17 @@
+ul.nav.tags.nav-pills
+  - article.tags.each do |tag|
+    - tag_name = %Q{/<span class="name">#{tag}</span>/}
+    li = link_to tag_name, tag_path(tag)
+
+#upsell
+
+#article-nav
+  .pull-left
+    - prev_article = current_article.previous_article
+    - if prev_article
+      = link_to "&laquo; #{prev_article.title}", prev_article.url
+  .pull-right
+    - next_article = current_article.next_article
+      - if next_article
+        = link_to next_article.title, next_article.url
+

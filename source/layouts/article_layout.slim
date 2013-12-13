@@ -1,0 +1,12 @@
+- wrap_layout :layout do
+  article
+    = partial :article_header, locals: { article: current_article }
+
+    .post-body
+      h2.title = link_to current_article.title, current_article
+      .date = current_article.date.strftime "%B %e, %Y"
+      = yield
+
+      = partial :article_footer, locals: { article: current_article }
+
+    = partial :comments

@@ -1,0 +1,13 @@
+.post-header
+  - if !article.data.image.nil?
+    .inner 
+      img.img-responsive src="#{article.data.image}"
+      .date 
+        .month = article.date.strftime "%B"
+        .day = article.date.strftime "%e"
+        .year = article.date.strftime "%Y"
+  - else
+    .inner.no-image
+      h2 = article.title
+      .date = article.date.strftime "%B %e, %Y"
+
