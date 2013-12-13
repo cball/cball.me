@@ -29,7 +29,7 @@ html
             li
               = link_to 'About', '/about'
             li
-              = link_to 'Newsletter'
+              = link_to 'Newsletter', '/newsletter'
             li
               = link_to 'Development'
             li
@@ -61,14 +61,5 @@ html
         li.separator &mdash;
         li
           = link_to 'Built by Chris Ball', '/'
-
-
-      /.container
-        .row
-          .col-md-4
-            h4 Topics
-            ul.list-unstyled
-              - blog.tags.each do |tag, articles|
-                li = link_to tag, tag_path(tag)
 
     = partial 'javascript'

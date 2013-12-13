@@ -1,0 +1,35 @@
+article
+  .post-body
+    .centered
+      h2 My Best Advice on Leveling Up
+      h4 Development, Consulting, and Life
+
+    .about-block.row
+      .selling-points.col-md-6
+        h4 As a Developer
+        ul
+          li Make yourself more marketable and increase your potential salary
+          li How to stay sane working with large codebases
+          li much more!
+
+        h4 As a Consultant
+        ul
+          li How to know when you're ready to start consulting
+          li Understand subcontractors, and see how they enabled me grow my consulting business.
+          li Get pointers on how to raise your rates and pitch ideas to current or prospective clients.
+
+      .col-md-6
+        .well#newsletter-signup
+          h4 Level up Each Week
+          p Get free advice on improving your development skills and consulting services.
+
+          #mc_embed_signup
+            = form_tag 'http://cball.us2.list-manage.com/subscribe/post?u=77f728de5b4d60eb74dfc0e34&amp;id=0e0c66ae59', id:"subscribe-form", target: '_blank', role: 'form' do
+              .form-group
+                /label.control-label for="first_name" First name
+                = text_field_tag :first_name, name: 'FNAME', id: 'first_name', class: 'form-control', placeholder: 'First name'
+              .form-group
+                /label.control-lablel for="email" Email
+                = text_field_tag :email, name: 'EMAIL', class: 'required email form-control', id: 'email', placeholder: 'Email address'
+              .form-group
+                = submit_tag 'Subscribe', class: "btn btn-primary btn-lg btn-block", id: 'subscribe'
