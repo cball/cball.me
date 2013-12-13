@@ -1,8 +1,9 @@
 .post-header
   - if !article.data.image.nil?
-    .inner 
-      img.img-responsive src="#{article.data.image}"
-      .date 
+    .inner
+      a href="#{article.url}"
+        img.img-responsive src="#{article.data.image}"
+      .date.hidden-xs
         .month = article.date.strftime "%B"
         .day = article.date.strftime "%e"
         .year = article.date.strftime "%Y"

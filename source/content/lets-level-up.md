@@ -1,5 +1,5 @@
 ---
-title: Welcome!
+title: Let's Level Up
 date: 2013-12-13
 tags: general
 image: /images/header_image_welcome.jpg

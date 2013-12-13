@@ -20,6 +20,7 @@ article {
   border: 1px solid lighten(#59787F, 40%);
   // box-shadow: 0 0 12px 0 #888;
   margin-bottom: 32px;
+  min-height: 300px;
 
   h3 {
     font-size: 24px;
@@ -29,8 +30,12 @@ article {
     margin: 12px 0 0 0;
 
     a {
-      // color: #333;
+      color: #333;
     }
+  }
+
+  .date {
+    color: lighten(#333, 30%);
   }
 }
 
@@ -49,7 +54,7 @@ article {
     color: #236574;
     padding: 14px;
     background: #fefefe;
-    border-radius: 4px;
+    border-radius: 6px;
     position: absolute;
     top: 20px;
     right: 20px;
