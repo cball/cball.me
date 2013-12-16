@@ -1,0 +1,19 @@
+.online-profiles {
+  text-align: center;
+
+  img {
+    height: 60px;
+  }
+
+  .logo {
+    display: inline-block;
+    margin: 0 20px;
+    opacity: 0.2;
+    transition: opacity 0.5s;
+    -webkit-transition: opacity 0.5s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+article
+  .post-body
+    .row
+      h3 Contact Chris
+
+    .row
+      = form_tag 'http://form-mailer.herokuapp.com/mail', id: 'contact-form' do
+        = hidden_field_tag :subject, value: "Message from cball.me"
+        = hidden_field_tag :redirect_to, value: 'http://cball.me/message_thanks'
+
+        .form-group
+          = label_tag :name, class: 'control-label'
+          = text_field_tag :name, name: 'name', id: 'name', class: 'form-control'
+        .form-group
+          = label_tag :email, class: 'control-label'
+          = email_field_tag :email, name: 'email', id: 'email', class: 'form-control'
+        .form-group
+          = label_tag :message, class: 'control-label'
+          = text_area_tag :message, name: 'message', id: 'message', class: 'form-control'
+        .form-group
+          = submit_tag 'Contact', class: 'btn btn-primary btn-lg'
+
+    .about-block.row.centered.online-profiles
+      p Other places online:
+
+      a class="twitter logo" href="http://twitter.com/cball_" target="_blank"
+        = image_tag 'twitter.png'
+
+      a class="github logo" href="http://github.com/cball" target="_blank"
+        = image_tag 'github.png'

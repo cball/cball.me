@@ -30,6 +30,6 @@ article
                 = text_field_tag :first_name, name: 'FNAME', id: 'first_name', class: 'form-control', placeholder: 'First name'
               .form-group
                 /label.control-lablel for="email" Email
-                = text_field_tag :email, name: 'EMAIL', class: 'required email form-control', id: 'email', placeholder: 'Email address'
+                = email_field_tag :email, name: 'EMAIL', class: 'required email form-control', id: 'email', placeholder: 'Email address'
               .form-group
                 = submit_tag 'Subscribe', class: "btn btn-primary btn-lg btn-block", id: 'subscribe'

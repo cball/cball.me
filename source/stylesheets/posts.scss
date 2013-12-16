@@ -22,16 +22,16 @@ article {
   margin-bottom: 32px;
   min-height: 300px;
 
-  h3 {
-    font-size: 24px;
-  }
-
   h2.title {
     margin: 12px 0 0 0;
 
     a {
       color: #333;
     }
+  }
+
+  h4 {
+    margin-top: 24px;
   }
 
   .date {
@@ -83,6 +83,8 @@ article {
     &.no-image {
       background: #59787F;
       color: #fefefe;
+      text-align: center;
+      padding: 122px 0;
     }
   }
 }
