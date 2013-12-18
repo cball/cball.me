@@ -18,15 +18,21 @@ end
 
 activate :directory_indexes
 
+activate :deploy do |deploy|
+  deploy.build_before = true
+  deploy.method = :git
+  # deploy.remote = "custom-remote" # remote name or git url, default: origin
+  # deploy.branch = "custom-branch" # default: gh-pages
+end
+
 page "/feed.xml", :layout => false
 
-# Automatic image dimensions on image_tag helper
-# activate :automatic_image_sizes
-
 configure :build do
+  activate :minify_css
+  activate :minify_javascript
+
   # Compress PNGs after build
-  # First: gem install middleman-smusher
-  # require "middleman-smusher"
-  # activate :smusher
-  # activate :gzip, :exts => %w(.atom .css .html .js .rss .svg .txt .xhtml .xml)
+  require "middleman-smusher"
+  activate :smusher
+  activate :gzip, :exts => %w(.atom .css .html .js .rss .svg .txt .xhtml .xml)
 end
