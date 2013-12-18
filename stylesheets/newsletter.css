@@ -1,10 +1,1 @@
-/* line 1, /Users/cball/Dropbox/Code/cballme/source/stylesheets/newsletter.scss */
-#newsletter-signup {
-  margin-top: 12px; }
-  /* line 4, /Users/cball/Dropbox/Code/cballme/source/stylesheets/newsletter.scss */
-  #newsletter-signup #subscribe {
-    margin-top: 24px; }
-
-/* line 9, /Users/cball/Dropbox/Code/cballme/source/stylesheets/newsletter.scss */
-.selling-points {
-  margin-bottom: 24px; }
+#newsletter-signup{margin-top:12px}#newsletter-signup #subscribe{margin-top:24px}.selling-points{margin-bottom:24px}

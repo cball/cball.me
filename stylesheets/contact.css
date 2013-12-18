@@ -1,16 +1,1 @@
-/* line 1, /Users/cball/Dropbox/Code/cballme/source/stylesheets/contact.scss */
-.online-profiles {
-  text-align: center; }
-  /* line 4, /Users/cball/Dropbox/Code/cballme/source/stylesheets/contact.scss */
-  .online-profiles img {
-    height: 60px; }
-  /* line 8, /Users/cball/Dropbox/Code/cballme/source/stylesheets/contact.scss */
-  .online-profiles .logo {
-    display: inline-block;
-    margin: 0 20px;
-    opacity: 0.2;
-    transition: opacity 0.5s;
-    -webkit-transition: opacity 0.5s; }
-    /* line 15, /Users/cball/Dropbox/Code/cballme/source/stylesheets/contact.scss */
-    .online-profiles .logo:hover {
-      opacity: 0.8; }
+.online-profiles{text-align:center}.online-profiles img{height:60px}.online-profiles .logo{display:inline-block;margin:0 20px;opacity:0.2;transition:opacity 0.5s;-webkit-transition:opacity 0.5s}.online-profiles .logo:hover{opacity:0.8}
