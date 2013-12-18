@@ -18,7 +18,7 @@ strong, b, h1, h2, h3, h4, h5, h6 {
 }
 
 a {
-  color: $electric-blue;
+  color: darken($electric-blue, 18%);
   &:hover, &:active {
     text-decoration: none;
   }

@@ -20,7 +20,7 @@ Like most, I started out on nights and weekends. Even though I had read a lot fr
 
 - If your a developer interested in making the jump to consulting, I'll explain how to get there, and how to know you're ready.
 - I'll explain pros and cons of subcontractors, and how they helped me grow my business.
-- I'll explain quick tips to help you raise your rates and pitch ideas.
+- I'll explain tips to help you raise your rates and pitch ideas.
 
 #### How I can help you: better your life
 I'm no life coach, but I want to share some things that have helped me live a happier life. The first step (learned by me the hard way of course)? **Don't work too much!**
