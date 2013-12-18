@@ -13,6 +13,7 @@ activate :blog do |blog|
   blog.layout = "article_layout"
 
   blog.tag_template = "tag.html"
+  blog.taglink = 'tags/:tag.html'
   blog.calendar_template = "calendar.html"
 end
 
