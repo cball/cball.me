@@ -1,7 +1,8 @@
 ---
 title: Walk Like a Designer
-date: 2013-12-16
+date: 2013-12-18
 tags: development
+image: /images/walk_like_a_designer.png
 ---
 
 ---

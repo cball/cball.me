@@ -24,10 +24,15 @@ a {
   }
 }
 
+p {
+  font-size: 16px;
+  line-height: 28px;
+}
+
 header {
   padding: 9px 15px;
-  border-bottom: 1px solid darken($electric-blue, 10%);
-  background: $electric-blue;
+  border-bottom: 1px solid #eee;
+  background: #fff;
 
   @media (min-width: 768px) {
     height: 300px;
@@ -37,13 +42,12 @@ header {
     text-align: center;
 
     img {
-      border: 1px solid lighten($electric-blue, 10%);
+      border: 1px solid #ddd;
       padding: 4px;
     }
   }
 
   a {
-    color: #fefefe;
     text-decoration: none;
     text-transform: uppercase;
   }

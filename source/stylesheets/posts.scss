@@ -92,6 +92,10 @@ article {
 .post-body {
   img {
     display:block;width:600px;max-width:100%;margin: 10px auto;
+
+    &.normal {
+      width:auto;
+    }
   }
 }
 
@@ -108,7 +112,7 @@ article {
 
 @media (min-width: 992px) {
   .post-body, #comments {
-    padding: 60px 120px;
+    padding: 60px 140px;
   }
 }
 
