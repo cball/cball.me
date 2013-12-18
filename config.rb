@@ -3,6 +3,7 @@ Time.zone = 'America/New_York'
 set :css_dir, 'stylesheets'
 set :js_dir, 'javascripts'
 set :images_dir, 'images'
+set :frontmatter_extensions, %w(.html .slim)
 
 activate :blog do |blog|
   # blog.prefix = "blog"
@@ -13,7 +14,7 @@ activate :blog do |blog|
   blog.layout = "article_layout"
 
   blog.tag_template = "tag.html"
-  blog.taglink = 'tags/:tag.html'
+  blog.taglink = 'categories/:tag.html'
   blog.calendar_template = "calendar.html"
 end
 
