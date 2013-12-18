@@ -1,0 +1,117 @@
+/* line 1, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+pre {
+  background: none;
+  border: none;
+  color: #333;
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: none; }
+
+/* line 13, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+code,
+kbd,
+pre,
+samp {
+  font-family: monospace;
+  font-weight: normal; }
+
+/* line 18, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+article {
+  background: #fff;
+  border: 1px solid #cad7da;
+  margin-bottom: 32px;
+  min-height: 300px; }
+  /* line 25, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  article h2.title {
+    margin: 12px 0 0 0; }
+    /* line 28, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+    article h2.title a {
+      color: #333; }
+  /* line 33, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  article h4 {
+    margin-top: 24px; }
+  /* line 37, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  article .date {
+    color: gray; }
+
+/* line 43, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.post-header h2 {
+  font-size: 32px;
+  margin-top: 0;
+  margin-bottom: 2px; }
+  /* line 48, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-header h2 a {
+    color: #333; }
+/* line 53, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.post-header .date {
+  color: #236574;
+  padding: 14px;
+  background: #fefefe;
+  border-radius: 6px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  line-height: 1;
+  text-align: center; }
+  /* line 64, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-header .date .month {
+    text-transform: uppercase;
+    font-size: 13px;
+    color: #C1844D; }
+  /* line 70, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-header .date .day {
+    font-size: 34px; }
+  /* line 74, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-header .date .year {
+    color: #236574;
+    margin-top: 2px; }
+/* line 80, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.post-header .inner {
+  position: relative; }
+  /* line 83, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-header .inner.no-image {
+    background: #59787F;
+    color: #fefefe;
+    text-align: center;
+    padding: 122px 0; }
+
+/* line 93, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.post-body img {
+  display: block;
+  width: 600px;
+  max-width: 100%;
+  margin: 10px auto; }
+  /* line 96, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-body img.normal {
+    width: auto; }
+
+/* line 103, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.post-body, #comments {
+  padding: 20px; }
+
+@media (min-width: 768px) {
+  /* line 108, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-body, #comments {
+    padding: 40px 80px; } }
+@media (min-width: 992px) {
+  /* line 114, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .post-body, #comments {
+    padding: 60px 140px; } }
+/* line 119, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+#comments {
+  margin-top: 0;
+  padding-top: 0; }
+
+/* line 124, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+.tags {
+  margin-bottom: 24px; }
+  /* line 127, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+  .tags > li > a {
+    color: #ddd;
+    font-size: 14px;
+    font-style: italic;
+    padding: 2px 4px; }
+    /* line 133, /Users/cball/Dropbox/Code/cballme/source/stylesheets/posts.scss */
+    .tags > li > a .name {
+      padding: 0 4px;
+      color: #aaa; }

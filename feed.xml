@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Blog Name</title>
+  <subtitle>Blog subtitle</subtitle>
+  <id>http://blog.url.com/</id>
+  <link href="http://blog.url.com/"/>
+  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <updated>2013-12-18T05:00:00Z</updated>
+  <author>
+    <name>Blog Author</name>
+  </author>
+  <entry>
+    <title>Walk Like a Designer</title>
+    <link rel="alternate" href="http://blog.url.com/walk-like-a-designer/"/>
+    <id>http://blog.url.com/walk-like-a-designer/</id>
+    <published>2013-12-18T05:00:00Z</published>
+    <updated>2013-12-18T09:30:34-05:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;You're a developer, not a designer. I get that. But to say you just "can't do front-end" is just plain wrong. Especially considering the tools that we have available to us today. I think you'll find if you learn to walk like a designer (and by that I mean learn your way around HTML, CSS and SCSS enough to produce quality work), you'll be pretty proud of what you can accomplish.&lt;/p&gt;
+
+&lt;h4 id="stop-the-i-only-do-back-end-mentality"&gt;Stop the "I only do back-end" mentality&lt;/h4&gt;
+&lt;p&gt;To many developers, design or front-end development is a black box and they never make an attempt to change that viewpoint. It's absolutely fine to &lt;em&gt;specialize&lt;/em&gt; in writing Ruby code, JavaScript, or SCSS, but these things should not be mutually exclusive. Sure, you might not have a natural design talent, but I'll bet you can look at something and determine if it looks good or not. Let's look at how we can improve this line of thinking.&lt;/p&gt;
+
+&lt;h4 id="lets-make-full-stack-development-just-part-of-the-job"&gt;Let's make "full stack" development just part of the job&lt;/h4&gt;
+&lt;p&gt;Improvement starts by not glorifying the fact that someone is a "full stack" developer. These days, most of us are not working on massively complicated systems. More often than not, we are working on products that are used directly by customers. As developers, why are we putting ourselves in a position to have to hand portions of a project off to someone who is "better at front-end" than us when, with just a little effort, we could take a feature to completion?&lt;/p&gt;
+
+&lt;p&gt;Instead of just handing over a Photoshop document, designers are now expected to know HTML, CSS and probably a css pre-processor like SCSS. Developers need to master these skills as well. It allows a knowledge overlap of the middle ground, which will increase efficiency of the team and ultimately, create better products.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="skill graph" src="/images/designer-developer-skills.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Here's why this is awesome:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;You as a developer can take a feature to completion.&lt;/li&gt;
+  &lt;li&gt;Designers will not come to you the second they are done with Photoshop.&lt;/li&gt;
+  &lt;li&gt;If you want to work on a side project, you'll be able to do a decent job with it and won't need to hire a designer to make it look nice.&lt;/li&gt;
+  &lt;li&gt;You start thinking more about the customer. When working only on back-end code, the customer is the furthest thing from your mind. It's amazing how much better your work can be when you think of how a human will interact with it.&lt;/li&gt;
+  &lt;li&gt;It will make you more marketable, which can increase your salary, or allow you to start a consultancy.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Here a a few things you can do &lt;strong&gt;right now&lt;/strong&gt;, to make yourself better at front end development:&lt;/p&gt;
+
+&lt;h4 id="quick-hit-1-learn-the-grid"&gt;Quick Hit #1: Learn the grid&lt;/h4&gt;
+&lt;p&gt;Laying out on a grid is the foundation of a good design, and will help solve issues with whitespace or things feeling crammed together.&lt;/p&gt;
+
+&lt;p&gt;By far the easiest way to get started with laying out pages in grids is to use a framework like &lt;a href="http://getbootstrap.com"&gt;Bootstrap&lt;/a&gt; or &lt;a href="http://foundation.zurb.com"&gt;Foundation&lt;/a&gt;. Paired with a browser plugin like &lt;a href="http://alefeuvre.github.io/foundation-grid-displayer/"&gt;Grid displayer&lt;/a&gt;, you can look at the grid for any Bootstrap or Foundation site. This will get you to start thinking in grids and see how other people have used them. Pay attention to how a grid automatically helps your content "breathe" and makes your layout uniform.&lt;/p&gt;
+
+&lt;h4 id="quick-hit-2-imitate-good-designs"&gt;Quick Hit #2: Imitate good designs&lt;/h4&gt;
+&lt;p&gt;Find a site or UI that you like and learn how to implement it. And don't just copy and paste, either. Take the time to learn how each piece fits together and why each line of HTML or CSS is there. See how it fits into a grid, and how it enhances the overall experience. Maybe they use a great responsive design and you like the experience on your phone. Or maybe there is a creative approach to navigation.&lt;/p&gt;
+
+&lt;p&gt;Once you do this a few times you'll learn all kinds of new techniques that you can immediately start applying to new work.&lt;/p&gt;
+
+&lt;h4 id="quick-hit-3-pair-with-someone-whos-better-than-you"&gt;Quick Hit #3: Pair with someone who's better than you&lt;/h4&gt;
+&lt;p&gt;Pairing is often encouraged in the world of Ruby and Rails, but not as much with design, HTML, CSS or JavaScript. Find someone who is better than you and work with them for 30 minutes to 1 hour. Explain how you're thinking about approaching the problem, and then have them think out loud while both of you code. You'll be amazed at how much knowledge you can soak up in a short amount of time.&lt;/p&gt;
+
+&lt;p&gt;Front-end development is extremely important. It's how your customer interacts with your product. Work out some of the quick hits I mentioned here and let me know how it goes! If you need someone to pair with, give me a shout.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Communication is Key</title>
+    <link rel="alternate" href="http://blog.url.com/communication-is-key/"/>
+    <id>http://blog.url.com/communication-is-key/</id>
+    <published>2013-12-17T05:00:00Z</published>
+    <updated>2013-12-18T09:30:38-05:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;Communication is a strange beast. It can destroy relationships,  and it can win you clients. It can make you sound knowledgeable, or make it seem like you have no idea what you're doing.&lt;/p&gt;
+
+&lt;p&gt;Here are a few small tips on communication from a consulting perspective:&lt;/p&gt;
+
+&lt;h4 id="learn-how-to-talk-to-people"&gt;Learn how to talk to people&lt;/h4&gt;
+&lt;p&gt;I have a client that I've worked with for a few years now. When having a discussion with them back in October, I was told that one of the reasons they enjoy working with me is because I know how to talk to them. That statement was not to imply that I have great sales tactics, but that I've developed an ability to explain technical topics in a simple, easy to understand way.&lt;/p&gt;
+
+&lt;p&gt;If you're a developer-turned-consultant, you probably fall into this trap all the time and find yourself having to take a mental step back when explaining things. Always remember to dial back the complexity in a conversation.&lt;/p&gt;
+
+&lt;h4 id="discover-your-style"&gt;Discover your style&lt;/h4&gt;
+&lt;p&gt;Style = personality. If you the type to crack an occasional joke, do it. If you're a bit quirky, go for it. If you sound like you're giving a formal lecture to a client when you're on a conference call with them, you're probably doing it wrong. Relax and stay professional, but let your personality shine through. This has a wonderful side benefit - it makes your client feel as if they are talking with a friend, and less like they are talking to a co-worker or someone who just cranks out code.&lt;/p&gt;
+
+&lt;h4 id="technical-jargon-is-not-a-style"&gt;Technical jargon is not a style&lt;/h4&gt;
+&lt;p&gt;Save the tech-heavy talk for meetup groups. Avoiding jargon and simplifying your discussion will boost client confidence and understanding. They're already impressed with your technical skills or they wouldn't be talking to you.&lt;/p&gt;
+
+&lt;h4 id="explain-how-you-are-solving-a-problem"&gt;Explain how you are solving a problem&lt;/h4&gt;
+&lt;p&gt;This is not the same thing as &lt;em&gt;what you are using&lt;/em&gt; to solve the problem. Most of the time clients don't care what technologies you use, they just care about the outcome. So talk about what they can expect after finishing a project or portion of a project.&lt;/p&gt;
+
+&lt;h4 id="followup"&gt;Followup&lt;/h4&gt;
+&lt;p&gt;Make it a point to reach out to clients periodically and see how things are going for them. I'd advise keeping this information in a CRM of some sort, both the date you should follow up, and what you've talked about in the past. Maybe you want to keep track of the anniversary of the company, or reach back out 6 months after an engagement to see how your work has changed their business. You'll be shocked at how much people appreciate a simple gesture like this. &lt;strong&gt;Note: Followups are a perfect time to ask for a testimonial!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id="practice"&gt;Practice&lt;/h4&gt;
+&lt;p&gt;If you're experiences are anything like mine you will fumble through conversations with your first few clients. Just keep at it, and with practice you'll get much better.&lt;/p&gt;
+
+&lt;p&gt;Learn to communicate well, and I'll bet your clients will start talking more about you to others.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>Let's Level Up</title>
+    <link rel="alternate" href="http://blog.url.com/lets-level-up/"/>
+    <id>http://blog.url.com/lets-level-up/</id>
+    <published>2013-12-13T05:00:00Z</published>
+    <updated>2013-12-17T13:22:59-05:00</updated>
+    <author>
+      <name>Article Author</name>
+    </author>
+    <content type="html">&lt;h4 id="what-is-this-blog-about"&gt;What is this blog about?&lt;/h4&gt;
+&lt;p&gt;In order to be the best you can be in anything in life, you need to practice. My goal with this blog is to give actionable advice on &lt;em&gt;how to practice&lt;/em&gt; in order to "level up" as a developer and/or a consultant.&lt;/p&gt;
+
+&lt;h4 id="how-i-can-help-you-the-developer"&gt;How I can help you: the developer&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;I'll show you how to make yourself more marketable by improving your design and front-end skills. If you're a developer that "only does back-end" work, come up for air and change that viewpoint. You may not become the next best designer, but you need to be competent.&lt;/li&gt;
+  &lt;li&gt;I want to help you to avoid getting too comfortable with your skillset. The web and mobile space changes rapidly and becoming comfortable is a mind-trap that puts you in an excellent position to watch the rest of the industry pass you by. &lt;/li&gt;
+  &lt;li&gt;I'll teach you how to stay sane when working with large codebases.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;/p&gt;
+
+&lt;h4 id="how-i-can-help-you-the-consultant"&gt;How I can help you: the consultant&lt;/h4&gt;
+&lt;p&gt;Like most, I started out on nights and weekends. Even though I had read a lot from others, it still took some trial and error to learn the ropes.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;If your a developer interested in making the jump to consulting, I'll explain how to get there, and how to know you're ready.&lt;/li&gt;
+  &lt;li&gt;I'll explain pros and cons of subcontractors, and how they helped me grow my business.&lt;/li&gt;
+  &lt;li&gt;I'll explain tips to help you raise your rates and pitch ideas.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="how-i-can-help-you-better-your-life"&gt;How I can help you: better your life&lt;/h4&gt;
+&lt;p&gt;I'm no life coach, but I want to share some things that have helped me live a happier life. The first step (learned by me the hard way of course)? &lt;strong&gt;Don't work too much!&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h4 id="why-should-you-listen-to-me"&gt;Why should you listen to me?&lt;/h4&gt;
+&lt;p&gt;I haven't given any large talks, created a massively used open-source library, built &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt; into a huge agency, or written a best selling book. But my guess is, more than likely, you're in the same boat.&lt;/p&gt;
+
+&lt;p&gt;I want to show you how these are all excellent long-term goals, but they are absolutely not requirements in order to be a successful and profitable developer or consultant. You can be a little fish in a big pond and still have a sustainable business and a happy life. Most of &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt;'s clients love the personal attention and camaraderie they get from working with a small agency.&lt;/p&gt;
+</content>
+  </entry>
+</feed>
