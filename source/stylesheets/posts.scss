@@ -54,12 +54,15 @@ article {
     color: #236574;
     padding: 14px;
     background: #fefefe;
-    border-radius: 6px;
+    border-radius: 50%;
+    width: 93px;
+    height: 93px;
     position: absolute;
     top: 20px;
     right: 20px;
     line-height: 1;
     text-align: center;
+    display: none;
 
     .month {
       text-transform:uppercase;

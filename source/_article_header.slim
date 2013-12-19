@@ -3,15 +3,15 @@
     .inner
       a href="#{article.url}"
         img.img-responsive src="#{article.data.image}"
-      .date.hidden-xs
-        .month = article.date.strftime "%B"
+      .date
+        .month = article.date.strftime "%b"
         .day = article.date.strftime "%e"
         .year = article.date.strftime "%Y"
   - else
     .inner.no-image
       h2 = article.title
-      .date.hidden-xs
-        .month = article.date.strftime "%B"
+      .date
+        .month = article.date.strftime "%b"
         .day = article.date.strftime "%e"
         .year = article.date.strftime "%Y"
 
