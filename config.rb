@@ -14,7 +14,7 @@ activate :blog do |blog|
   blog.layout = "article_layout"
 
   blog.tag_template = "tag.html"
-  blog.taglink = 'categories/:tag.html'
+  blog.taglink = 'topics/:tag.html'
   blog.calendar_template = "calendar.html"
 end
 
