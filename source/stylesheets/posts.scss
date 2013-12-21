@@ -16,6 +16,9 @@ samp {
 }
 
 article {
+  font-size: 16px;
+  line-height: 28px;
+
   background: #fff;
   border: 1px solid lighten(#59787F, 40%);
   // box-shadow: 0 0 12px 0 #888;
@@ -94,10 +97,14 @@ article {
 
 .post-body {
   img {
-    display:block;width:600px;max-width:100%;margin: 10px auto;
+    display:block;width:600px;max-width:100%;margin: 20px auto;
 
-    &.normal {
+    &.normal, &.no-resize {
       width:auto;
+    }
+
+    &.vspace {
+      margin: 40px auto;
     }
   }
 }
