@@ -19,6 +19,7 @@ activate :blog do |blog|
 end
 
 activate :directory_indexes
+activate :syntax
 
 activate :deploy do |deploy|
   deploy.build_before = true
