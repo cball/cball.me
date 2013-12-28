@@ -7,11 +7,9 @@
 - page_articles.each_with_index do |article, i|
   article
     = partial(:article_header, :locals => { :article => article })
-    .post-body
-      h2.title = link_to article.title, article
 
-      .date
-        = article.date.strftime "%B %e, %Y"
+    .post-body
+      = partial :article_info, locals: { article: article }
 
       = article.summary
       = link_to 'Continue Reading', article

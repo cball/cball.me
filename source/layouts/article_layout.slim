@@ -3,8 +3,8 @@
     = partial :article_header, locals: { article: current_article }
 
     .post-body
-      h2.title = link_to current_article.title, current_article
-      .date = current_article.date.strftime "%B %e, %Y"
+      = partial :article_info, locals: { article: current_article }
+
       = yield
 
       = partial :article_footer, locals: { article: current_article }

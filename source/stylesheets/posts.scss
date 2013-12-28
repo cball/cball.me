@@ -146,3 +146,26 @@ article {
     }
   }
 }
+
+#upsell {
+  padding: 30px 40px;
+  margin-top: 10px;
+  margin-bottom: 40px;
+  text-align: center;
+  border-radius: 3px;
+  background: $electric-blue;
+  color: #fefefe;
+
+  h3 {
+    margin-top: 0;
+  }
+
+  p {
+    line-height: 20px;
+    margin-bottom: 24px;
+  }
+
+  .btn {
+    text-transform: uppercase;
+  }
+}

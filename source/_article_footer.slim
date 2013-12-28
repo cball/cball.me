@@ -3,7 +3,11 @@ ul.nav.tags.nav-pills
     - tag_name = %Q{/<span class="name">#{tag}</span>/}
     li = link_to tag_name, tag_path(tag)
 
-#upsell
+.row
+  #upsell.col-md-8.col-md-offset-2
+    h3 Learned something new?
+    p Get my best development and consulting advice every week, right in your inbox.
+    = link_to 'Join for free', '/newsletter.html', class: 'btn btn-warning'
 
 #article-nav
   .pull-left
