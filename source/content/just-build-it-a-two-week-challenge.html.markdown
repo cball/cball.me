@@ -1,5 +1,5 @@
 ---
-title: The "Just Build It" Challenge
+title: Just Build It
 date: 2013-12-28
 tags: development
 image: /images/just_build_it.png
@@ -38,4 +38,4 @@ I'm going to build this app and then do a followup post in 2 weeks detailing my 
 #### Let's do this
 Remember, we are going to try our best to finish our "Just build it" app in 2 weeks time, but don't get frustrated if you can't quite complete it. As long as you put some real effort behind it, you'll see the benefits. Worst case, you'll have something interesting to discuss with other developers at your next meetup (you are attending meetups right?).
 
-If you take part in the "Just build it" challenge, let me know what you're working on!
+If you take part in the "Just build It" challenge, let me know what you're working on!
