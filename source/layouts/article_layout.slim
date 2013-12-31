@@ -3,6 +3,11 @@
   meta name="og:title" content="#{current_article.title}"
   meta name="og:url" content="http://cball.me#{current_article.url}"
 
+- content_for(:meta_description) do
+  - doc = Nokogiri::HTML(current_article.summary)
+  - stripped_summary = doc.xpath("//text()").remove
+  meta name="description" content="#{stripped_summary}"
+
 - wrap_layout :layout do
   article
     = partial :article_header, locals: { article: current_article }
