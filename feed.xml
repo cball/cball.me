@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>Blog Name</title>
-  <subtitle>Blog subtitle</subtitle>
-  <id>http://blog.url.com/</id>
-  <link href="http://blog.url.com/"/>
-  <link href="http://blog.url.com/feed.xml" rel="self"/>
+  <title>Level Up</title>
+  <subtitle>Your development and consulting skills</subtitle>
+  <id>http://cball.me/</id>
+  <link href="http://cball.me/"/>
+  <link href="http://cball.me/feed.xml" rel="self"/>
   <updated>2014-01-05T05:00:00Z</updated>
   <author>
-    <name>Blog Author</name>
+    <name>Chris Ball</name>
   </author>
   <entry>
     <title>How to Grow your Consulting Business in only 4 Hours per Week</title>
-    <link rel="alternate" href="http://blog.url.com/how-to-grow-your-consulting-business-in-only-4-hours-per-week/"/>
-    <id>http://blog.url.com/how-to-grow-your-consulting-business-in-only-4-hours-per-week/</id>
+    <link rel="alternate" href="http://cball.me/how-to-grow-your-consulting-business-in-only-4-hours-per-week/"/>
+    <id>http://cball.me/how-to-grow-your-consulting-business-in-only-4-hours-per-week/</id>
     <published>2014-01-05T05:00:00Z</published>
     <updated>2014-01-05T19:25:20-05:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Chris Ball</name>
     </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;If you're like me, you started (or plan to start) your consulting as a side business while keeping a full-time job. This is a great way to ease in to consulting, but requires putting in long hours every day to grow your business. And doing this over...&lt;/p&gt;</summary>
     <content type="html">&lt;hr /&gt;
 &lt;p&gt;If you're like me, you started (or plan to start) your consulting as a side business while keeping a full-time job. This is a great way to ease in to consulting, but requires putting in long hours every day to grow your business. And doing this over an extended period of time will almost certainly lead to burnout.&lt;/p&gt;
 
@@ -88,13 +89,17 @@
   </entry>
   <entry>
     <title>Just Build It</title>
-    <link rel="alternate" href="http://blog.url.com/just-build-it-a-two-week-challenge/"/>
-    <id>http://blog.url.com/just-build-it-a-two-week-challenge/</id>
+    <link rel="alternate" href="http://cball.me/just-build-it-a-two-week-challenge/"/>
+    <id>http://cball.me/just-build-it-a-two-week-challenge/</id>
     <published>2013-12-28T05:00:00Z</published>
     <updated>2013-12-30T09:23:49-05:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Chris Ball</name>
     </author>
+    <summary type="html">&lt;hr /&gt;
+&lt;p&gt;A foolproof way to level up your development in a short amount of time is to just build something. Pick something away from the silo of your day job or client work (something different than what you work on daily will be more exciting!), give yourself a deadline, and just build it.&lt;/p&gt;
+
+&lt;p&gt;</summary>
     <content type="html">&lt;hr /&gt;
 &lt;p&gt;A foolproof way to level up your development in a short amount of time is to just build something. Pick something away from the silo of your day job or client work (something different than what you work on daily will be more exciting!), give yourself a deadline, and just build it.&lt;/p&gt;
 
@@ -133,13 +138,14 @@
   </entry>
   <entry>
     <title>Walk Like a Designer</title>
-    <link rel="alternate" href="http://blog.url.com/walk-like-a-designer/"/>
-    <id>http://blog.url.com/walk-like-a-designer/</id>
+    <link rel="alternate" href="http://cball.me/walk-like-a-designer/"/>
+    <id>http://cball.me/walk-like-a-designer/</id>
     <published>2013-12-18T05:00:00Z</published>
     <updated>2013-12-18T09:30:34-05:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Chris Ball</name>
     </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;You're a developer, not a designer. I get that. But to say you just "can't do front-end" is just plain wrong. Especially considering the tools that we have available to us today. I think you'll find if you learn to walk like a designer (and by that...&lt;/p&gt;</summary>
     <content type="html">&lt;hr /&gt;
 &lt;p&gt;You're a developer, not a designer. I get that. But to say you just "can't do front-end" is just plain wrong. Especially considering the tools that we have available to us today. I think you'll find if you learn to walk like a designer (and by that I mean learn your way around HTML, CSS and SCSS enough to produce quality work), you'll be pretty proud of what you can accomplish.&lt;/p&gt;
 
@@ -183,13 +189,16 @@
   </entry>
   <entry>
     <title>Communication is Key</title>
-    <link rel="alternate" href="http://blog.url.com/communication-is-key/"/>
-    <id>http://blog.url.com/communication-is-key/</id>
+    <link rel="alternate" href="http://cball.me/communication-is-key/"/>
+    <id>http://cball.me/communication-is-key/</id>
     <published>2013-12-17T05:00:00Z</published>
     <updated>2013-12-18T09:30:38-05:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Chris Ball</name>
     </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;Communication is a strange beast. It can destroy relationships,  and it can win you clients. It can make you sound knowledgeable, or make it seem like you have no idea what you're doing.&lt;/p&gt;
+
+&lt;p&gt;Here are a few small tips on communication from a consulting...&lt;/p&gt;</summary>
     <content type="html">&lt;hr /&gt;
 &lt;p&gt;Communication is a strange beast. It can destroy relationships,  and it can win you clients. It can make you sound knowledgeable, or make it seem like you have no idea what you're doing.&lt;/p&gt;
 
@@ -220,13 +229,24 @@
   </entry>
   <entry>
     <title>Let's Level Up</title>
-    <link rel="alternate" href="http://blog.url.com/lets-level-up/"/>
-    <id>http://blog.url.com/lets-level-up/</id>
+    <link rel="alternate" href="http://cball.me/lets-level-up/"/>
+    <id>http://cball.me/lets-level-up/</id>
     <published>2013-12-13T05:00:00Z</published>
     <updated>2013-12-17T13:22:59-05:00</updated>
     <author>
-      <name>Article Author</name>
+      <name>Chris Ball</name>
     </author>
+    <summary type="html">&lt;h4 id="what-is-this-blog-about"&gt;What is this blog about?&lt;/h4&gt;
+&lt;p&gt;In order to be the best you can be in anything in life, you need to practice. My goal with this blog is to give actionable advice on &lt;em&gt;how to practice&lt;/em&gt; in order to "level up" as a developer and/or a consultant.&lt;/p&gt;
+
+&lt;h4 id="how-i-can-help-you-the-developer"&gt;How I can help you: the developer&lt;/h4&gt;
+&lt;ul&gt;
+  &lt;li&gt;I'll show you how to make yourself more marketable by improving your design and front-end skills. If you're a developer that "only does back-end" work, come up for air and change that viewpoint. You may not become the next best designer, but you need to be competent.&lt;/li&gt;
+  &lt;li&gt;I want to help you to avoid getting too comfortable with your skillset. The web and mobile space changes rapidly and becoming comfortable is a mind-trap that puts you in an excellent position to watch the rest of the industry pass you by. &lt;/li&gt;
+  &lt;li&gt;I'll teach you how to stay sane when working with large codebases.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;</summary>
     <content type="html">&lt;h4 id="what-is-this-blog-about"&gt;What is this blog about?&lt;/h4&gt;
 &lt;p&gt;In order to be the best you can be in anything in life, you need to practice. My goal with this blog is to give actionable advice on &lt;em&gt;how to practice&lt;/em&gt; in order to "level up" as a developer and/or a consultant.&lt;/p&gt;
 
