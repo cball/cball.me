@@ -2,6 +2,7 @@
   meta name="og:image" content="http://cball.me#{current_article.data.image}"
   meta name="og:title" content="#{current_article.title}"
   meta name="og:url" content="http://cball.me#{current_article.url}"
+  link rel="author" href="https://plus.google.com/100884992885084072433"
 
 - content_for(:meta_description) do
   - doc = Nokogiri::HTML(current_article.summary)

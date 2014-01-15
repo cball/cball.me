@@ -2,7 +2,7 @@
 title: Just Build It
 date: 2013-12-28
 tags: development
-image: /images/just_build_it.png
+image: http://cball.me/images/just_build_it.png
 ---
 
 ---
@@ -31,7 +31,7 @@ To give you an example and to show you that this works, I'm going to be building
 
 I'm taking this idea from a tweet from Brian Cardarella:
 
-![Screenshot app tweet](/images/screenshot-app-tweet.png){: .no-resize}
+![Screenshot app tweet](http://cball.me/images/screenshot-app-tweet.png){: .no-resize}
 
 I'm going to build this app and then do a followup post in 2 weeks detailing my approach from start to finish, and showing what I have learned. 
 
