@@ -5,10 +5,198 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-01-05T05:00:00Z</updated>
+  <updated>2014-01-14T05:00:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Integrating with Github - Authentication and Web Hooks</title>
+    <link rel="alternate" href="http://cball.me/building-a-github-integrated-service/"/>
+    <id>http://cball.me/building-a-github-integrated-service/</id>
+    <published>2014-01-14T05:00:00Z</published>
+    <updated>2014-01-14T23:26:27-05:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;Just over two weeks ago, I (and hopefully you!) started a challenge to "&lt;a href="http://cball.me/just-build-it-a-two-week-challenge/"&gt;Just build it&lt;/a&gt;". We set a timeline of two weeks to see what we could build in order to level up our development skills. I want to go over what I built, what I've learned, and give...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;Just over two weeks ago, I (and hopefully you!) started a challenge to "&lt;a href="http://cball.me/just-build-it-a-two-week-challenge/"&gt;Just build it&lt;/a&gt;". We set a timeline of two weeks to see what we could build in order to level up our development skills. I want to go over what I built, what I've learned, and give you tips you can implement in your applications.&lt;/p&gt;
+
+&lt;p&gt;The application I built is called Gitshot, and it gives developers and designers the ability to generate screenshots from Github pull requests. So that I don't overload your brain or mine, this is a first in a series of 6 posts. Here's what we'll cover:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;strong&gt;Integrating with Github - Authentication and Web Hooks&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;Launching a Virtual Machine - Buddy up with Vagrant&lt;/li&gt;
+  &lt;li&gt;Integrating Further with Github - SSH Keys and Deploy Keys&lt;/li&gt;
+  &lt;li&gt;Booting your App in the Background&lt;/li&gt;
+  &lt;li&gt;Generating Screenshots with PhantomJS&lt;/li&gt;
+  &lt;li&gt;Tying it all together - Look mom, I learned something!&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3 id="github-authentication"&gt;Github Authentication&lt;/h3&gt;
+
+&lt;h4 id="getting-started"&gt;Getting started&lt;/h4&gt;
+&lt;p&gt;Github uses OAuth for authentication. Instead of having a single token for your application like you would for something like NewRelic, your application will request authorization, store a token, and make requests on behalf of a user.&lt;/p&gt;
+
+&lt;p&gt;Start by &lt;a href="https://github.com/settings/applications/new"&gt;registering a new application&lt;/a&gt;. Callback urls in this section do not have to be publicly accessible. Here are my settings:
+&lt;img alt="New Github Application Settings" src="https://s3.amazonaws.com/cball.me/new-github-app.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;Add &lt;a href="https://github.com/octokit/octokit.rb"&gt;octokit.rb&lt;/a&gt; to your Gemfile to interface with the Github API.&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;gem&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;octokit&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;~&amp;gt; 2.0&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Add the following environment variables to your application with the keys from the previous step:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="no"&gt;OCTOKIT_CLIENT_ID&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;xxxxx&lt;/span&gt;
+&lt;span class="no"&gt;OCTOKIT_SECRET&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;xxx&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4 id="show-a-github-link-on-your-loginaccount-page"&gt;Show a Github link on your login/account page&lt;/h4&gt;
+&lt;p&gt;We'll use Octokit to generate the authorization link for us. This link will tell Github what the client application is as well as the scopes to apply to the user permissions.&lt;/p&gt;
+
+&lt;pre class="highlight erb"&gt;&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="n"&gt;authorize_url&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Octokit&lt;/span&gt;&lt;span class="nf"&gt;.authorize_url&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;scope: &lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;repo,user:email&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;link_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;Connect to Github&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;authorize_url&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4 id="exchange-an-authorization-code-for-a-proper-access-token"&gt;Exchange an authorization code for a proper access token&lt;/h4&gt;
+&lt;p&gt;After the user authorizes our application, Github will hit our callback url defined in the settings and pass a single parameter: &lt;strong&gt;code&lt;/strong&gt;. Let's exchange this for a proper OAuth token, which we'll store to make future calls on behalf of the user.&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;GithubAuthCallbacksController&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="no"&gt;ApplicationController&lt;/span&gt;
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;oauth_code&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;user_from_github_access_token&lt;/span&gt;&lt;span class="nf"&gt;.update_from_github_info!&lt;/span&gt;
+      &lt;span class="n"&gt;sign_in&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;else&lt;/span&gt;
+      &lt;span class="n"&gt;flash&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:error&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;Github does not want us to work together.&amp;#39;&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="n"&gt;redirect_to&lt;/span&gt; &lt;span class="n"&gt;root_path&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="kp"&gt;private&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_from_github_access_token&lt;/span&gt;
+    &lt;span class="no"&gt;User&lt;/span&gt;&lt;span class="nf"&gt;.where&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;github_token: &lt;/span&gt;&lt;span class="n"&gt;github_access_token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.first_or_initialize&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;github_access_token&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Octokit&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;
+    &lt;span class="n"&gt;token_response&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.exchange_code_for_access_token&lt;/span&gt; &lt;span class="n"&gt;code_params&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:code&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;token_response&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;access_token&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;code_params&lt;/span&gt;
+    &lt;span class="n"&gt;params&lt;/span&gt;&lt;span class="nf"&gt;.permit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:code&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The magic method here is:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.exchange_code_for_access_token&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;It does exactly what it says. Given an authorization code, it will return an access token that you can store permanently (though keep in mind the user can revoke access at any time so you should handle that in your application).&lt;/p&gt;
+
+&lt;p&gt;Now that you're authenticated, you should be able to call any method in the api on behalf of the user. For example, to get a list of the user's repositories:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Octokit&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;access_token: &lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="nf"&gt;.github_token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.repos&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Note however, this does not include Organization repositories that the user has access to. Here's how I get these on Gitshot:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;GithubRepositoryFetcher&lt;/span&gt;
+  &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:client&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="vi"&gt;@user&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;user&lt;/span&gt;
+    &lt;span class="vi"&gt;@client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Octokit&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;access_token: &lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="nf"&gt;.github_token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;all&lt;/span&gt;
+    &lt;span class="n"&gt;user_repositories&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;organization_repositories&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_repositories&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.repos&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;organization_repositories&lt;/span&gt;
+    &lt;span class="n"&gt;organization_names&lt;/span&gt;&lt;span class="nf"&gt;.map&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.organization_repositories&lt;/span&gt; &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;&lt;span class="nf"&gt;.flatten&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="kp"&gt;private&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;organization_names&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.organizations.map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="ss"&gt;:login&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;I'm sure there is a more efficient way to do this… I don't love the fact that this makes n+1 organization repository calls just to get a list of all repositories the user has access to.&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id="github-web-hooks"&gt;Github Web Hooks&lt;/h3&gt;
+
+&lt;p&gt;In order to know when to generate screenshots and to be able to gather information from a Github pull request, we need to install a web hook. A web hook at its core is &lt;strong&gt;just another callback url&lt;/strong&gt;, that Github will post as much information as it possibly can about a pull request, comment or other activity. Here's how we do that:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;ProjectGitHookAdder&lt;/span&gt;
+  &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="ss"&gt;:project&lt;/span&gt;
+  &lt;span class="n"&gt;delegate&lt;/span&gt; &lt;span class="ss"&gt;:user&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;to: :project&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="vi"&gt;@project&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;project&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;add&lt;/span&gt;
+    &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;Octokit&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Client&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt; &lt;span class="ss"&gt;access_token: &lt;/span&gt;&lt;span class="n"&gt;user&lt;/span&gt;&lt;span class="nf"&gt;.github_token&lt;/span&gt;
+    &lt;span class="n"&gt;hook&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="nf"&gt;.create_hook&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+      &lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="nf"&gt;.repository&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="s1"&gt;&amp;#39;web&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;hook_url_config&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="n"&gt;hook_options&lt;/span&gt;
+    &lt;span class="p"&gt;)&lt;/span&gt;
+
+    &lt;span class="n"&gt;hook&lt;/span&gt;&lt;span class="nf"&gt;.id.present?&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="kp"&gt;private&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;hook_url_config&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;url: &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http://gitshot.24.183.111.227.xip.io/hooks/1&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;content_type: &lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;json&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+   &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;hook_options&lt;/span&gt;
+    &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="ss"&gt;events: &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;pull_request&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;pull_request_review_comment&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;commit_comment&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;issue_comment&amp;#39;&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;active: &lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The important parts of the hook parameters are:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;repository name&lt;/strong&gt; in the form of &amp;lt;user/repo&amp;gt; (cball/something).&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;the url&lt;/strong&gt; (when developing locally I like to use xip.io since it integrates nicely with pow). Keep in mind that this url &lt;em&gt;must be publicly accessible&lt;/em&gt;.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;events&lt;/strong&gt; all of the events that will trigger this hook&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;active&lt;/strong&gt; you'll want active to be true, so something actually happens&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Github has great documentation on the event types in case you need something different.&lt;/p&gt;
+
+&lt;h4 id="testing-it-out"&gt;Testing it out&lt;/h4&gt;
+&lt;p&gt;After authenticating and adding a hook to a repository, you should be able to see your new hook installed in the repository settings.&lt;/p&gt;
+
+&lt;p&gt;Note: If you find yourself needing to add additional event types, the only way to do so is through the API. &lt;/p&gt;
+
+&lt;h4 id="parsing-incoming-hooks"&gt;Parsing incoming hooks&lt;/h4&gt;
+
+&lt;p&gt;The json payload is slightly different for each event you have registered, but a lot of the information is the same. &lt;/p&gt;
+
+&lt;p&gt;For Gitshot, I decided on a message convention of [screenshot /myurl]. This required scanning incoming hook data for this string in order to derive the URL the user wanted to fetch. If this message appears in the payload, we need to try and grab the HEAD and BASE commit hashes, as well as the open/closed state. If the message is not found, or the pull request is closed, we ignore it. Here's how that works in Gitshot:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# code&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Awesome! We've done a lot here. We started working with the Github API, authorized our application using OAuth, and installed a hook to let Github notify us when there is activity on the repository we care about. &lt;/p&gt;
+
+&lt;p&gt;In part 2, we will be delving into virtual machines using Vagrant. This is extremely important in order to be able to check out and run code from our authorized repository in an secure, isolated, and temporary environment. Talk to you then! &lt;a href="http://cball.me/newsletter"&gt;Get email updates for the rest of the series here&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>How to Grow your Consulting Business in only 4 Hours per Week</title>
     <link rel="alternate" href="http://cball.me/how-to-grow-your-consulting-business-in-only-4-hours-per-week/"/>
@@ -92,7 +280,7 @@
     <link rel="alternate" href="http://cball.me/just-build-it-a-two-week-challenge/"/>
     <id>http://cball.me/just-build-it-a-two-week-challenge/</id>
     <published>2013-12-28T05:00:00Z</published>
-    <updated>2013-12-30T09:23:49-05:00</updated>
+    <updated>2014-01-13T20:04:50-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -126,7 +314,7 @@
 
 &lt;p&gt;I'm taking this idea from a tweet from Brian Cardarella:&lt;/p&gt;
 
-&lt;p&gt;&lt;img alt="Screenshot app tweet" class="no-resize" src="/images/screenshot-app-tweet.png" /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt="Screenshot app tweet" class="no-resize" src="http://cball.me/images/screenshot-app-tweet.png" /&gt;&lt;/p&gt;
 
 &lt;p&gt;I'm going to build this app and then do a followup post in 2 weeks detailing my approach from start to finish, and showing what I have learned. &lt;/p&gt;
 
