@@ -6,6 +6,9 @@ pre {
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
   border-radius: none;
+  font-size: 14px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 code,
@@ -169,4 +172,9 @@ article {
   .btn {
     text-transform: uppercase;
   }
+}
+
+.read-more-link {
+  display: block;
+  margin-top: 24px;
 }

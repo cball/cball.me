@@ -28,12 +28,9 @@ a {
 
 header {
   padding: 9px 15px;
-  border-bottom: 1px solid #eee;
+  border-bottom: 1px solid lighten(#59787F, 40%);
   background: #fff;
-
-  @media (min-width: 768px) {
-    height: 300px;
-  }
+  text-align: center;
 
   #my-picture {
     text-align: center;
@@ -53,6 +50,23 @@ header {
   a {
     text-decoration: none;
     text-transform: uppercase;
+  }
+
+  .home {
+    text-align: center;
+  }
+
+  .title {
+    font-weight: bold;
+    font-size: 24px;
+    display: block;
+    line-height: 105%;
+  }
+
+  .name {
+    text-transform: none;
+    font-size: 12px;
+    display: block;
   }
 
   h2 {
@@ -83,9 +97,13 @@ header {
     visibility: hidden;
   }
 }
+.nav-pills > li {
+  float: none;
+}
 
 .nav > li {
   text-align: center;
+  display: inline-block;
 }
 
 .nav > li > a:hover, .nav > li > a:focus {
@@ -95,19 +113,13 @@ header {
 }
 
 .nav {
-  margin-top: 24px;
+  // margin-top: 24px;
 }
 
 #main {
   margin-top: 0;
   margin-bottom: 0;
-  padding: 0;
-}
-
-@media (min-width: 768px) {
-  #main {
-    margin-top: -200px;
-  }
+  padding: 24px 0 0 0;
 }
 
 #wrap {
