@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/integrating-with-github-authentication-and-web-hooks/"/>
     <id>http://cball.me/integrating-with-github-authentication-and-web-hooks/</id>
     <published>2014-01-16T05:00:00Z</published>
-    <updated>2014-01-16T15:09:34-05:00</updated>
+    <updated>2014-01-16T15:23:50-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -226,7 +226,7 @@
     &lt;span class="no"&gt;GitHubCommentHookProcessor&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hook_params&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:comment&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;project&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="nf"&gt;.process&lt;/span&gt;
 &lt;span class="k"&gt;end&lt;/span&gt;
 &lt;/pre&gt;
-&lt;p&gt;The &lt;strong&gt;GitHubHookProcessor&lt;/strong&gt; runs the hook parameters through individual sub-processors, returning if a match for [screenshot /myurl] is found. If the processor finds the requested url, it also parses the BASE and HEAD commit hashes for the pull request, as well as checks the open/closed state to make sure its worth going any further. Unfortunately, we have to use 3 different processors, since GitHub formats each of the parameters differently, and its far better to split things out into separate classes than it is to add a bunch of if statements in our main processor.&lt;/p&gt;
+&lt;p&gt;The &lt;strong&gt;GitHubHookProcessor&lt;/strong&gt; runs the hook parameters through individual sub-processors, returning if a match for [screenshot /myurl] is found. If the processor finds the requested url, it also parses the BASE and HEAD commit hashes for the pull request, as well as checks the open/closed state to make sure its worth going any further. Unfortunately, we have to use 3 different processors since GitHub formats each of the parameters differently. It's also far better to split things out into separate classes than it is to add a bunch of if statements in our main processor.&lt;/p&gt;
 
 &lt;p&gt;In an upcoming post, we'll see how to use these parsed messages to check out Git branches and instruct PhantomJS where to go to generate a screenshot.&lt;/p&gt;
 
