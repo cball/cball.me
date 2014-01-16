@@ -221,7 +221,7 @@ class GitHubHookProcessor
 end
 ~~~
 
-The **GitHubHookProcessor** runs the hook parameters through individual sub-processors, returning if a match for [screenshot /myurl] is found. If the processor finds the requested url, it also parses the BASE and HEAD commit hashes for the pull request, as well as checks the open/closed state to make sure its worth going any further. Unfortunately, we have to use 3 different processors, since GitHub formats each of the parameters differently, and its far better to split things out into separate classes than it is to add a bunch of if statements in our main processor.
+The **GitHubHookProcessor** runs the hook parameters through individual sub-processors, returning if a match for [screenshot /myurl] is found. If the processor finds the requested url, it also parses the BASE and HEAD commit hashes for the pull request, as well as checks the open/closed state to make sure its worth going any further. Unfortunately, we have to use 3 different processors since GitHub formats each of the parameters differently. It's also far better to split things out into separate classes than it is to add a bunch of if statements in our main processor.
 
 In an upcoming post, we'll see how to use these parsed messages to check out Git branches and instruct PhantomJS where to go to generate a screenshot.
 
