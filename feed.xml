@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/go-code-spelunking/"/>
     <id>http://cball.me/go-code-spelunking/</id>
     <published>2014-04-07T04:00:00Z</published>
-    <updated>2014-04-07T18:44:01-04:00</updated>
+    <updated>2014-04-07T19:25:04-04:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -23,7 +23,7 @@
     <content type="html">&lt;hr /&gt;
 &lt;p&gt;Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!&lt;/p&gt;
 
-&lt;p&gt;Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure a concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at &lt;strong&gt;adding configuration to a ruby gem&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure an unknown concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at &lt;strong&gt;adding configuration to a ruby gem&lt;/strong&gt;.&lt;/p&gt;
 
 &lt;h3 id="adding-configuration-to-a-ruby-gem"&gt;Adding Configuration to a Ruby Gem&lt;/h3&gt;
 
