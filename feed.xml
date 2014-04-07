@@ -5,10 +5,262 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-01-16T05:00:00Z</updated>
+  <updated>2014-04-07T04:00:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Go Code Spelunking</title>
+    <link rel="alternate" href="http://cball.me/go-code-spelunking/"/>
+    <id>http://cball.me/go-code-spelunking/</id>
+    <published>2014-04-07T04:00:00Z</published>
+    <updated>2014-04-07T18:44:01-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr /&gt;
+&lt;p&gt;Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!</summary>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!&lt;/p&gt;
+
+&lt;p&gt;Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure a concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at &lt;strong&gt;adding configuration to a ruby gem&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h3 id="adding-configuration-to-a-ruby-gem"&gt;Adding Configuration to a Ruby Gem&lt;/h3&gt;
+
+&lt;p&gt;Lets assume you've written a ruby gem that does something awesome when a branch is pushed to git. You as the developer make it happen:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
+  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Ship it. Then you realize that you're only really supposed to do awesome stuff when the master branch is pushed to:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
+  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="kp"&gt;private&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="sr"&gt;/master/&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;git_branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:git&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="ss"&gt;:branch&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="nf"&gt;.to_s.strip&lt;/span&gt;
+      &lt;span class="n"&gt;git_branch&lt;/span&gt;&lt;span class="nf"&gt;.sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/^origin\//&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Glory. Next, let's say you want to add custom data to an internal dashboard when other developers push code (for sake of argument, assume your company runs its own git server instead of using GitHub). The dashboard is on a separate app, so you add your newly created gem to it. But now, you've got a problem… one app should do_awesome_stuff when master is involved and the other should do _awesome_stuff all the time.&lt;/p&gt;
+
+&lt;p&gt;This is a perfect time for to add configuration to your gem. Rather than asking StackOverflow, lets look at some gems that we know have quality code and see how they do configuration. Not only will that give us a correct answer, but also a chance to look at how others have a approached this problem in open-source libraries that get a lot of use by the community.&lt;/p&gt;
+
+&lt;h4 id="example-clearance-simplified"&gt;Example: Clearance (simplified)&lt;/h4&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Clearance&lt;/span&gt;
+  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Configuration&lt;/span&gt;
+    &lt;span class="kp"&gt;attr_writer&lt;/span&gt; &lt;span class="ss"&gt;:allow_sign_up&lt;/span&gt;
+
+    &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="p"&gt;\&lt;/span&gt;
+      &lt;span class="ss"&gt;:cookie_domain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;:cookie_expiration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="ss"&gt;:cookie_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="c1"&gt;#...&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;initialize&lt;/span&gt;
+      &lt;span class="vi"&gt;@allow_sign_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+      &lt;span class="vi"&gt;@cookie_expiration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cookies&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="nf"&gt;.year.from_now.utc&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+      &lt;span class="vi"&gt;@cookie_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
+      &lt;span class="c1"&gt;#...&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_model&lt;/span&gt;
+      &lt;span class="vi"&gt;@user_model&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;allow_sign_up?&lt;/span&gt;
+      &lt;span class="vi"&gt;@allow_sign_up&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_id_parameter&lt;/span&gt;
+      &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;user_model&lt;/span&gt;&lt;span class="nf"&gt;.model_name.singular&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_id&amp;quot;&lt;/span&gt;&lt;span class="nf"&gt;.to_sym&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;
+    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Configuration&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
+    &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4 id="example-carrierwave-simplified"&gt;Example: Carrierwave (simplified)&lt;/h4&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CarrierWave&lt;/span&gt;
+
+  &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Uploader&lt;/span&gt;
+    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Configuration&lt;/span&gt;
+      &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Concern&lt;/span&gt;
+
+      &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+        &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="ss"&gt;:_storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:_cache_storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:instance_writer&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
+
+        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:root&lt;/span&gt;
+        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:base_path&lt;/span&gt;
+        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:asset_host&lt;/span&gt;
+        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:permissions&lt;/span&gt;
+        &lt;span class="c1"&gt;#...&lt;/span&gt;
+
+       	&lt;span class="c1"&gt;# set default values&lt;/span&gt;
+        &lt;span class="n"&gt;reset_config&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+      &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ClassMethods&lt;/span&gt;
+
+        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;
+            &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="nf"&gt;._storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="nf"&gt;.is_a?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;Symbol&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="nb"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage_engines&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+          &lt;span class="n"&gt;_storage&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="n"&gt;alias_method&lt;/span&gt; &lt;span class="ss"&gt;:storage&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:storage&lt;/span&gt;
+
+        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;add_config&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="nb"&gt;class_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
+            #... a bunch of methods that get added to class
+&lt;/span&gt;&lt;span class="no"&gt;          RUBY&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+
+        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
+          &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+
+        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;reset_config&lt;/span&gt;
+          &lt;span class="n"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+            &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0644&lt;/span&gt;
+            &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.directory_permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0755&lt;/span&gt;
+            &lt;span class="c1"&gt;#...&lt;/span&gt;
+          &lt;span class="k"&gt;end&lt;/span&gt;
+        &lt;span class="k"&gt;end&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;In both of these examples, the api that the developer using the gem interacts with is the same:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="no"&gt;Clearance&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.allow_sign_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.cookie_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.example.com&amp;#39;&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="no"&gt;CarrierWave&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0666&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.directory_permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0777&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;:file&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;After looking at both libraries, you decide you like the &lt;strong&gt;clearance&lt;/strong&gt; implementation for the following reasons:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Does not rely on &lt;code&gt;ActiveSupport::Concern&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;Uses mostly &lt;code&gt;attr_accessor&lt;/code&gt; combined with methods when more logic is needed&lt;/li&gt;
+  &lt;li&gt;Seems simpler (this is subjective)&lt;/li&gt;
+  &lt;li&gt;You have no need for reset config logic&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Keeping this approach in mind, you flush out your Git configuration object:&lt;/p&gt;
+
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# lib/cool_git_gem/configuration.rb&lt;/span&gt;
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
+  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Configuration&lt;/span&gt;
+    
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;awesome_branches&lt;/span&gt;
+      &lt;span class="vi"&gt;@awesome_branches&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="sr"&gt;/.*/&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;awesome_branches&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="vi"&gt;@awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;items_to_regex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="kp"&gt;private&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;items_to_regex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="nf"&gt;.respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="nf"&gt;.map&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Regexp&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+    
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;
+    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Configuration&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
+    &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="c1"&gt;# lib/cool_git_gem.rb&lt;/span&gt;
+&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
+  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
+      &lt;span class="k"&gt;end&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="kp"&gt;private&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configuration.awesome_branches.any?&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+
+    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="n"&gt;git_branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:git&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="ss"&gt;:branch&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="nf"&gt;.to_s.strip&lt;/span&gt;
+      &lt;span class="n"&gt;git_branch&lt;/span&gt;&lt;span class="nf"&gt;.sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/^origin\//&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;end&lt;/span&gt;
+  &lt;span class="k"&gt;end&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 1&lt;/span&gt;
+&lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sx"&gt;%w(master)&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+
+&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 2&lt;/span&gt;
+&lt;span class="c1"&gt;# nothing needed, matches any branch by default&lt;/span&gt;
+
+&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 3&lt;/span&gt;
+&lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
+  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.*-dev&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sr"&gt;/crazy/&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;And just like that, anyone can add arrays of regex's or regex strings to match branch names. We also now have a really great structure to store configuration as our gem grows.&lt;/p&gt;
+
+&lt;p&gt;Using this technique, I'll bet you understand your new config object far better than you would have by just consulting StackOverflow and doing the copy/paste approach.&lt;/p&gt;
+
+</content>
+  </entry>
   <entry>
     <title>Integrating with GitHub - Authentication and Web Hooks</title>
     <link rel="alternate" href="http://cball.me/integrating-with-github-authentication-and-web-hooks/"/>
@@ -452,56 +704,6 @@
 &lt;p&gt;If you're experiences are anything like mine you will fumble through conversations with your first few clients. Just keep at it, and with practice you'll get much better.&lt;/p&gt;
 
 &lt;p&gt;Learn to communicate well, and I'll bet your clients will start talking more about you to others.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Let's Level Up</title>
-    <link rel="alternate" href="http://cball.me/lets-level-up/"/>
-    <id>http://cball.me/lets-level-up/</id>
-    <published>2013-12-13T05:00:00Z</published>
-    <updated>2013-12-17T13:22:59-05:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;h4 id="what-is-this-blog-about"&gt;What is this blog about?&lt;/h4&gt;
-&lt;p&gt;In order to be the best you can be in anything in life, you need to practice. My goal with this blog is to give actionable advice on &lt;em&gt;how to practice&lt;/em&gt; in order to "level up" as a developer and/or a consultant.&lt;/p&gt;
-
-&lt;h4 id="how-i-can-help-you-the-developer"&gt;How I can help you: the developer&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;I'll show you how to make yourself more marketable by improving your design and front-end skills. If you're a developer that "only does back-end" work, come up for air and change that viewpoint. You may not become the next best designer, but you need to be competent.&lt;/li&gt;
-  &lt;li&gt;I want to help you to avoid getting too comfortable with your skillset. The web and mobile space changes rapidly and becoming comfortable is a mind-trap that puts you in an excellent position to watch the rest of the industry pass you by. &lt;/li&gt;
-  &lt;li&gt;I'll teach you how to stay sane when working with large codebases.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;</summary>
-    <content type="html">&lt;h4 id="what-is-this-blog-about"&gt;What is this blog about?&lt;/h4&gt;
-&lt;p&gt;In order to be the best you can be in anything in life, you need to practice. My goal with this blog is to give actionable advice on &lt;em&gt;how to practice&lt;/em&gt; in order to "level up" as a developer and/or a consultant.&lt;/p&gt;
-
-&lt;h4 id="how-i-can-help-you-the-developer"&gt;How I can help you: the developer&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;I'll show you how to make yourself more marketable by improving your design and front-end skills. If you're a developer that "only does back-end" work, come up for air and change that viewpoint. You may not become the next best designer, but you need to be competent.&lt;/li&gt;
-  &lt;li&gt;I want to help you to avoid getting too comfortable with your skillset. The web and mobile space changes rapidly and becoming comfortable is a mind-trap that puts you in an excellent position to watch the rest of the industry pass you by. &lt;/li&gt;
-  &lt;li&gt;I'll teach you how to stay sane when working with large codebases.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h4 id="how-i-can-help-you-the-consultant"&gt;How I can help you: the consultant&lt;/h4&gt;
-&lt;p&gt;Like most, I started out on nights and weekends. Even though I had read a lot from others, it still took some trial and error to learn the ropes.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;If your a developer interested in making the jump to consulting, I'll explain how to get there, and how to know you're ready.&lt;/li&gt;
-  &lt;li&gt;I'll explain pros and cons of subcontractors, and how they helped me grow my business.&lt;/li&gt;
-  &lt;li&gt;I'll explain tips to help you raise your rates and pitch ideas.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="how-i-can-help-you-better-your-life"&gt;How I can help you: better your life&lt;/h4&gt;
-&lt;p&gt;I'm no life coach, but I want to share some things that have helped me live a happier life. The first step (learned by me the hard way of course)? &lt;strong&gt;Don't work too much!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h4 id="why-should-you-listen-to-me"&gt;Why should you listen to me?&lt;/h4&gt;
-&lt;p&gt;I haven't given any large talks, created a massively used open-source library, built &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt; into a huge agency, or written a best selling book. But my guess is, more than likely, you're in the same boat.&lt;/p&gt;
-
-&lt;p&gt;I want to show you how these are all excellent long-term goals, but they are absolutely not requirements in order to be a successful and profitable developer or consultant. You can be a little fish in a big pond and still have a sustainable business and a happy life. Most of &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt;'s clients love the personal attention and camaraderie they get from working with a small agency.&lt;/p&gt;
 </content>
   </entry>
 </feed>

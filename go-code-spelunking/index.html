@@ -1,0 +1,279 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Go Code Spelunking</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development and consulting skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!" name="description" /><meta content="http://cball.mehttp://cball.me.s3.amazonaws.com/go_code_spelunking.jpg" name="og:image" /><meta content="Go Code Spelunking" name="og:title" /><meta content="http://cball.me/go-code-spelunking/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="go-code-spelunking go-code-spelunking_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name">by Chris Ball</span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/topics/development/">Development</a></li><li><a href="/topics/consulting/">Consulting</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/go-code-spelunking/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/go_code_spelunking.jpg" /></a><div class="date"><div class="month">Apr</div><div class="day"> 7</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/go-code-spelunking/">Go Code Spelunking</a></h2><div class="date subtitle">April  7, 2014</div><hr />
+<p>Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!</p>
+
+<p>Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure a concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at <strong>adding configuration to a ruby gem</strong>.</p>
+
+<h3 id="adding-configuration-to-a-ruby-gem">Adding Configuration to a Ruby Gem</h3>
+
+<p>Lets assume you've written a ruby gem that does something awesome when a branch is pushed to git. You as the developer make it happen:</p>
+
+<pre class="highlight ruby"><span class="k">module</span> <span class="nn">CoolGitGem</span>
+  <span class="k">class </span><span class="nc">Git</span>
+    <span class="k">def </span><span class="nf">push_received</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">do_awesome_stuff</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+<p>Ship it. Then you realize that you're only really supposed to do awesome stuff when the master branch is pushed to:</p>
+
+<pre class="highlight ruby"><span class="k">module</span> <span class="nn">CoolGitGem</span>
+  <span class="k">class </span><span class="nc">Git</span>
+    <span class="k">def </span><span class="nf">push_received</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">branch_should_do_awesome_stuff?</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">do_awesome_stuff</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def </span><span class="nf">branch_should_do_awesome_stuff?</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">parsed_git_branch</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">=~</span> <span class="sr">/master/</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">parsed_git_branch</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">git_branch</span> <span class="o">=</span> <span class="n">data</span><span class="o">[</span><span class="ss">:git</span><span class="o">][</span><span class="ss">:branch</span><span class="o">]</span><span class="nf">.to_s.strip</span>
+      <span class="n">git_branch</span><span class="nf">.sub</span><span class="p">(</span><span class="sr">/^origin\//</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+<p>Glory. Next, let's say you want to add custom data to an internal dashboard when other developers push code (for sake of argument, assume your company runs its own git server instead of using GitHub). The dashboard is on a separate app, so you add your newly created gem to it. But now, you've got a problem… one app should do_awesome_stuff when master is involved and the other should do _awesome_stuff all the time.</p>
+
+<p>This is a perfect time for to add configuration to your gem. Rather than asking StackOverflow, lets look at some gems that we know have quality code and see how they do configuration. Not only will that give us a correct answer, but also a chance to look at how others have a approached this problem in open-source libraries that get a lot of use by the community.</p>
+
+<h4 id="example-clearance-simplified">Example: Clearance (simplified)</h4>
+<pre class="highlight ruby"><span class="k">module</span> <span class="nn">Clearance</span>
+  <span class="k">class </span><span class="nc">Configuration</span>
+    <span class="kp">attr_writer</span> <span class="ss">:allow_sign_up</span>
+
+    <span class="kp">attr_accessor</span> <span class="p">\</span>
+      <span class="ss">:cookie_domain</span><span class="p">,</span>
+      <span class="ss">:cookie_expiration</span><span class="p">,</span>
+      <span class="ss">:cookie_path</span><span class="p">,</span>
+      <span class="c1">#...</span>
+
+    <span class="k">def </span><span class="nf">initialize</span>
+      <span class="vi">@allow_sign_up</span> <span class="o">=</span> <span class="kp">true</span>
+      <span class="vi">@cookie_expiration</span> <span class="o">=</span> <span class="o">-&gt;</span><span class="p">(</span><span class="n">cookies</span><span class="p">)</span> <span class="p">{</span> <span class="mi">1</span><span class="nf">.year.from_now.utc</span> <span class="p">}</span>
+      <span class="vi">@cookie_path</span> <span class="o">=</span> <span class="s1">&#39;/&#39;</span>
+      <span class="c1">#...</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">user_model</span>
+      <span class="vi">@user_model</span> <span class="o">||</span> <span class="o">::</span><span class="no">User</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">allow_sign_up?</span>
+      <span class="vi">@allow_sign_up</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">user_id_parameter</span>
+      <span class="s2">&quot;</span><span class="si">#{</span><span class="n">user_model</span><span class="nf">.model_name.singular</span><span class="si">}</span><span class="s2">_id&quot;</span><span class="nf">.to_sym</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span>
+    <span class="vi">@configuration</span> <span class="o">||=</span> <span class="no">Configuration</span><span class="nf">.new</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="vi">@configuration</span> <span class="o">=</span> <span class="n">config</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configure</span>
+    <span class="k">yield</span> <span class="n">configuration</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+<h4 id="example-carrierwave-simplified">Example: Carrierwave (simplified)</h4>
+<pre class="highlight ruby"><span class="k">module</span> <span class="nn">CarrierWave</span>
+
+  <span class="k">module</span> <span class="nn">Uploader</span>
+    <span class="k">module</span> <span class="nn">Configuration</span>
+      <span class="kp">extend</span> <span class="no">ActiveSupport</span><span class="o">::</span><span class="no">Concern</span>
+
+      <span class="n">included</span> <span class="k">do</span>
+        <span class="n">class_attribute</span> <span class="ss">:_storage</span><span class="p">,</span> <span class="ss">:_cache_storage</span><span class="p">,</span> <span class="ss">:instance_writer</span> <span class="o">=&gt;</span> <span class="kp">false</span>
+
+        <span class="n">add_config</span> <span class="ss">:root</span>
+        <span class="n">add_config</span> <span class="ss">:base_path</span>
+        <span class="n">add_config</span> <span class="ss">:asset_host</span>
+        <span class="n">add_config</span> <span class="ss">:permissions</span>
+        <span class="c1">#...</span>
+
+       	<span class="c1"># set default values</span>
+        <span class="n">reset_config</span>
+      <span class="k">end</span>
+
+      <span class="k">module</span> <span class="nn">ClassMethods</span>
+
+        <span class="k">def </span><span class="nf">storage</span><span class="p">(</span><span class="n">storage</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span>
+          <span class="k">if</span> <span class="n">storage</span>
+            <span class="nb">self</span><span class="nf">._storage</span> <span class="o">=</span> <span class="n">storage</span><span class="nf">.is_a?</span><span class="p">(</span><span class="no">Symbol</span><span class="p">)</span> <span class="p">?</span> <span class="nb">eval</span><span class="p">(</span><span class="n">storage_engines</span><span class="o">[</span><span class="n">storage</span><span class="o">]</span><span class="p">)</span> <span class="p">:</span> <span class="n">storage</span>
+          <span class="k">end</span>
+          <span class="n">_storage</span>
+        <span class="k">end</span>
+        <span class="n">alias_method</span> <span class="ss">:storage</span><span class="o">=</span><span class="p">,</span> <span class="ss">:storage</span>
+
+        <span class="k">def </span><span class="nf">add_config</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+          <span class="nb">class_eval</span> <span class="o">&lt;&lt;-</span><span class="no">RUBY</span><span class="p">,</span> <span class="kp">__FILE__</span><span class="p">,</span> <span class="kp">__LINE__</span> <span class="o">+</span> <span class="mi">1</span><span class="sh">
+            #... a bunch of methods that get added to class
+</span><span class="no">          RUBY</span>
+        <span class="k">end</span>
+
+        <span class="k">def </span><span class="nf">configure</span>
+          <span class="k">yield</span> <span class="nb">self</span>
+        <span class="k">end</span>
+
+        <span class="k">def </span><span class="nf">reset_config</span>
+          <span class="n">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+            <span class="n">config</span><span class="nf">.permissions</span> <span class="o">=</span> <span class="mo">0644</span>
+            <span class="n">config</span><span class="nf">.directory_permissions</span> <span class="o">=</span> <span class="mo">0755</span>
+            <span class="c1">#...</span>
+          <span class="k">end</span>
+        <span class="k">end</span>
+      <span class="k">end</span>
+
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+</pre>
+<p>In both of these examples, the api that the developer using the gem interacts with is the same:</p>
+
+<pre class="highlight ruby"><span class="no">Clearance</span><span class="nf">.configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="nf">.allow_sign_up</span> <span class="o">=</span> <span class="kp">true</span>
+  <span class="n">config</span><span class="nf">.cookie_domain</span> <span class="o">=</span> <span class="s1">&#39;.example.com&#39;</span>
+<span class="k">end</span>
+</pre>
+<pre class="highlight ruby"><span class="no">CarrierWave</span><span class="nf">.configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="nf">.permissions</span> <span class="o">=</span> <span class="mo">0666</span>
+  <span class="n">config</span><span class="nf">.directory_permissions</span> <span class="o">=</span> <span class="mo">0777</span>
+  <span class="n">config</span><span class="nf">.storage</span> <span class="o">=</span> <span class="ss">:file</span>
+<span class="k">end</span>
+</pre>
+<p>After looking at both libraries, you decide you like the <strong>clearance</strong> implementation for the following reasons:</p>
+
+<ul>
+  <li>Does not rely on <code>ActiveSupport::Concern</code></li>
+  <li>Uses mostly <code>attr_accessor</code> combined with methods when more logic is needed</li>
+  <li>Seems simpler (this is subjective)</li>
+  <li>You have no need for reset config logic</li>
+</ul>
+
+<p>Keeping this approach in mind, you flush out your Git configuration object:</p>
+
+<pre class="highlight ruby"><span class="c1"># lib/cool_git_gem/configuration.rb</span>
+<span class="k">module</span> <span class="nn">CoolGitGem</span>
+  <span class="k">class </span><span class="nc">Configuration</span>
+    
+    <span class="k">def </span><span class="nf">awesome_branches</span>
+      <span class="vi">@awesome_branches</span> <span class="o">||</span> <span class="o">[</span><span class="sr">/.*/</span><span class="o">]</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">awesome_branches</span><span class="o">=</span><span class="p">(</span><span class="n">branches</span><span class="p">)</span>
+      <span class="vi">@awesome_branches</span> <span class="o">=</span> <span class="n">items_to_regex</span><span class="p">(</span><span class="n">branches</span><span class="p">)</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def </span><span class="nf">items_to_regex</span><span class="p">(</span><span class="n">branches</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">branches</span><span class="nf">.respond_to?</span><span class="p">(</span><span class="ss">:map</span><span class="p">)</span>
+        <span class="n">branches</span><span class="nf">.map</span><span class="p">{</span><span class="o">|</span><span class="n">b</span><span class="o">|</span> <span class="no">Regexp</span><span class="nf">.new</span><span class="p">(</span><span class="n">b</span><span class="p">)}</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+    
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span>
+    <span class="vi">@configuration</span> <span class="o">||=</span> <span class="no">Configuration</span><span class="nf">.new</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configuration</span><span class="o">=</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+    <span class="vi">@configuration</span> <span class="o">=</span> <span class="n">config</span>
+  <span class="k">end</span>
+
+  <span class="k">def </span><span class="nc">self</span><span class="o">.</span><span class="nf">configure</span>
+    <span class="k">yield</span> <span class="n">configuration</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># lib/cool_git_gem.rb</span>
+<span class="k">module</span> <span class="nn">CoolGitGem</span>
+  <span class="k">class </span><span class="nc">Git</span>
+    <span class="k">def </span><span class="nf">push_received</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">branch_should_do_awesome_stuff?</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">do_awesome_stuff</span>
+      <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="kp">private</span>
+
+    <span class="k">def </span><span class="nf">branch_should_do_awesome_stuff?</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">branch</span> <span class="o">=</span> <span class="n">parsed_git_branch</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="no">CoolGitGem</span><span class="nf">.configuration.awesome_branches.any?</span><span class="p">{</span><span class="o">|</span><span class="n">b</span><span class="o">|</span> <span class="n">branch</span> <span class="o">=~</span> <span class="n">b</span><span class="p">}</span>
+    <span class="k">end</span>
+
+    <span class="k">def </span><span class="nf">parsed_git_branch</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+      <span class="n">git_branch</span> <span class="o">=</span> <span class="n">data</span><span class="o">[</span><span class="ss">:git</span><span class="o">][</span><span class="ss">:branch</span><span class="o">]</span><span class="nf">.to_s.strip</span>
+      <span class="n">git_branch</span><span class="nf">.sub</span><span class="p">(</span><span class="sr">/^origin\//</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="c1"># config/initializers/cool_git_gem.rb - app 1</span>
+<span class="no">CoolGitGem</span><span class="nf">.configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="nf">.awesome_branches</span> <span class="o">=</span> <span class="sx">%w(master)</span>
+<span class="k">end</span>
+
+<span class="c1"># config/initializers/cool_git_gem.rb - app 2</span>
+<span class="c1"># nothing needed, matches any branch by default</span>
+
+<span class="c1"># config/initializers/cool_git_gem.rb - app 3</span>
+<span class="no">CoolGitGem</span><span class="nf">.configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="nf">.awesome_branches</span> <span class="o">=</span> <span class="o">[</span><span class="s1">&#39;.*-dev&#39;</span><span class="p">,</span> <span class="sr">/crazy/</span><span class="o">]</span>
+<span class="k">end</span>
+</pre>
+<p>And just like that, anyone can add arrays of regex's or regex strings to match branch names. We also now have a really great structure to store configuration as our gem grows.</p>
+
+<p>Using this technique, I'll bet you understand your new config object far better than you would have by just consulting StackOverflow and doing the copy/paste approach.</p>
+
+<ul class="nav tags nav-pills"><li><a href="/topics/development/">/<span class="name">development</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development and consulting advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join for free</a></div></div><div id="article-nav"><div class="pull-left"><a href="/integrating-with-github-authentication-and-web-hooks/">&laquo; Integrating with GitHub - A...</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div><div class="row"><div class="col-md-12"><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a><p>Founder / Principal</p></div></div></div></div><footer><ul class="list-unstyled"><li><a href="/newsletter">Free updates</a></li><li class="separator">&mdash;</li><li><a href="/contact">Contact</a></li><li class="separator">&mdash;</li><li><a href="/about">Built by Chris</a></li></ul></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// gauges
+var _gauges = _gauges || [];
+(function() {
+  var t   = document.createElement('script');
+  t.type  = 'text/javascript';
+  t.async = true;
+  t.id    = 'gauges-tracker';
+  t.setAttribute('data-site-id', '5283075d108d7b40cf0000b8');
+  t.src = '//secure.gaug.es/track.js';
+  var s = document.getElementsByTagName('script')[0];
+  s.parentNode.insertBefore(t, s);
+})();
+
+// clicky
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100694755);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();</script></body></html>
