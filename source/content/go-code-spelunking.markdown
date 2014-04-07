@@ -8,7 +8,7 @@ image: http://cball.me.s3.amazonaws.com/go_code_spelunking.jpg
 ---
 Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!READMORE
 
-Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure a concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at **adding configuration to a ruby gem**.
+Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure an unknown concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at **adding configuration to a ruby gem**.
 
 ### Adding Configuration to a Ruby Gem
 
