@@ -35,10 +35,10 @@ After the long break, congratulate yourself. You've just gone through 2 hours an
 I can't even count how many developers I know that either do not take lunch or do so at their desks while continuing to work. Once you see how much you can accomplish in the first 4 hours of your day, I'll bet you can afford to take some time to sit and relax away from the machine. Please do this!
 
 #### Try to not work more than 8 hours
-It's very hard sometimes for us as programmers to stop working. Again, you should be making a lot of progress and should be able put your work to rest until the next morning.
+It's very hard sometimes for us as programmers to stop working. Again, you should be making a lot of progress and shouldn't have any trouble put your work to rest until the next morning.
 
 #### Don't try to fit a minimum number of Pomodoros per day
-Sometimes, things come up. Maybe you have meetings to go to (though let's hope those are limited), or maybe the project you were working on turned your brain to jello. It's ok, and it happens. 
+Sometimes, things come up. Maybe you have meetings to go to (though let's hope those are limited), or maybe you're just having an off day. It's ok, and it happens. 
 
 #### Always find ways to improve
 Our entire industry revolves around learning and staying up-to-date. Leveling up is all about taking small, consistent steps in order to improve your craft. And sometimes, those steps don't have anything to do with code. If you've reached a plateau, want to increase your productivity, or find yourself easily distracted, give Pomodoro a try. Let me know if it helps you!
