@@ -5,10 +5,60 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-04-07T04:00:00Z</updated>
+  <updated>2014-04-14T12:30:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>One Way to be Insanely Productive as a Developer</title>
+    <link rel="alternate" href="http://cball.me/one-way-to-be-insanely-productive-as-a-developer/"/>
+    <id>http://cball.me/one-way-to-be-insanely-productive-as-a-developer/</id>
+    <published>2014-04-14T12:30:00Z</published>
+    <updated>2014-04-14T11:42:40-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr /&gt;
+&lt;p&gt;Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming, but it has massively increased my throughput and efficiency.</summary>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming, but it has massively increased my throughput and efficiency.&lt;/p&gt;
+
+&lt;h3 id="the-pomodoro-technique"&gt;The Pomodoro Technique&lt;/h3&gt;
+&lt;p&gt;You may have heard of &lt;strong&gt;The Pomodoro Technique&lt;/strong&gt;. It's actually been around since the 1980's. The name is the Italian word for tomato - and apparently the first physical timers made for this technique were kitchen timers shaped like tomatoes. But, enough history. Let's talk about how it can help you.&lt;/p&gt;
+
+&lt;h4 id="get-an-app"&gt;Get an app&lt;/h4&gt;
+&lt;p&gt;I've tried a few different ones both on my phone and my laptop. Out of them, my favorite is called &lt;a href="http://martakostova.github.io/timer/"&gt;Timer - Personal Time Manager&lt;/a&gt;. You can compile it yourself, or grab it from the App Store.&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="Timer Screenshot" class="no-resize" src="http://cball.me.s3.amazonaws.com/timer-icon.png" /&gt;&lt;/p&gt;
+
+&lt;h4 id="work-for-25-minutes"&gt;Work for 25 minutes&lt;/h4&gt;
+&lt;p&gt;Some people like to make their initial session a planning section, but I already know the first thing I want to work on each day, so I just hop right to it.&lt;/p&gt;
+
+&lt;p&gt;Here's the hard part - force yourself to shut down email, Twitter, or anything else thats not work and might distract you. Concentrate on your task for 25 minutes. Trust me, its enough time to get in the zone and crank away. When your time is up, your app will tell you you're done. You're ready for a break! Just resist the urge to plow through and keep working.&lt;/p&gt;
+
+&lt;h4 id="take-a-5-minute-break"&gt;Take a 5 minute break&lt;/h4&gt;
+&lt;p&gt;One your 25 minute work cycle is up you get a 5 minute break. During my 5 minute break, I do a few things. I will check email and see if anything is really important that I need to address. I'll catch up on Twitter, saving anything that looks interesting to Instapaper for later reading. I'll also walk around a bit, which I highly, highly recommend. A little movement a few times an hour works wonders. Again, your app will tell you when the break is up and ask if you're ready for the next work cycle.&lt;/p&gt;
+
+&lt;p&gt;Feel free to change anything else you want, but try to use the default break settings. Lots of research went into the suggested times, and I'm willing to bet their reasons for choosing a timeframe are better than mine.&lt;/p&gt;
+
+&lt;h4 id="repeat-this-cycle-4-times"&gt;Repeat this cycle 4 times&lt;/h4&gt;
+&lt;p&gt;On the fourth cycle of timers and breaks, your 5 minute break turns into a 10 minute break. During this break, I try to go get a snack, water, or coffee, and like before I walk around a bit. I will also catch up on email or twitter, or maybe read an article I saved during one of my previous breaks.&lt;/p&gt;
+
+&lt;p&gt;After the long break, congratulate yourself. You've just gone through 2 hours and 5 minutes of your day and maintained intense concentration while doing it.&lt;/p&gt;
+
+&lt;h4 id="take-a-lunch"&gt;Take a lunch!&lt;/h4&gt;
+&lt;p&gt;I can't even count how many developers I know that either do not take lunch or do so at their desks while continuing to work. Once you see how much you can accomplish in the first 4 hours of your day, I'll bet you can afford to take some time to sit and relax away from the machine. Please do this!&lt;/p&gt;
+
+&lt;h4 id="try-to-not-work-more-than-8-hours"&gt;Try to not work more than 8 hours&lt;/h4&gt;
+&lt;p&gt;It's very hard sometimes for us as programmers to stop working. Again, you should be making a lot of progress and shouldn't have any trouble put your work to rest until the next morning.&lt;/p&gt;
+
+&lt;h4 id="dont-try-to-fit-a-minimum-number-of-pomodoros-per-day"&gt;Don't try to fit a minimum number of Pomodoros per day&lt;/h4&gt;
+&lt;p&gt;Sometimes, things come up. Maybe you have meetings to go to (though let's hope those are limited), or maybe you're just having an off day. It's ok, and it happens. &lt;/p&gt;
+
+&lt;h4 id="always-find-ways-to-improve"&gt;Always find ways to improve&lt;/h4&gt;
+&lt;p&gt;Our entire industry revolves around learning and staying up-to-date. Leveling up is all about taking small, consistent steps in order to improve your craft. And sometimes, those steps don't have anything to do with code. If you've reached a plateau, want to increase your productivity, or find yourself easily distracted, give Pomodoro a try. Let me know if it helps you!&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Go Code Spelunking</title>
     <link rel="alternate" href="http://cball.me/go-code-spelunking/"/>
@@ -664,46 +714,6 @@
 &lt;p&gt;Pairing is often encouraged in the world of Ruby and Rails, but not as much with design, HTML, CSS or JavaScript. Find someone who is better than you and work with them for 30 minutes to 1 hour. Explain how you're thinking about approaching the problem, and then have them think out loud while both of you code. You'll be amazed at how much knowledge you can soak up in a short amount of time.&lt;/p&gt;
 
 &lt;p&gt;Front-end development is extremely important. It's how your customer interacts with your product. Work out some of the quick hits I mentioned here and let me know how it goes! If you need someone to pair with, give me a shout.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Communication is Key</title>
-    <link rel="alternate" href="http://cball.me/communication-is-key/"/>
-    <id>http://cball.me/communication-is-key/</id>
-    <published>2013-12-17T05:00:00Z</published>
-    <updated>2013-12-18T09:30:38-05:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr&gt;&lt;p&gt;Communication is a strange beast. It can destroy relationships,  and it can win you clients. It can make you sound knowledgeable, or make it seem like you have no idea what you're doing.&lt;/p&gt;
-
-&lt;p&gt;Here are a few small tips on communication from a consulting...&lt;/p&gt;</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;Communication is a strange beast. It can destroy relationships,  and it can win you clients. It can make you sound knowledgeable, or make it seem like you have no idea what you're doing.&lt;/p&gt;
-
-&lt;p&gt;Here are a few small tips on communication from a consulting perspective:&lt;/p&gt;
-
-&lt;h4 id="learn-how-to-talk-to-people"&gt;Learn how to talk to people&lt;/h4&gt;
-&lt;p&gt;I have a client that I've worked with for a few years now. When having a discussion with them back in October, I was told that one of the reasons they enjoy working with me is because I know how to talk to them. That statement was not to imply that I have great sales tactics, but that I've developed an ability to explain technical topics in a simple, easy to understand way.&lt;/p&gt;
-
-&lt;p&gt;If you're a developer-turned-consultant, you probably fall into this trap all the time and find yourself having to take a mental step back when explaining things. Always remember to dial back the complexity in a conversation.&lt;/p&gt;
-
-&lt;h4 id="discover-your-style"&gt;Discover your style&lt;/h4&gt;
-&lt;p&gt;Style = personality. If you the type to crack an occasional joke, do it. If you're a bit quirky, go for it. If you sound like you're giving a formal lecture to a client when you're on a conference call with them, you're probably doing it wrong. Relax and stay professional, but let your personality shine through. This has a wonderful side benefit - it makes your client feel as if they are talking with a friend, and less like they are talking to a co-worker or someone who just cranks out code.&lt;/p&gt;
-
-&lt;h4 id="technical-jargon-is-not-a-style"&gt;Technical jargon is not a style&lt;/h4&gt;
-&lt;p&gt;Save the tech-heavy talk for meetup groups. Avoiding jargon and simplifying your discussion will boost client confidence and understanding. They're already impressed with your technical skills or they wouldn't be talking to you.&lt;/p&gt;
-
-&lt;h4 id="explain-how-you-are-solving-a-problem"&gt;Explain how you are solving a problem&lt;/h4&gt;
-&lt;p&gt;This is not the same thing as &lt;em&gt;what you are using&lt;/em&gt; to solve the problem. Most of the time clients don't care what technologies you use, they just care about the outcome. So talk about what they can expect after finishing a project or portion of a project.&lt;/p&gt;
-
-&lt;h4 id="followup"&gt;Followup&lt;/h4&gt;
-&lt;p&gt;Make it a point to reach out to clients periodically and see how things are going for them. I'd advise keeping this information in a CRM of some sort, both the date you should follow up, and what you've talked about in the past. Maybe you want to keep track of the anniversary of the company, or reach back out 6 months after an engagement to see how your work has changed their business. You'll be shocked at how much people appreciate a simple gesture like this. &lt;strong&gt;Note: Followups are a perfect time to ask for a testimonial!&lt;/strong&gt;&lt;/p&gt;
-
-&lt;h4 id="practice"&gt;Practice&lt;/h4&gt;
-&lt;p&gt;If you're experiences are anything like mine you will fumble through conversations with your first few clients. Just keep at it, and with practice you'll get much better.&lt;/p&gt;
-
-&lt;p&gt;Learn to communicate well, and I'll bet your clients will start talking more about you to others.&lt;/p&gt;
 </content>
   </entry>
 </feed>
