@@ -6,10 +6,10 @@ image: http://cball.me.s3.amazonaws.com/one_way_to_be_productive.jpg
 ---
 
 ---
-Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming, but it has massively increased my throughput and efficiency.READMORE
+Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming.READMORE
 
 ### The Pomodoro Technique
-You may have heard of **The Pomodoro Technique**. It's actually been around since the 1980's. The name is the Italian word for tomato - and apparently the first physical timers made for this technique were kitchen timers shaped like tomatoes. But, enough history. Let's talk about how it can help you.
+You may have heard of **The Pomodoro Technique**. It's been around since the 1980's. The name is the Italian word for tomato - and apparently the first physical timers made for this technique were kitchen timers shaped like tomatoes. But, enough history. Let's talk about how it can help you.
 
 #### Get an app
 I've tried a few different ones both on my phone and my laptop. Out of them, my favorite is called [Timer - Personal Time Manager](http://martakostova.github.io/timer/). You can compile it yourself, or grab it from the App Store.
