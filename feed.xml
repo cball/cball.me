@@ -5,10 +5,68 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-04-14T12:30:00Z</updated>
+  <updated>2014-04-24T03:11:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Book Some Janitor Time</title>
+    <link rel="alternate" href="http://cball.me/book-some-janitor-time/"/>
+    <id>http://cball.me/book-some-janitor-time/</id>
+    <published>2014-04-24T03:11:00Z</published>
+    <updated>2014-04-23T22:52:41-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr /&gt;
+&lt;p&gt;If your team works in an office, you probably have a janitor that comes in to clean it. It might happen daily or weekly, but chances are that it happens. What if you applied that same mindset to your codebase?</summary>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;If your team works in an office, you probably have a janitor that comes in to clean it. It might happen daily or weekly, but chances are that it happens. What if you applied that same mindset to your codebase?&lt;/p&gt;
+
+&lt;p&gt;Most startups have something in common; a &lt;em&gt;massive&lt;/em&gt; feature backlog. No matter how much you work, and how productive you are, this will continue to grow. Over time, you will find that your team "has no time to make x better" because there are "too many features that have been promised to business/the client/the stakeholder". &lt;/p&gt;
+
+&lt;p&gt;Or maybe you've just spent a few weeks on a feature, only to get to the very end of it and find you need a little bit of refactoring to make it perfect. Only, you've already missed your deadline so you can't afford the time. In a perfect world, you should always add that last refactor or tweak to make each feature great, but we all know that there are times when you just can't.&lt;/p&gt;
+
+&lt;p&gt;So, how do we find the time for these tweaks, fix-ups, or a chance to try out something that may improve app performance? By booking some janitor time.&lt;/p&gt;
+
+&lt;p&gt;Here are a few ways I've found that work (substitute Friday for whatever day makes sense at your company).&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;
+    &lt;h4 id="option-1-every-developer-every-friday"&gt;Option 1: Every developer, every Friday&lt;/h4&gt;
+    &lt;p&gt;While this option is the best, its also the least realistic for most companies since nothing except high priority bugs will happen on Fridays. A hard sell, but if your company will allow you go for this.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h4 id="option-2-every-developer-9am-12pm-friday-12-day"&gt;Option 2: Every developer, 9am-12pm Friday (1/2 day)&lt;/h4&gt;
+    &lt;p&gt;Similar to option above, just without allocating the entire day.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h4 id="option-3-one-developer-every-friday"&gt;Option 3: One developer, every Friday&lt;/h4&gt;
+    &lt;p&gt;The key to making this option work is to add rotation. You can keep the same day and rotate developers, or rotate both days and developers.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;h4 id="option-4-every-developer-first-few-hours-of-the-day"&gt;Option 4: Every developer, first few hours of the day&lt;/h4&gt;
+    &lt;p&gt;This is the lowest slice of time I recommend allocating. Any lower, and chances are you'll be hitting your stride just as you have to stop and switch contexts.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="ok-the-time-is-booked-what-do-we-work-on"&gt;Ok, the time is booked. What do we work on?&lt;/h3&gt;
+&lt;p&gt;First, develop a small queue of items other developers could address. I like to use Trello for planning things like this. Anytime you get an idea, toss it in the queue and someone can pick it up if they don't know what to work on during their janitor time.&lt;/p&gt;
+
+&lt;p&gt;Here are a few examples to get you started:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Review your most recent feature&lt;/strong&gt;. If there is any refactoring that can be done to increase readability or simplify the code, do it now.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Check for n+1 queries&lt;/strong&gt;. If you use Ruby, use a gem like &lt;a href="https://github.com/flyerhzm/bullet"&gt;bullet&lt;/a&gt; or a service like &lt;a href="http://skylight.io"&gt;skylight.io&lt;/a&gt; to help you. Kocking out 4-5 of these will drastically improve the performance of your app, especially if they are all on one page.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;[Insert process that everyone always complains about]&lt;/strong&gt;. Recently, I was working with a team that had a custom process for preparing a seed database for tests. This is fine. However, if you didn't specify the test environment, it would blow away your development database, which isn't so fine. Total time to fix it? 45 seconds. &lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Find your slowest loading page&lt;/strong&gt; and make it render faster. Don't just think queries either, look at iterating in templates, etc. Anything you can accomplish here is a win.&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Implement a CDN&lt;/strong&gt;, add far-future expire headers, and gzip responses. People often forget this, but it has massive performance benefits.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id="try-it-out"&gt;Try it out&lt;/h3&gt;
+&lt;p&gt;I've found this to be a great way to make sure you allocate time for code cleanup. Remember: "I'll come back to that" will never come. Future you will thank you because you're protecting everyone from a landslide of technical debt and slow applications.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>One Way to be Insanely Productive as a Developer</title>
     <link rel="alternate" href="http://cball.me/one-way-to-be-insanely-productive-as-a-developer/"/>
@@ -663,57 +721,6 @@
 &lt;p&gt;Remember, we are going to try our best to finish our "Just build it" app in 2 weeks time, but don't get frustrated if you can't quite complete it. As long as you put some real effort behind it, you'll see the benefits. Worst case, you'll have something interesting to discuss with other developers at your next meetup (you are attending meetups right?).&lt;/p&gt;
 
 &lt;p&gt;If you take part in the "Just build It" challenge, let me know what you're working on!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Walk Like a Designer</title>
-    <link rel="alternate" href="http://cball.me/walk-like-a-designer/"/>
-    <id>http://cball.me/walk-like-a-designer/</id>
-    <published>2013-12-18T05:00:00Z</published>
-    <updated>2013-12-18T09:30:34-05:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr&gt;&lt;p&gt;You're a developer, not a designer. I get that. But to say you just "can't do front-end" is just plain wrong. Especially considering the tools that we have available to us today. I think you'll find if you learn to walk like a designer (and by that...&lt;/p&gt;</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;You're a developer, not a designer. I get that. But to say you just "can't do front-end" is just plain wrong. Especially considering the tools that we have available to us today. I think you'll find if you learn to walk like a designer (and by that I mean learn your way around HTML, CSS and SCSS enough to produce quality work), you'll be pretty proud of what you can accomplish.&lt;/p&gt;
-
-&lt;h4 id="stop-the-i-only-do-back-end-mentality"&gt;Stop the "I only do back-end" mentality&lt;/h4&gt;
-&lt;p&gt;To many developers, design or front-end development is a black box and they never make an attempt to change that viewpoint. It's absolutely fine to &lt;em&gt;specialize&lt;/em&gt; in writing Ruby code, JavaScript, or SCSS, but these things should not be mutually exclusive. Sure, you might not have a natural design talent, but I'll bet you can look at something and determine if it looks good or not. Let's look at how we can improve this line of thinking.&lt;/p&gt;
-
-&lt;h4 id="lets-make-full-stack-development-just-part-of-the-job"&gt;Let's make "full stack" development just part of the job&lt;/h4&gt;
-&lt;p&gt;Improvement starts by not glorifying the fact that someone is a "full stack" developer. These days, most of us are not working on massively complicated systems. More often than not, we are working on products that are used directly by customers. As developers, why are we putting ourselves in a position to have to hand portions of a project off to someone who is "better at front-end" than us when, with just a little effort, we could take a feature to completion?&lt;/p&gt;
-
-&lt;p&gt;Instead of just handing over a Photoshop document, designers are now expected to know HTML, CSS and probably a css pre-processor like SCSS. Developers need to master these skills as well. It allows a knowledge overlap of the middle ground, which will increase efficiency of the team and ultimately, create better products.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="skill graph" src="/images/designer-developer-skills.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here's why this is awesome:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;You as a developer can take a feature to completion.&lt;/li&gt;
-  &lt;li&gt;Designers will not come to you the second they are done with Photoshop.&lt;/li&gt;
-  &lt;li&gt;If you want to work on a side project, you'll be able to do a decent job with it and won't need to hire a designer to make it look nice.&lt;/li&gt;
-  &lt;li&gt;You start thinking more about the customer. When working only on back-end code, the customer is the furthest thing from your mind. It's amazing how much better your work can be when you think of how a human will interact with it.&lt;/li&gt;
-  &lt;li&gt;It will make you more marketable, which can increase your salary, or allow you to start a consultancy.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Here a a few things you can do &lt;strong&gt;right now&lt;/strong&gt;, to make yourself better at front end development:&lt;/p&gt;
-
-&lt;h4 id="quick-hit-1-learn-the-grid"&gt;Quick Hit #1: Learn the grid&lt;/h4&gt;
-&lt;p&gt;Laying out on a grid is the foundation of a good design, and will help solve issues with whitespace or things feeling crammed together.&lt;/p&gt;
-
-&lt;p&gt;By far the easiest way to get started with laying out pages in grids is to use a framework like &lt;a href="http://getbootstrap.com"&gt;Bootstrap&lt;/a&gt; or &lt;a href="http://foundation.zurb.com"&gt;Foundation&lt;/a&gt;. Paired with a browser plugin like &lt;a href="http://alefeuvre.github.io/foundation-grid-displayer/"&gt;Grid displayer&lt;/a&gt;, you can look at the grid for any Bootstrap or Foundation site. This will get you to start thinking in grids and see how other people have used them. Pay attention to how a grid automatically helps your content "breathe" and makes your layout uniform.&lt;/p&gt;
-
-&lt;h4 id="quick-hit-2-imitate-good-designs"&gt;Quick Hit #2: Imitate good designs&lt;/h4&gt;
-&lt;p&gt;Find a site or UI that you like and learn how to implement it. And don't just copy and paste, either. Take the time to learn how each piece fits together and why each line of HTML or CSS is there. See how it fits into a grid, and how it enhances the overall experience. Maybe they use a great responsive design and you like the experience on your phone. Or maybe there is a creative approach to navigation.&lt;/p&gt;
-
-&lt;p&gt;Once you do this a few times you'll learn all kinds of new techniques that you can immediately start applying to new work.&lt;/p&gt;
-
-&lt;h4 id="quick-hit-3-pair-with-someone-whos-better-than-you"&gt;Quick Hit #3: Pair with someone who's better than you&lt;/h4&gt;
-&lt;p&gt;Pairing is often encouraged in the world of Ruby and Rails, but not as much with design, HTML, CSS or JavaScript. Find someone who is better than you and work with them for 30 minutes to 1 hour. Explain how you're thinking about approaching the problem, and then have them think out loud while both of you code. You'll be amazed at how much knowledge you can soak up in a short amount of time.&lt;/p&gt;
-
-&lt;p&gt;Front-end development is extremely important. It's how your customer interacts with your product. Work out some of the quick hits I mentioned here and let me know how it goes! If you need someone to pair with, give me a shout.&lt;/p&gt;
 </content>
   </entry>
 </feed>
