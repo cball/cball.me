@@ -3,11 +3,11 @@ html
   head
     meta charset="utf-8"
     meta http-equiv="X-UA-Compatible" content="IE=edge"
-    title = current_page.data.title || 'Level up your development and consulting skills | Chris Ball'
+    title = current_page.data.title || 'Level up your development skills | Chris Ball'
     meta name="viewport" content="width=device-width, initial-scale=1"
-    meta name="og:site_name" content="Level up your development and consulting skills | Chris Ball"
+    meta name="og:site_name" content="Level up your development skills | Chris Ball"
     meta name="og:type" content="blog"
-    = yield_content(:meta_description) || '<meta name="description" content="Level up your development and consulting skills every week.">'
+    = yield_content(:meta_description) || '<meta name="description" content="Level up your development skills every week.">'
     = yield_content(:og_tags)
 
     /[if lt IE 9]
@@ -26,7 +26,7 @@ html
               .home.col-md-2
                 a href="/"
                   span.title Level Up
-                  span.name by Chris Ball
+                  span.name = " by Chris Ball "
 
               .col-md-10
                 ul.nav.nav-pills
@@ -36,8 +36,6 @@ html
                     = link_to 'Newsletter', '/newsletter'
                   li
                     = link_to 'Development', tag_path('development')
-                  li
-                    = link_to 'Consulting', tag_path('consulting')
                   li
                     = link_to 'Contact', '/contact'
 
@@ -50,7 +48,7 @@ html
         .col-md-12
           .echobind.center
             = link_to image_tag('echobind.png'), 'http://echobind.com', target: '_blank'
-            p Founder / Principal
+            p Founder / Lead Developer
 
     footer
       ul.list-unstyled

@@ -12,6 +12,7 @@ activate :blog do |blog|
   blog.summary_separator = /(READMORE)/
   blog.summary_length = 250
   blog.layout = "article_layout"
+  blog.paginate = true
 
   blog.tag_template = "tag.html"
   blog.taglink = 'topics/:tag.html'
@@ -20,6 +21,7 @@ end
 
 activate :directory_indexes
 activate :syntax
+activate :livereload, no_swf: true
 
 activate :deploy do |deploy|
   deploy.build_before = true

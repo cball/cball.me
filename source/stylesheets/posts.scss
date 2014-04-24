@@ -178,3 +178,11 @@ article {
   display: block;
   margin-top: 24px;
 }
+
+.vspace {
+  margin-top: 40px;
+
+  &.large {
+    margin-top: 60px;
+  }
+}
