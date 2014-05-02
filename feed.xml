@@ -5,10 +5,98 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-04-24T03:11:00Z</updated>
+  <updated>2014-05-02T15:00:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Non-RESTful API calls with Ember Data</title>
+    <link rel="alternate" href="http://cball.me/non-restful-api-calls-with-ember-data/"/>
+    <id>http://cball.me/non-restful-api-calls-with-ember-data/</id>
+    <published>2014-05-02T15:00:00Z</published>
+    <updated>2014-05-02T11:11:17-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr /&gt;
+
+&lt;p&gt;When developing an application using Ember and Ember Data, if the API you're using is a completely RESTful interface, things are very straightforward. Once you need to make a call that does not fit into standard REST conventions, such as &lt;strong&gt;task/:id/complete&lt;/strong&gt; as PUT request, you have a choice to make. Your first instinct might be to reach for Ember.$.ajax, but don't; especially if you're sending custom headers or using a namespace. </summary>
+    <content type="html">&lt;hr /&gt;
+
+&lt;p&gt;When developing an application using Ember and Ember Data, if the API you're using is a completely RESTful interface, things are very straightforward. Once you need to make a call that does not fit into standard REST conventions, such as &lt;strong&gt;task/:id/complete&lt;/strong&gt; as PUT request, you have a choice to make. Your first instinct might be to reach for Ember.$.ajax, but don't; especially if you're sending custom headers or using a namespace.  &lt;/p&gt;
+
+&lt;p&gt;The following examples use ember-cli, but should be the same for an application using ember-appkit.&lt;/p&gt;
+
+&lt;h4 id="know-thy-adapter"&gt;Know thy adapter&lt;/h4&gt;
+
+&lt;p&gt;Ember Data has the concept of an adapter that tells your application how to talk to your persistence layer. It is typically called from the store object through the use of something like &lt;code&gt;this.store.find('task', 1)&lt;/code&gt;, but occasionally you'll need to use it directly.&lt;/p&gt;
+
+&lt;p&gt;Let's say we have an application that is in the process of moving to version 2 of an API, and we want start by updating our Task model to use that version. In version 1 of the API, we just updated the complete boolean on a Task. For version 2, we need to perform a number of actions on task complete, so a dedicated /&lt;strong&gt;tasks/:id/complete&lt;/strong&gt; API call was added. With Ember Data, using different API versions on a per-model basis is a breeze.&lt;/p&gt;
+
+&lt;p&gt;Here is our application-wide adapter:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/adapters/application.js
+&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ActiveModelAdapter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;                            
+  &lt;span class="na"&gt;host&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;http://api.coolapp.com&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;                                                                                   
+  &lt;span class="na"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                                                             
+    &lt;span class="s1"&gt;&amp;#39;Accept&amp;#39;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;application/vnd.api.coolapp.com; version=1&amp;#39;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;                                                                      
+&lt;span class="p"&gt;});&lt;/span&gt;                           
+&lt;/pre&gt;
+&lt;p&gt;And the new task adapter:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/adapters/task.js
+&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ActiveModelAdapter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;headers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                                                             
+    &lt;span class="s1"&gt;&amp;#39;Accept&amp;#39;&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;application/vnd.api.coolapp.com; version=2&amp;#39;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;              
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4 id="make-the-non-restful-call"&gt;Make the Non-RESTful call&lt;/h4&gt;
+&lt;p&gt;Now that the adapters are in place, we add a complete action to our TasksShowController that will make the proper API call.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/controllers/tasks/show.js
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;TasksShowController&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ObjectController&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;           
+  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                                                        
+    &lt;span class="na"&gt;complete&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;                                           
+      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;task&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;adapter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;container&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;lookup&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;adapter:task&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                                                                    
+      &lt;span class="nx"&gt;adapter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ajax&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;completeTaskUrl&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;adapter&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;PUT&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+          &lt;span class="nx"&gt;task&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setProperties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;task&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+          &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;transitionToRoute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;tasks&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt; 
+        &lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;completeFailure&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt;
+
+  &lt;span class="na"&gt;taskCompleteFailure&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;response&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// show a nice message
+&lt;/span&gt;  &lt;span class="p"&gt;},&lt;/span&gt;
+
+  &lt;span class="na"&gt;completeTaskUrl&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;adapter&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                                   
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;adapter&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;buildURL&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;task&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;content&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/complete&amp;#39;&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;TasksShowController&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;We first store the current context to a variable, since we will lose the scope inside the &lt;code&gt;.then&lt;/code&gt; function. &lt;/p&gt;
+
+&lt;p&gt;Then, we grab the content (which represents the task) from our controller using &lt;code&gt;this.get('content')&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Next, we look up the TaskAdapter, and use the ajax method defined there. Using &lt;code&gt;adapter.ajax&lt;/code&gt; instead of &lt;code&gt;Ember.$.ajax&lt;/code&gt; will leverage any headers or namespaces defined on the adapter.&lt;/p&gt;
+
+&lt;p&gt;Finally, we want to construct a url that has the correct host and path. If you are running your API on the same host as your Ember application, you could just use '/tasks/1/complete' in the ajax call above, but building the url through the adapter is a great practice since you are insulated from change at an adapter level down the line.&lt;/p&gt;
+
+&lt;p&gt;When we get the response back, we call &lt;code&gt;task.setProperties&lt;/code&gt; with the updated task from the response. This will mark the task as complete.&lt;/p&gt;
+
+&lt;h4 id="lessons-learned"&gt;Lessons Learned&lt;/h4&gt;
+
+&lt;p&gt;With adapters, Ember Data gives you a wonderful mechanism for incrementally upgrading an API version in an application, or even using a different API backend on a per-model basis.&lt;/p&gt;
+
+&lt;p&gt;If you need to make a non-RESTful call in an application using Ember Data, reach for &lt;code&gt;adapter.ajax&lt;/code&gt;.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Book Some Janitor Time</title>
     <link rel="alternate" href="http://cball.me/book-some-janitor-time/"/>
@@ -672,55 +760,6 @@
 &lt;/ol&gt;
 
 &lt;p&gt;Subcontractors are one of the many ways that allowed me to make the jump from part-time to running &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt; full-time. By slowly taking on client work and using subcontractors to fill in the gaps, you'll be able to build up a financial runway and enough of a project pipeline to transition to consulting full-time. I'll explain this in more detail - &lt;strong&gt;including when to make the jump&lt;/strong&gt; - in future posts. Here's to growth!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Just Build It</title>
-    <link rel="alternate" href="http://cball.me/just-build-it-a-two-week-challenge/"/>
-    <id>http://cball.me/just-build-it-a-two-week-challenge/</id>
-    <published>2013-12-28T05:00:00Z</published>
-    <updated>2014-01-13T20:04:50-05:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr /&gt;
-&lt;p&gt;A foolproof way to level up your development in a short amount of time is to just build something. Pick something away from the silo of your day job or client work (something different than what you work on daily will be more exciting!), give yourself a deadline, and just build it.&lt;/p&gt;
-
-&lt;p&gt;</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;A foolproof way to level up your development in a short amount of time is to just build something. Pick something away from the silo of your day job or client work (something different than what you work on daily will be more exciting!), give yourself a deadline, and just build it.&lt;/p&gt;
-
-&lt;p&gt;&lt;/p&gt;
-
-&lt;h4 id="find-an-idea"&gt;Find an idea&lt;/h4&gt;
-&lt;p&gt;There's no need to make this complicated or think about how to turn it into a paid product (though that can be a nice side benefit). The goal here is to find anything you can create a working prototype for in a short amount of time. API mashups are great candidates, and your twitter feed likely has inspiration if you can't think of anything.&lt;/p&gt;
-
-&lt;h4 id="make-sure-the-scope-is-small"&gt;Make sure the scope is small&lt;/h4&gt;
-&lt;p&gt;This is key - we're going to set a deadline of 2 weeks to complete this project, and do so using only free time. Choose something you can devote a total of no more than 20 hours to.&lt;/p&gt;
-
-&lt;h4 id="you-dont-have-to-get-it-perfect-right-away"&gt;You don't have to get it perfect right away&lt;/h4&gt;
-&lt;p&gt;Make sure to write tests, make it visually appealing, and write clean code, but don't spend too much time making it perfect. The goal is just to get something out in the wild, and level up your skills along the way. It can always be refined later. &lt;/p&gt;
-
-&lt;p&gt;Use something like &lt;a href="http://heroku.com"&gt;Heroku&lt;/a&gt; so that you're not wasting time setting up a VPS. Use a front-end framework so that you don't spend as much time styling css. Where appropriate, use libraries that someone has already built so that you don't get bogged down in the details. This is not the type of project where you build authentication from scratch. Though it's not hard to do so, we want to stay focused on the core functionality of the app. &lt;/p&gt;
-
-&lt;p&gt;We will revisit the app you build as a refactoring exercise in a future post. &lt;/p&gt;
-
-&lt;h4 id="use-a-planning-tool"&gt;Use a planning tool&lt;/h4&gt;
-&lt;p&gt;Make sure to break your app down into small chunks so that "ok, what's next?" is a phrase that never crosses your mind. &lt;a href="http://trello.com"&gt;Trello&lt;/a&gt; and Github Issues are great free tools to help with this, or you can use a todo app or handwritten list. It doesn't matter what you use, just use something.&lt;/p&gt;
-
-&lt;h4 id="ill-join-you"&gt;I'll join you!&lt;/h4&gt;
-&lt;p&gt;To give you an example and to show you that this works, I'm going to be building an app that will generate before and after screenshots from comments on Github pull requests.&lt;/p&gt;
-
-&lt;p&gt;I'm taking this idea from a tweet from Brian Cardarella:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="Screenshot app tweet" class="no-resize" src="http://cball.me/images/screenshot-app-tweet.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;I'm going to build this app and then do a followup post in 2 weeks detailing my approach from start to finish, and showing what I have learned. &lt;/p&gt;
-
-&lt;h4 id="lets-do-this"&gt;Let's do this&lt;/h4&gt;
-&lt;p&gt;Remember, we are going to try our best to finish our "Just build it" app in 2 weeks time, but don't get frustrated if you can't quite complete it. As long as you put some real effort behind it, you'll see the benefits. Worst case, you'll have something interesting to discuss with other developers at your next meetup (you are attending meetups right?).&lt;/p&gt;
-
-&lt;p&gt;If you take part in the "Just build It" challenge, let me know what you're working on!&lt;/p&gt;
 </content>
   </entry>
 </feed>

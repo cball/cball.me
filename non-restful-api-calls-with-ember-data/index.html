@@ -1,0 +1,101 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Non-RESTful API calls with Ember Data</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="When developing an application using Ember and Ember Data, if the API you're using is a completely RESTful interface, things are very straightforward. Once you need to make a call that does not fit into standard REST conventions, such as task/:id/complete as PUT request, you have a choice to make. Your first instinct might be to reach for Ember.$.ajax, but don't; especially if you're sending custom headers or using a namespace. " name="description" /><meta content="http://cball.me.s3.amazonaws.com/ember-making-non-restful-api-calls.jpg" name="og:image" /><meta content="Non-RESTful API calls with Ember Data" name="og:title" /><meta content="http://cball.me/non-restful-api-calls-with-ember-data/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="non-restful-api-calls-with-ember-data non-restful-api-calls-with-ember-data_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/topics/development/">Development</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/non-restful-api-calls-with-ember-data/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/ember-making-non-restful-api-calls.jpg" /></a><div class="date"><div class="month">May</div><div class="day"> 2</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/non-restful-api-calls-with-ember-data/">Non-RESTful API calls with Ember Data</a></h2><div class="date subtitle">May  2, 2014</div><hr />
+
+<p>When developing an application using Ember and Ember Data, if the API you're using is a completely RESTful interface, things are very straightforward. Once you need to make a call that does not fit into standard REST conventions, such as <strong>task/:id/complete</strong> as PUT request, you have a choice to make. Your first instinct might be to reach for Ember.$.ajax, but don't; especially if you're sending custom headers or using a namespace.  </p>
+
+<p>The following examples use ember-cli, but should be the same for an application using ember-appkit.</p>
+
+<h4 id="know-thy-adapter">Know thy adapter</h4>
+
+<p>Ember Data has the concept of an adapter that tells your application how to talk to your persistence layer. It is typically called from the store object through the use of something like <code>this.store.find('task', 1)</code>, but occasionally you'll need to use it directly.</p>
+
+<p>Let's say we have an application that is in the process of moving to version 2 of an API, and we want start by updating our Task model to use that version. In version 1 of the API, we just updated the complete boolean on a Task. For version 2, we need to perform a number of actions on task complete, so a dedicated /<strong>tasks/:id/complete</strong> API call was added. With Ember Data, using different API versions on a per-model basis is a breeze.</p>
+
+<p>Here is our application-wide adapter:</p>
+
+<pre class="highlight javascript"><span class="c1">// app/adapters/application.js
+</span><span class="kr">export</span> <span class="k">default</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">ActiveModelAdapter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>                            
+  <span class="na">host</span><span class="p">:</span> <span class="s1">&#39;http://api.coolapp.com&#39;</span><span class="p">,</span>                                                                                   
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>                                                             
+    <span class="s1">&#39;Accept&#39;</span><span class="err">:</span> <span class="s1">&#39;application/vnd.api.coolapp.com; version=1&#39;</span>
+  <span class="p">}</span>                                                                      
+<span class="p">});</span>                           
+</pre>
+<p>And the new task adapter:</p>
+
+<pre class="highlight javascript"><span class="c1">// app/adapters/task.js
+</span><span class="kr">export</span> <span class="k">default</span> <span class="nx">DS</span><span class="p">.</span><span class="nx">ActiveModelAdapter</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">headers</span><span class="p">:</span> <span class="p">{</span>                                                             
+    <span class="s1">&#39;Accept&#39;</span><span class="err">:</span> <span class="s1">&#39;application/vnd.api.coolapp.com; version=2&#39;</span>
+  <span class="p">}</span>              
+<span class="p">});</span>
+</pre>
+<h4 id="make-the-non-restful-call">Make the Non-RESTful call</h4>
+<p>Now that the adapters are in place, we add a complete action to our TasksShowController that will make the proper API call.</p>
+
+<pre class="highlight javascript"><span class="c1">// app/controllers/tasks/show.js
+</span><span class="kd">var</span> <span class="nx">TasksShowController</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">ObjectController</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>           
+  <span class="na">actions</span><span class="p">:</span> <span class="p">{</span>                                                        
+    <span class="na">complete</span><span class="p">:</span> <span class="kd">function</span><span class="p">(){</span>                                           
+      <span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+      <span class="kd">var</span> <span class="nx">task</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;content&#39;</span><span class="p">);</span>
+      <span class="kd">var</span> <span class="nx">adapter</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">container</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;adapter:task&#39;</span><span class="p">);</span>
+                                                                    
+      <span class="nx">adapter</span><span class="p">.</span><span class="nx">ajax</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">completeTaskUrl</span><span class="p">(</span><span class="nx">adapter</span><span class="p">),</span> <span class="s1">&#39;PUT&#39;</span><span class="p">)</span>
+        <span class="p">.</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+          <span class="nx">task</span><span class="p">.</span><span class="nx">setProperties</span><span class="p">(</span><span class="nx">response</span><span class="p">.</span><span class="nx">task</span><span class="p">);</span>
+          <span class="nx">_this</span><span class="p">.</span><span class="nx">transitionToRoute</span><span class="p">(</span><span class="s1">&#39;tasks&#39;</span><span class="p">);</span> 
+        <span class="p">},</span> <span class="k">this</span><span class="p">.</span><span class="nx">completeFailure</span><span class="p">);</span>
+  <span class="p">},</span>
+
+  <span class="na">taskCompleteFailure</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">response</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// show a nice message
+</span>  <span class="p">},</span>
+
+  <span class="na">completeTaskUrl</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">adapter</span><span class="p">)</span> <span class="p">{</span>                                   
+    <span class="k">return</span> <span class="nx">adapter</span><span class="p">.</span><span class="nx">buildURL</span><span class="p">(</span><span class="s1">&#39;task&#39;</span><span class="p">,</span> <span class="k">this</span><span class="p">.</span><span class="nx">content</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;id&#39;</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/complete&#39;</span>
+  <span class="p">}</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">TasksShowController</span><span class="p">;</span>
+</pre>
+<p>We first store the current context to a variable, since we will lose the scope inside the <code>.then</code> function. </p>
+
+<p>Then, we grab the content (which represents the task) from our controller using <code>this.get('content')</code>.</p>
+
+<p>Next, we look up the TaskAdapter, and use the ajax method defined there. Using <code>adapter.ajax</code> instead of <code>Ember.$.ajax</code> will leverage any headers or namespaces defined on the adapter.</p>
+
+<p>Finally, we want to construct a url that has the correct host and path. If you are running your API on the same host as your Ember application, you could just use '/tasks/1/complete' in the ajax call above, but building the url through the adapter is a great practice since you are insulated from change at an adapter level down the line.</p>
+
+<p>When we get the response back, we call <code>task.setProperties</code> with the updated task from the response. This will mark the task as complete.</p>
+
+<h4 id="lessons-learned">Lessons Learned</h4>
+
+<p>With adapters, Ember Data gives you a wonderful mechanism for incrementally upgrading an API version in an application, or even using a different API backend on a per-model basis.</p>
+
+<p>If you need to make a non-RESTful call in an application using Ember Data, reach for <code>adapter.ajax</code>.</p>
+<ul class="nav tags nav-pills"><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join for free</a></div></div><div id="article-nav"><div class="pull-left"><a href="/book-some-janitor-time/">&laquo; Book Some Janitor Time</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div><div class="row"><div class="col-md-12"><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a><p>Founder / Lead Developer</p></div></div></div></div><footer><ul class="list-unstyled"><li><a href="/newsletter">Free updates</a></li><li class="separator">&mdash;</li><li><a href="/contact">Contact</a></li><li class="separator">&mdash;</li><li><a href="/about">Built by Chris</a></li></ul></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// clicky
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100694755);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();</script></body></html>
