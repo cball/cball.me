@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/understanding-loading-substates-in-ember/"/>
     <id>http://cball.me/understanding-loading-substates-in-ember/</id>
     <published>2014-09-05T12:50:00Z</published>
-    <updated>2014-09-05T08:51:20-04:00</updated>
+    <updated>2014-09-05T08:54:43-04:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -30,12 +30,11 @@
 &lt;ul&gt;
   &lt;li&gt;&lt;a href="#nested-loading-templates"&gt;Nested loading templates&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href="#loading-event"&gt;A loading event in routes&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#manual"&gt;Using loading templates manually&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;The &lt;a href="http://emberjs.com/guides/routing/loading-and-error-substates/"&gt;guides for loading substates&lt;/a&gt; are excellent, so read through those if you haven’t already. Instead of just reiterating what the guides say, I'd like to try to show you visual examples using a real world application.&lt;/p&gt;
+&lt;p&gt;I’ll also show you how to &lt;a href="#manual"&gt;Use loading templates manually&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;To keep this simple, we’ll be using FixtureAdapter and hardcoded data, though I don’t normally like doing that when &lt;a href="http://cball.me"&gt;developing a real app&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The &lt;a href="http://emberjs.com/guides/routing/loading-and-error-substates/"&gt;guides for loading substates&lt;/a&gt; are excellent, so read through those if you haven’t already. Instead of just reiterating what the guides say, I'd like to try to show you visual examples using a real world application.&lt;/p&gt;
 
 &lt;h4 id="our-example-app"&gt;Our example app&lt;/h4&gt;
 
