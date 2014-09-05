@@ -5,277 +5,10 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-08-25T01:00:00Z</updated>
+  <updated>2014-05-02T15:00:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
-  <entry>
-    <title>Understanding Loading SubStates</title>
-    <link rel="alternate" href="http://cball.me/understanding-loading-substates-in-ember/"/>
-    <id>http://cball.me/understanding-loading-substates-in-ember/</id>
-    <published>2014-08-25T01:00:00Z</published>
-    <updated>2014-09-04T21:27:57-04:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr&gt;&lt;p&gt;Ember applications (and client-side applications in general) respond quickly to user interaction. In a perfect world, the API powering your application also responds quickly, but unfortunately most of us don’t live in a perfect world.&lt;/p&gt;
-
-&lt;p&gt;Ember has a...&lt;/p&gt;</summary>
-    <content type="html">&lt;hr /&gt;
-
-&lt;p&gt;Ember applications (and client-side applications in general) respond quickly to user interaction. In a perfect world, the API powering your application also responds quickly, but unfortunately most of us don’t live in a perfect world.&lt;/p&gt;
-
-&lt;p&gt;Ember has a few different loading behaviors built-in to help us deal with this situation:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Nested loading templates&lt;/li&gt;
-  &lt;li&gt;A loading event in routes&lt;/li&gt;
-  &lt;li&gt;link-to loading behavior&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The &lt;a href="http://emberjs.com/guides/routing/loading-and-error-substates/"&gt;guides for loading substates&lt;/a&gt; are excellent, so read through those if you haven’t already. Instead of just reiterating what the guides say, I'd like to try to show you visual examples using a real world application.&lt;/p&gt;
-
-&lt;p&gt;To keep this simple, we’ll be using FixtureAdapter and hardcoded data, though I don’t normally like doing that when &lt;a href="http://cball.me"&gt;developing a real app&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h4 id="our-example-app"&gt;Our example app&lt;/h4&gt;
-
-&lt;p&gt;Let’s assume we are building a Rdio clone (all Rdio screenshots are copyright them and not me) and we want to add a loading state to each section of the album page.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="rdio UI" src="http://cball.me.s3.amazonaws.com/loading-substates/1-interface.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Our album template is divided into the following sections:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="rdio sections" src="http://cball.me.s3.amazonaws.com/loading-substates/2-template-sections.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here’s what our router and models might look like:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// router.js
-&lt;/span&gt;&lt;span class="nx"&gt;App&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Router&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/album/:album_id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
-  &lt;span class="p"&gt;});&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/album.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;reviews&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;hasMany&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;review&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;async&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}),&lt;/span&gt;
-  &lt;span class="na"&gt;activities&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;hasMany&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activity&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;async&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt; &lt;span class="p"&gt;})&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/review.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;body&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;album&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;belongsTo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/activity.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;album&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;belongsTo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Since we are &lt;em&gt;nesting our UI&lt;/em&gt; (comments and activity appears within the album template) &lt;em&gt;our routes are also nested&lt;/em&gt;. We want Ember to automatically generate index routes for both activities and reviews. We don't need any other route actions, so we’ll just pass an empty function as the second argument to this.resource.&lt;/p&gt;
-
-&lt;p&gt;Also note that we're using &lt;code&gt;async: true&lt;/code&gt; for the hasMany associations.&lt;/p&gt;
-
-&lt;h4 id="using-nested-loading-templates"&gt;Using nested loading templates&lt;/h4&gt;
-&lt;p&gt;To start things off, let’s add our application template, index template, and a top-level loading template. The loading template will automatically render when a route’s &lt;code&gt;beforeModel/model/afterModel&lt;/code&gt; hook returns an unresolved promise, and then automatically render the route’s normal template in its place when the promise resolves.&lt;/p&gt;
-
-&lt;p&gt;You might have noticed that by default any of these hooks will pause a transition while the promise resolves. Once we define a loading template it will become an eager transition (meaning it will transition immediately instead of waiting for promises in our model hooks to resolve). You’ll know when a route is using an eager transition because the URL will update right away.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/application.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrapper&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Rdio Clone&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sidebar&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;h4&amp;gt;&lt;/span&gt;playlists&lt;span class="nt"&gt;&amp;lt;/h4&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Cool Playlist&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;outlet&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/index.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h3&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;top-title&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Cool Playlist&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;albums&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt; &lt;span class="nv"&gt;album&lt;/span&gt; &lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;model&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-    &lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt; &lt;span class="nv"&gt;album&lt;/span&gt; &lt;span class="nv"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;album&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;img&lt;/span&gt; &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;bind-attr&lt;/span&gt; &lt;span class="nv"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;image&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-      &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;title&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-    &lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Loading...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Clicking our &lt;em&gt;Load an album&lt;/em&gt; link should look like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="root-loading-template" src="http://cball.me.s3.amazonaws.com/loading-substates/3-root-loading-template.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this change in place, &lt;em&gt;any route that loads a template into the top level outlet&lt;/em&gt; will transition to our loading template while any of its model hook promises are resolving.&lt;/p&gt;
-
-&lt;p&gt;If you look at the preview, you’ll see that we start at the root of the app. Our loading template renders in two different cases - once while the list of albums is being fetched, and another while a single album is being fetched (the page was reloaded while on the album page). The loading template does not render when navigating from the list of albums to the album view since Ember already has the required data.&lt;/p&gt;
-
-&lt;p&gt;Next, let’s say we want to show a different loading state for other items on the album page. All we have to do is add an album/loading template.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/album/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching album data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Ember will load our &lt;code&gt;album/loading&lt;/code&gt; template into the outlet inside the album template. That would look like this (again, with a refresh thrown in for good measure):&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="album loading" src="http://cball.me.s3.amazonaws.com/loading-substates/4-album-loading-template.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This looks good, so we move on to adding the review section, but realize both activities and reviews will render into the same outlet. This would be desired behavior if we were using a tabbed interface to show activities and reviews. Since we aren’t, we should use &lt;code&gt;named outlets&lt;/code&gt;. For named outlets to work with loading substates, we’ll need to tell each route the outlet it should render templates into using the &lt;code&gt;renderTemplate&lt;/code&gt; hook.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities-index.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;modelFor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/activities.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/reviews-index.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;modelFor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/reviews.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;This gets us a little bit closer, with the loading, activity, and review templates rendering into separate areas of the page. Ignoring for a second that loading reviews still removes activities from the UI, we can see that our &lt;code&gt;album/loading&lt;/code&gt; template is being used in both cases.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="named-outlets" src="http://cball.me.s3.amazonaws.com/loading-substates/5-named-outlets.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Taking things a step further, we can now add specific loading templates for both activities and reviews. Because we are using named outlets, we again need to specify where the loading templates should render. If you were implementing this using default outlets, you could omit the loading route code entirely.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/activities/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;“loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching activity data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/reviews/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching review data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities/loading.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt; 
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/reviews/loading.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt; 
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;&lt;img alt="separate-loading-templates" src="http://cball.me.s3.amazonaws.com/loading-substates/6-separate-loading-templates.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is very close to what we need, but we're still not quite there. The UI really needs to load data without changing the URL and without removing the other sections. For that we'll have to manage our loading states manually. But first, let’s discuss the &lt;code&gt;loading event&lt;/code&gt;.&lt;/p&gt;
-
-&lt;h4 id="using-the-loading-event"&gt;Using the loading event&lt;/h4&gt;
-&lt;p&gt;If you need to do something more custom than the default loading substate behavior, Ember provides a loading event that is fired on the current route and bubbles upward to your application route.&lt;/p&gt;
-
-&lt;p&gt;To use this hook, define a loading action in the the current route or any of its parents.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loading&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;crazy custom stuff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;The loading substate behavior in Ember does not kick until the loading action fully bubbles past the ApplicationRoute. If we implement a loading action somewhere and fail to return true (like the example above) the &lt;em&gt;loading substate behavior will not occur&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Our Rdio clone will eventually load our activity and review sections when the user scrolls them into view rather than when a user clicks a link. If we want to keep our existing loading template behavior but track when reviews are loaded, we could also use the loading hook. For this to work, we just need to &lt;code&gt;return true&lt;/code&gt; from the loading action (which will cause the event	 to bubble up). &lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/reviews.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loading&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="nx"&gt;postDataToAnalytics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews:loaded&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;h4 id="using-loading-templates-manually"&gt;Using loading templates manually&lt;/h4&gt;
-
-&lt;h4 id="using-link-to-loading-behavior"&gt;Using link-to loading behavior&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;loadingClass (loading by default).  A &lt;code&gt;LinkView&lt;/code&gt; is considered loading when it has at least one
-  parameter whose value is currently null or undefined. During
-  this time, clicking the link will perform no transition and
-  emit a warning that the link is still in a loading state.&lt;/li&gt;
-  &lt;li&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id="what-we-talked-about"&gt;What we talked about&lt;/h4&gt;
-&lt;ul&gt;
-  &lt;li&gt;how to use loading templates&lt;/li&gt;
-  &lt;li&gt;how to nest loading templates&lt;/li&gt;
-  &lt;li&gt;how to use loading templates with named outlets&lt;/li&gt;
-  &lt;li&gt;how to use loading event (user scrolls down, post data to api)&lt;/li&gt;
-  &lt;li&gt;sometimes you might need to do it manually&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-&lt;p&gt;NOTES:&lt;/p&gt;
-
-&lt;p&gt;By default, uses template at level of sibling. show http://jsbin.com/pikoha#/albums/1/reviews renders &lt;code&gt;album/loading&lt;/code&gt;, but also default outlet. to use named you have to override generated route.&lt;/p&gt;
-
-&lt;p&gt;To show this, start with activities using the default outlet, then show why its bad with reviews and default outlet.&lt;/p&gt;
-
-&lt;p&gt;inline render does not get this functionality. can you use:
-  intermediateTransitionTo manually with beforeModel / afterModel?&lt;/p&gt;
-
-&lt;p&gt;if you want to perform an action and still use the default behavior return true.&lt;/p&gt;
-
-&lt;hr /&gt;
-</content>
-  </entry>
   <entry>
     <title>Non-RESTful API calls with Ember Data</title>
     <link rel="alternate" href="http://cball.me/non-restful-api-calls-with-ember-data/"/>
@@ -949,6 +682,84 @@
 &lt;p&gt;We've done a lot here! We started working with the GitHub API, authorized our application using OAuth, listed repositories for a user, and installed a hook to notify us when there is activity on the repository we care about. &lt;/p&gt;
 
 &lt;p&gt;In part 2, we will be delving into virtual machines using Vagrant. This is extremely important in order to be able to check out and run code from an authorized repository in an secure, isolated, and temporary environment. &lt;a href="http://cball.me/newsletter"&gt;Get email updates for the rest of the series&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
+  <entry>
+    <title>How to Grow your Consulting Business in only 4 Hours per Week</title>
+    <link rel="alternate" href="http://cball.me/how-to-grow-your-consulting-business-in-only-4-hours-per-week/"/>
+    <id>http://cball.me/how-to-grow-your-consulting-business-in-only-4-hours-per-week/</id>
+    <published>2014-01-05T05:00:00Z</published>
+    <updated>2014-01-05T19:25:20-05:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;If you're like me, you started (or plan to start) your consulting as a side business while keeping a full-time job. This is a great way to ease in to consulting, but requires putting in long hours every day to grow your business. And doing this over...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr /&gt;
+&lt;p&gt;If you're like me, you started (or plan to start) your consulting as a side business while keeping a full-time job. This is a great way to ease in to consulting, but requires putting in long hours every day to grow your business. And doing this over an extended period of time will almost certainly lead to burnout.&lt;/p&gt;
+
+&lt;p&gt;How then, can you take on additional work while maintaining a high degree of quality and avoiding burnout? &lt;strong&gt;By effectively using subcontractors&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h4 id="find-the-right-talent"&gt;Find the right talent&lt;/h4&gt;
+&lt;p&gt;Just like hiring a full-time employee, you have to find the right people in order to have any chance of being successful. I did this two ways:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;I had some developer friends from previous jobs that were interested in making a little extra money on the side.&lt;/li&gt;
+  &lt;li&gt;I found a few others at &lt;a href="http://bostonrb.org"&gt;boston.rb&lt;/a&gt;, my local ruby meetup.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;If you're talking with people you've never worked with, try to get a feel for their skill level, what their strengths are, and the types of things they've worked on. The beauty of using someone as a subcontractor is you can try them out to make sure they are a good fit. If things go south, you're only out the initial time investment.&lt;/p&gt;
+
+&lt;h4 id="build-up-a-network"&gt;Build up a network&lt;/h4&gt;
+&lt;p&gt;If you have people that are doing work for you part-time, you'll have to deal with multiple schedules and scheduling issues. To help insulate yourself from potential problems, you're going to need overlap and backup. A bench, so to speak. I've found a core group of 3-4 developers works great for me.&lt;/p&gt;
+
+&lt;p&gt;When trying to plan a weekly project roadmap, think of subcontractor hours as about 1/4 those of a normal employee. This past year, my subcontractors averaged no more than 7.5 hours per week, and I essentially gave them freedom to work as many hours as they wanted. Remember, they have full time jobs too. &lt;/p&gt;
+
+&lt;h4 id="you-should-always-be-the-one-kicking-off-the-project"&gt;You should always be the one kicking-off the project&lt;/h4&gt;
+&lt;p&gt;There are two reasons for this.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;You are the face of the business. Your clients will be talking to you, not your subcontractors.&lt;/li&gt;
+  &lt;li&gt;You can always be sure that the project management tools, initial code structure, and workflow are set up properly.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;With the initial setup out of the way, you can then start divvying out the work.&lt;/p&gt;
+
+&lt;h4 id="charge-more-than-your-subcontractors-charge-you"&gt;Charge more than your subcontractors charge you&lt;/h4&gt;
+&lt;p&gt;Never pass the cost of your subcontractor directly to the client. &lt;strong&gt;Always charge a markup&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Say you bill out at $150 per hour (though I recommend using weekly rates after you're established) and your subcontractor charges $100 per hour. Here's how that works for an average 7.5 hour week:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h4 id="x-75---100-x-75--375--4-management-hrs--9375hr"&gt;$150 x 7.5 - $100 x 7.5 = $375 / 4 management hrs = $93.75/hr&lt;/h4&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;You're getting paid $93.75 per hour to do 4 hours of project management and code reviews. That being said, I almost never need the 4 hours I've allotted for this and end up spending only about 2 hours per week. That math comes out far better:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;h4 id="x-75---100-x-75--375--2-management-hrs--18750hr"&gt;$150 x 7.5 - $100 x 7.5 = $375 / 2 management hrs = $187.50/hr&lt;/h4&gt;
+&lt;/blockquote&gt;
+
+&lt;h4 id="use-a-good-invoicing-tool"&gt;Use a good invoicing tool&lt;/h4&gt;
+&lt;p&gt;I recommend &lt;a href="https://echobind.freshbooks.com/refer/www"&gt;Freshbooks&lt;/a&gt; since it has a great subcontractor feature. Subcontractors can invoice me whenever they'd like at whatever rate we've agreed to, and it all flows through to my invoices to clients at the rate that I set.&lt;/p&gt;
+
+&lt;h4 id="do-it-all-in-4-hours-per-week"&gt;Do it all in 4 hours per week&lt;/h4&gt;
+&lt;p&gt;Once you have this system set up, here's how it allows you to grow with limited time invested:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;At the beginning of the week, plan your development work for that week based on subcontractors scheduling. Each week, try to get a feel for how many hours each person thinks they can put in and compare that with the hours they actually end up working. I do this with a simple spreadsheet. &lt;strong&gt;(0.5 hours)&lt;/strong&gt;&lt;/li&gt;
+  &lt;li&gt;During the week review all code and approve it before it goes into the main codebase. I do this using Github Pull Requests. The actual amount of time varies based on the feature and the skill of your subcontractors, but if you just review and offer improvement suggestions it shouldn't take up a ton of time. &lt;strong&gt;(1-3.5 hours)&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h4 id="challenges"&gt;Challenges&lt;/h4&gt;
+&lt;p&gt;Using subcontractors to grow your business is not without its challenges. Here are a few.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Dealing with schedules. If someone doesn't come through, it all falls back on you. Because of this it's extremely important to not overbook yourself.&lt;/li&gt;
+  &lt;li&gt;Dealing with turn-over. Subcontractors by nature are not as stable as full-time employees. There is no guarantee how long someone will be available to you.&lt;/li&gt;
+  &lt;li&gt;Development work is done nights and weekends. I've never had this be an issue with any of my clients, but it's something to note. As long as your accessible to them via email and phone during the day you should not run into any problems.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Subcontractors are one of the many ways that allowed me to make the jump from part-time to running &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt; full-time. By slowly taking on client work and using subcontractors to fill in the gaps, you'll be able to build up a financial runway and enough of a project pipeline to transition to consulting full-time. I'll explain this in more detail - &lt;strong&gt;including when to make the jump&lt;/strong&gt; - in future posts. Here's to growth!&lt;/p&gt;
 </content>
   </entry>
 </feed>
