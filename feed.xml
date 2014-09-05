@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/understanding-loading-substates-in-ember/"/>
     <id>http://cball.me/understanding-loading-substates-in-ember/</id>
     <published>2014-09-05T12:50:00Z</published>
-    <updated>2014-09-05T08:54:43-04:00</updated>
+    <updated>2014-09-05T08:56:05-04:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -342,7 +342,7 @@
   &lt;li&gt;use loading templates&lt;/li&gt;
   &lt;li&gt;nest loading templates&lt;/li&gt;
   &lt;li&gt;use loading templates with named outlets&lt;/li&gt;
-  &lt;li&gt;use a loading event (user scrolls down, post data to api)&lt;/li&gt;
+  &lt;li&gt;use a loading event&lt;/li&gt;
   &lt;li&gt;use manual loading states when necessary&lt;/li&gt;
 &lt;/ul&gt;
 
