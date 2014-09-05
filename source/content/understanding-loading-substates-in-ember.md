@@ -1,5 +1,5 @@
 ---
-title: Understanding Loading Substates
+title: Understanding Loading Substates in Ember
 date: 2014-09-05 8:50 EDT
 image: http://cball.me.s3.amazonaws.com/loading-substates/understanding-loading-substates.jpg
 tags: ember
