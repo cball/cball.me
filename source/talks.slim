@@ -1,0 +1,19 @@
+---
+title: Talks
+---
+
+article
+  .post-body
+    h2 Talks
+
+    p A list of my talks at conferences or meetups. It's currently a pretty massive list at 1 talk strong, but I'm working on increasing that number.
+
+    ul.talk-list
+      - talks = YAML.load_file(File.open('source/talks.yml'))['talks'].values
+      - talks.each do |talk|
+        - url = "/talk/#{talk['title'].parameterize}"
+        - proxy url, "/talk/template.html", locals: { t: talk }, ignore: true
+
+        li
+          = link_to talk['title'], url, class: 'talk-link'
+          span.year = Date.parse(talk['date']).strftime('%Y')
