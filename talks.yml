@@ -1,0 +1,9 @@
+talks:
+  1:
+    title: Real World Fixtures
+    event: Boston Ember Meetup
+    location: Boston, MA
+    date: '2014-08-24'
+    description: <p>A talk from the August 2014 Boston Ember Meetup about using HTTP mocks during the development of Ember applications. Using HTTP mocks will allow you to keep the same adapters you're used to using, predict app behavior, ensure proper handling of ajax errors, and even drive the API spec for your app. They are extremely helpful for building out the front-end before moving on to implementing the API.</p><p>This is the first talk I've ever given, so go easy!</p><p>My talk starts at 1hr 7min in the video.</p>
+    speakerdeck_id: d45610f006bb0132098a4ec2e24a2701
+    youtube_id: jSKZkHN3fIE
