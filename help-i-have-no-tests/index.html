@@ -1,0 +1,172 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Help I have no tests!</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="There will come a point in your career as a developer that you run across one of two common scenarios.
+
+
+You come face-to-face with a project that has no tests (or very few).
+  
+You come face-to-face with a project that has incorrect tests.
+These two..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/help-i-have-no-tests.jpg" name="og:image" /><meta content="Help I have no tests!" name="og:title" /><meta content="http://cball.me/help-i-have-no-tests/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="help-i-have-no-tests help-i-have-no-tests_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/help-i-have-no-tests/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/help-i-have-no-tests.jpg" /></a><div class="date"><div class="month">Sep</div><div class="day">16</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/help-i-have-no-tests/">Help I have no tests!</a></h2><div class="date subtitle">September 16, 2014</div><hr />
+<p>There will come a point in your career as a developer that you run across one of two common scenarios.</p>
+
+<ol>
+  <li><a href="#no-tests">You come face-to-face with a project that has no tests (or very few)</a>.</li>
+  <li><a href="#incorrect-tests">You come face-to-face with a project that has incorrect tests</a>.</li>
+</ol>
+
+<p>These two scenarios are variations on the same theme. Tests exist to verify that your code is working how it should, and are there for you to lean on when adding new features or refactoring. If you can’t lean on a good test suite, it’s very hard to ship and improve a product.</p>
+
+<p>Let’s talk about strategies for dealing with each of these scenarios.</p>
+
+<hr />
+<hr />
+
+<p><a name="no-tests"></a></p>
+
+<h4 id="testing-an-app-with-no-tests-or-very-few">Testing an app with no tests (or very few).</h4>
+<p>There can be many reasons why an app has no tests, but by far the most common one is that developers “don’t have time for them”. Another (and one that I’ve run into recently in Ember apps) is that the framework is so new that best practices are not fully established or well understood by the community. This often leads to developer confusion, and a “we’ll come back to it later” attitude. Thankfully, with Ember this is increasingly less common due to conventions put in place by ember-cli. If you run into this situation, how can you deal with it?</p>
+
+<h4 id="start-by-writing-acceptance-level-tests">Start by writing acceptance-level tests.</h4>
+<p>When an app is without tests, you can’t be sure the code is working as expected. What you can be sure of, however, is how it functions from an end user point of view. This is exactly where you should start! Begin by writing tests for the user interactions that you can verify in the browser. By doing this, you’ll end up with a safety net that you can lean on as you start diving deeper in to the models and unit level tests.</p>
+
+<p>I’ve found a few patterns helpful when implementing this approach:</p>
+
+<ul>
+  <li>Write more acceptance tests than you normally would.</li>
+  <li>Extract a login helper.</li>
+  <li>Cast a wide net, then write a success and fail scenario for each major feature in the app.</li>
+</ul>
+
+<h4 id="write-more-acceptance-tests">Write more acceptance tests.</h4>
+<p>Typically an application should have lots of unit tests and just enough acceptance tests to cover combined and/or complicated scenarios, but because we’re starting from ground zero it helps to temporarily flip that mentality. Again, focus on writing tests for things you <strong>know are correct from a user point of view</strong>.</p>
+
+<h4 id="extract-a-login-helper">Extract a login helper.</h4>
+<p>The first thing that you’ll want to do is extract a login helper. You’ll be using this in all of your acceptance tests, so its a logical place to start.</p>
+
+<p>The implementation is different depending on your framework of choice, but you’ll usually want a <code>login</code> method that takes a user model as an argument. </p>
+
+<p>Here’s an example from an Ember app that is using QUnit and Ember Simple Auth as the authentication library:</p>
+
+<pre class="highlight javascript"><span class="c1">// tests/helpers/login.js
+</span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">registerAsyncHelper</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">user</span><span class="p">,</span> <span class="nx">app</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">applicationRoute</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;route:application&#39;</span><span class="p">);</span>
+
+  <span class="nx">authenticateSession</span><span class="p">();</span>
+  <span class="nx">applicationRoute</span><span class="p">.</span><span class="nx">set</span><span class="p">(</span><span class="s1">&#39;session.currentUser&#39;</span><span class="p">,</span> <span class="nx">user</span><span class="p">);</span>
+<span class="p">});</span>
+</pre>
+<p>And another example that doesn’t use an authentication framework, and creates the user in the store. Adding the object to the store is helpful because subsequent calls to <code>this.store.find('user', 1)</code> from within the same test scenario will return the same user. Stub the login API request using something like <a href="http://github.com/trek/pretender">pretender</a>.</p>
+
+<pre class="highlight javascript"><span class="c1">// tests/helpers/login.js
+</span><span class="nx">Ember</span><span class="p">.</span><span class="nx">Test</span><span class="p">.</span><span class="nx">registerAsyncHelper</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">app</span><span class="p">)</span> <span class="p">{</span> 
+  <span class="kd">var</span> <span class="nx">applicationRoute</span> <span class="o">=</span> <span class="nx">app</span><span class="p">.</span><span class="nx">__container__</span><span class="p">.</span><span class="nx">lookup</span><span class="p">(</span><span class="s1">&#39;route:application&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">server</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Pretender</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/login&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">request</span><span class="p">){</span>
+      <span class="k">return</span> <span class="p">[</span><span class="mi">200</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;Content-Type&quot;</span><span class="err">:</span> <span class="s2">&quot;application/json&quot;</span><span class="p">},</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="na">token</span><span class="p">:</span> <span class="s1">&#39;foo&#39;</span><span class="p">})];</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+
+
+  <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">applicationRoute</span><span class="p">.</span><span class="nx">store</span><span class="p">.</span><span class="nx">createRecord</span><span class="p">(</span><span class="s1">&#39;user&#39;</span><span class="p">,</span> <span class="p">{</span>
+      <span class="na">id</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="na">firstName</span><span class="p">:</span> <span class="s2">&quot;The&quot;</span><span class="p">,</span>
+      <span class="na">lastName</span><span class="p">:</span> <span class="s2">&quot;Dude&quot;</span><span class="p">,</span>
+      <span class="na">email</span><span class="p">:</span> <span class="s2">&quot;dude@wee.net&quot;</span> 
+    <span class="p">});</span>
+
+    <span class="nx">visit</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">);</span>
+    <span class="nx">fillIn</span><span class="p">(</span><span class="s1">&#39;#email&#39;</span><span class="p">,</span> <span class="nx">user</span><span class="p">.</span><span class="nx">email</span><span class="p">);</span>
+    <span class="nx">fillIn</span><span class="p">(</span><span class="s1">&#39;#password&#39;</span><span class="p">,</span> <span class="s1">&#39;mattersnot&#39;</span><span class="p">);</span>
+    <span class="nx">click</span><span class="p">(</span><span class="s1">&#39;#login&#39;</span><span class="p">);</span>
+
+    <span class="nx">server</span><span class="p">.</span><span class="nx">shutdown</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+</pre>
+<p>If you’re implementing this in a server-side framework, things are a bit easier since you have direct database access. You won’t have to mock the login API, but the concept of a login helper is the same. If you’re in an API only server-side app, you might do this by generating a user and passing the proper headers in a network request.</p>
+
+<h4 id="cast-a-wide-net-then-write-success-and-fail-scenarios">Cast a wide net, then write success and fail scenarios.</h4>
+<p>When you’re faced with a large task like writing a full test suite where there is none, it’s easy to get overwhelmed. To quickly cover as much of your app as possible, start by finding groups of features that you can implement as a single acceptance test. Then, go back and fill in the gaps with tests for smaller or more specific features.</p>
+
+<p>Examples of groups of features include:</p>
+
+<ul>
+  <li>A user adds a post and then comments on it</li>
+  <li>A user that is not signed in, tries to vote but can’t. Then they sign up and should be able to vote.</li>
+  <li>A user visits a profile page, friends a user, and sees another user in a “You are both friends with” box.</li>
+</ul>
+
+<p>By doing this, you can actually cover a large percentage of your app at a high level. Next, try to figure out a success and failure scenario for each major feature. If you’ve already covered a success scenario when implementing the wide net approach, there is no need to add a redundant test.</p>
+
+<p>Once you have an acceptable base of acceptance tests, you’re ready to dive down and start writing unit tests. If you come across bugs in the code for your app go ahead and fix them, writing unit tests to back up your changes. You should have enough test coverage from the acceptance test layer to catch bugs introduced by small code changes like this.</p>
+
+<p>Continuing on, you will eventually have a comprehensive test suite in place. You can then use this test suite to improve your code by refactoring.</p>
+
+<hr />
+<hr />
+
+<p><a name="incorrect-tests"></a></p>
+
+<h4 id="testing-a-project-that-has-incorrect-tests">Testing a project that has incorrect tests.</h4>
+<p>A project that has incorrect tests is sometimes hard to spot. I’ve come across two common cases:</p>
+
+<ul>
+  <li>The app has unit tests that are heavily mocked.</li>
+  <li>The test case isn’t really testing what it needs to.</li>
+</ul>
+
+<h4 id="heavily-mocked-tests">Heavily mocked tests</h4>
+<p>When used properly, mocks are great. However, they can be abused. If you find yourself wanting to mock more than just one or two items in a unit test, it probably means you could improve your application design. Work on teasing apart models or service objects to reduce coupling and dependencies. </p>
+
+<p>One of the biggest dangers with mocks is that something is mocked wrong and you don’t realize it. The test will pass because you mocked it, but could disguise a bug since you’re not using the real object.</p>
+
+<h4 id="testing-the-wrong-thing">Testing the wrong thing</h4>
+<p>You might also have a good sized test suite, but some of your tests might be testing the wrong thing. This is dangerous because it can give a false sense of security. It’s tough to spot tests like this, but most commonly it happens by testing behavior of one class from within the unit test of another.</p>
+
+<p>It can also happen when an object has too many responsibilities. One of those responsibilities slips through the cracks test-wise, and later changes can break things.</p>
+
+<h4 id="how-to-fix-it">How to fix it</h4>
+<p>The fix for this is actually pretty simple. If you’re skeptical of an area of your test suite, write a few tests that you think may break it. If you can write a failing test, fix the code so that the test is passing. Next, verify that the entire suite is still passing. If it is, look at the older test and decide if it’s worth keeping around as an alternate scenario. It might be completely invalid, or it might overlap the new test you just wrote. Use your best judgement, and if it’s not worth keeping around don’t be afraid to delete it!</p>
+
+<p>If you you are unable to write a failing test, then you can breathe a little easier. See if the new test is worth keeping around as an alternate scenario. If not, feel free to trash it.</p>
+
+<p>After doing this, if things still don’t feel right, then use the confidence from the test coverage to refactor and simplify the code.</p>
+
+<h4 id="making-it-better">Making it better</h4>
+<p>These strategies should help you start to take hold of projects you come across that have less than ideal test suites. Often the biggest hurdle is just knowing where to start.</p>
+<ul class="nav tags nav-pills"><li><a href="/topics/testing/">/<span class="name">testing</span>/</a></li><li><a href="/topics/development/">/<span class="name">development</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join for free</a></div></div><div id="article-nav"><div class="pull-left"><a href="/understanding-loading-substates-in-ember/">&laquo; Understanding Loading Subst...</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div><div class="row"><div class="col-md-12"><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a><p>Founder / Lead Developer</p></div></div></div></div><footer><ul class="list-unstyled"><li><a href="/newsletter">Free updates</a></li><li class="separator">&mdash;</li><li><a href="/contact">Contact</a></li><li class="separator">&mdash;</li><li><a href="/about">Built by Chris</a></li></ul></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46757526-1', 'auto');
+ga('send', 'pageview');
+
+
+// clicky
+var clicky_site_ids = clicky_site_ids || [];
+clicky_site_ids.push(100694755);
+(function() {
+  var s = document.createElement('script');
+  s.type = 'text/javascript';
+  s.async = true;
+  s.src = '//static.getclicky.com/js';
+  ( document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0] ).appendChild( s );
+})();</script></body></html>
