@@ -6,13 +6,12 @@ article
   .post-body
     h2 Talks
 
-    p A list of my talks at conferences or meetups. It's currently a pretty massive list at 1 talk strong, but I'm working on increasing that number.
+    p A list of my talks at conferences or meetups. I know, I know. It's a pretty massive list right now at 1 talk strong, but that will change soon.
 
     ul.talk-list
       - talks = YAML.load_file(File.open('source/talks.yml'))['talks'].values
       - talks.each do |talk|
         - url = "/talk/#{talk['title'].parameterize}"
-        - proxy url, "/talk/template.html", locals: { t: talk }, ignore: true
 
         li
           = link_to talk['title'], url, class: 'talk-link'

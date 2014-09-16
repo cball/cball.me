@@ -1,29 +1,31 @@
-article
-  .post-body
-    h2 = t['title']
-    h4 = t['event']
-    h5.date
-      span = t['location']
-      span.what -
-      span = Date.parse(t['date']).strftime('%B %d, %Y')
+- t ||= {}
+- unless t.blank?
+  article
+    .post-body
+      h2 = t['title']
+      h4 = t['event']
+      h5.date
+        span = t['location']
+        span.separator -
+        span = Date.parse(t['date']).strftime('%B %d, %Y')
 
-    p.description = t['description']
+      p.description = t['description']
 
-    hr
+      hr
 
-    .slides
-      h4 Slides
-      - if t['speakerdeck_id']
-        <script async class="speakerdeck-embed" data-id="#{t['speakerdeck_id']}" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
-      - else
-        p No slides available
+      .slides
+        h4 Slides
+        - if t['speakerdeck_id']
+          <script async class="speakerdeck-embed" data-id="#{t['speakerdeck_id']}" data-ratio="1.77777777777778" src="//speakerdeck.com/assets/embed.js"></script>
+        - else
+          p No slides available
 
-    .video
-      h4 Video
-      - if t['youtube_id']
-        .video-container
-          <iframe width="560" height="315" src="//www.youtube.com/embed/#{t['youtube_id']}?rel=0" frameborder="0" allowfullscreen></iframe>
-      - elsif t['vimeo_id']
-        <iframe src="//player.vimeo.com/video/#{t['vimeo_id']}?title=0&amp;byline=0&amp;portrait=0&amp;color=f3b940" width="560" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-      - else
-        p No video available
+      .video
+        h4 Video
+        - if t['youtube_id']
+          .video-container
+            <iframe width="560" height="315" src="//www.youtube.com/embed/#{t['youtube_id']}?rel=0" frameborder="0" allowfullscreen></iframe>
+        - elsif t['vimeo_id']
+          <iframe src="//player.vimeo.com/video/#{t['vimeo_id']}?title=0&amp;byline=0&amp;portrait=0&amp;color=f3b940" width="560" height="315" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+        - else
+          p No video available

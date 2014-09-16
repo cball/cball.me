@@ -41,3 +41,9 @@ configure :build do
   activate :smusher
   activate :gzip, :exts => %w(.atom .css .html .js .rss .svg .txt .xhtml .xml)
 end
+
+talks = YAML.load_file(File.open('./source/talks.yml'))['talks'].values
+talks.each do |talk|
+  url = "/talk/#{talk['title'].parameterize}/index.html"
+  proxy url, "/talk/template.html", locals: { t: talk }, ignore: true
+end
