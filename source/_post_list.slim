@@ -1,21 +1,10 @@
-- if paginate && num_pages > 1
-  p Page #{page_number} of #{num_pages}
+article
+  = partial :article_header, locals: { article: article }
 
-  - if prev_page
-    p = link_to 'Previous page', prev_page
+  .post-body
+    = partial :article_info, locals: { article: article }
 
-- page_articles.each_with_index do |article, i|
-  article
-    = partial(:article_header, :locals => { :article => article })
-
-    .post-body
-      = partial :article_info, locals: { article: article }
-
-      = article.summary
-      = link_to 'Continue reading &raquo;', article, class: 'read-more-link'
+    = article.summary
+    = link_to 'Continue reading &raquo;', article, class: 'read-more-link'
 
   hr
-
-- if paginate
-  - if next_page
-    p = link_to 'Next page', next_page
