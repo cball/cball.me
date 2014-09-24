@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/realtime-app-version-notices/"/>
     <id>http://cball.me/realtime-app-version-notices/</id>
     <published>2014-09-24T23:18:00Z</published>
-    <updated>2014-09-24T19:21:45-04:00</updated>
+    <updated>2014-09-24T19:40:48-04:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -132,7 +132,7 @@
 &lt;p&gt;Now that we have Redis storing the current version of our deployed application, we need a way for the client app to read it.&lt;/p&gt;
 
 &lt;h4 id="websockets"&gt;Websockets&lt;/h4&gt;
-&lt;p&gt;Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse &lt;a href="https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302"&gt;built their own solution&lt;/a&gt;. Recently though, a library called socket.io has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.&lt;/p&gt;
+&lt;p&gt;Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse &lt;a href="https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302"&gt;built their own solution&lt;/a&gt;. Recently though, a library called &lt;a href="http://socket.io/"&gt;socket.io&lt;/a&gt; has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.&lt;/p&gt;
 
 &lt;p&gt;Since we’re using Redis as a global store, we can set up a small server that has has the single responsibility of forwarding app version changes to other apps through Redis Pub/Sub and socket.io. This will give us maximum scalability, and won’t impact our main application.&lt;/p&gt;
 
