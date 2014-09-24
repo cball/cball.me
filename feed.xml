@@ -5,10 +5,230 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-09-16T04:00:00Z</updated>
+  <updated>2014-09-24T23:18:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Realtime App Version Notices with socket.io and Redis</title>
+    <link rel="alternate" href="http://cball.me/realtime-app-version-notices/"/>
+    <id>http://cball.me/realtime-app-version-notices/</id>
+    <published>2014-09-24T23:18:00Z</published>
+    <updated>2014-09-24T19:21:45-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;If you’ve been on a site powered by &lt;a href="http://www.discourse.org/"&gt;Discourse&lt;/a&gt;, you may have seen the following notification:&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="discourse update" src="http://cball.me.s3.amazonaws.com/discourse_update.png"&gt;&lt;/p&gt;
+
+&lt;p&gt;How and why did they do this?&lt;/p&gt;
+
+&lt;p&gt;One of the built-in benefits of rendering frontend templates server-side is that you are guaranteed users will be using the...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr /&gt;
+
+&lt;p&gt;If you’ve been on a site powered by &lt;a href="http://www.discourse.org/"&gt;Discourse&lt;/a&gt;, you may have seen the following notification:&lt;/p&gt;
+
+&lt;p&gt;&lt;img alt="discourse update" src="http://cball.me.s3.amazonaws.com/discourse_update.png" /&gt;&lt;/p&gt;
+
+&lt;p&gt;How and why did they do this?&lt;/p&gt;
+
+&lt;p&gt;One of the built-in benefits of rendering frontend templates server-side is that you are guaranteed users will be using the most recent version of your application. Since most actions require a refresh from the server, the user usually gets an updated template the next time they click on something.&lt;/p&gt;
+
+&lt;p&gt;If you’re using a client-side framework, however, this is not the case. Your app may have loaded everything it needs from the backend API and might go a very long time without requesting anything new from the server. Or, your user might leave the app open in a tab so they can come back to it at lunchtime. &lt;/p&gt;
+
+&lt;p&gt;Even if you’re not using a client-side framework, this situation can happen if part of your application makes ajax requests to get updated information but stays on the page otherwise.&lt;/p&gt;
+
+&lt;p&gt;How can we show users that there is a new version of the app available?&lt;/p&gt;
+
+&lt;h4 id="determine-the-current-version-of-the-app"&gt;Determine the current version of the app&lt;/h4&gt;
+&lt;p&gt;There are many ways to figure out the current version of your application.&lt;/p&gt;
+
+&lt;p&gt;If you’re using ember with ember-cli you could grab the version of your application.js using information from the &lt;code&gt;broccoli-asset-rev&lt;/code&gt; plugin.&lt;/p&gt;
+
+&lt;p&gt;If your client-side application is being served from within Rails, you could use &lt;code&gt;Rails.application.assets.digest&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;The method I like best is to use a &lt;code&gt;deploy task&lt;/code&gt; to set an application version using git. Assuming you use the same or similar deployment scripts across your apps, it gives a universal way to access app version information regardless of the language the app is using. This of course assumes that all of your application use git for source control.&lt;/p&gt;
+
+&lt;h4 id="store-the-current-version-somewhere-globally-accessible"&gt;Store the current version somewhere globally accessible&lt;/h4&gt;
+&lt;p&gt;We use Redis quite a bit at &lt;a href="http://echobind.com"&gt;echobind&lt;/a&gt;. Redis is a great (fast!) key value store and has client libraries for many different languages. This makes it a great candidate to hold our global app version. Since we’re looking at real time notifications, we’ll also use the &lt;a href="http://redis.io/topics/pubsub"&gt;Pub/Sub&lt;/a&gt; functionality.&lt;/p&gt;
+
+&lt;h4 id="example-ruby-deploy-task-backed-by-redis"&gt;Example Ruby deploy task backed by Redis&lt;/h4&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# Rakefile&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;./app_version&amp;#39;&lt;/span&gt;                    
+                                           
+&lt;span class="n"&gt;desc&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;deploys the app&amp;#39;&lt;/span&gt;                     
+&lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;:deploy&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;                            
+  &lt;span class="n"&gt;app_version&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="no"&gt;AppVersion&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;frontend&amp;quot;&lt;/span&gt;  
+                                           
+  &lt;span class="n"&gt;app_version&lt;/span&gt;&lt;span class="nf"&gt;.update_to&lt;/span&gt; &lt;span class="n"&gt;version_from_git&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
+    &lt;span class="c1"&gt;# deploy production                    &lt;/span&gt;
+    &lt;span class="sb"&gt;`divshot push production`&lt;/span&gt;           
+  &lt;span class="k"&gt;end&lt;/span&gt;                                      
+&lt;span class="k"&gt;end&lt;/span&gt;                                        
+                                           
+&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;version_from_git&lt;/span&gt;                       
+  &lt;span class="sb"&gt;`git rev-parse HEAD`&lt;/span&gt;&lt;span class="nf"&gt;.strip&lt;/span&gt;               
+&lt;span class="k"&gt;end&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# app_version.rb&lt;/span&gt;
+&lt;span class="nb"&gt;require&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;redis&amp;#39;&lt;/span&gt;                                                         
+                                                                        
+&lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;AppVersion&lt;/span&gt;                                                        
+  &lt;span class="kp"&gt;attr_reader&lt;/span&gt; &lt;span class="ss"&gt;:app_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:use_pubsub&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:version_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:previous_version_key&lt;/span&gt;
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;app_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;use_pubsub&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;                              
+    &lt;span class="vi"&gt;@app_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;app_key&lt;/span&gt;                                                  
+    &lt;span class="vi"&gt;@use_pubsub&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;use_pubsub&lt;/span&gt;                                            
+    &lt;span class="vi"&gt;@version_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;app_key&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-app-version&amp;quot;&lt;/span&gt;                             
+    &lt;span class="vi"&gt;@previous_version_key&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;app_key&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-app-version-prev&amp;quot;&lt;/span&gt;               
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;current&lt;/span&gt;                                                           
+    &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.get&lt;/span&gt; &lt;span class="n"&gt;version_key&lt;/span&gt;                                               
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;current&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;                                                 
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Setting &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;app_key&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; app-version to &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;.&amp;quot;&lt;/span&gt;                
+    &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.set&lt;/span&gt; &lt;span class="n"&gt;version_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;                                      
+    &lt;span class="n"&gt;publish_new_version&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;                                         
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;previous&lt;/span&gt;                                                          
+    &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.get&lt;/span&gt; &lt;span class="n"&gt;previous_version_key&lt;/span&gt;                                      
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;previous&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;                                                
+    &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.set&lt;/span&gt; &lt;span class="n"&gt;previous_version_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;                             
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;update_to&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="o"&gt;&amp;amp;&lt;/span&gt;&lt;span class="n"&gt;block&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;                                        
+    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="nf"&gt;.previous&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;current&lt;/span&gt;                                             
+    &lt;span class="k"&gt;yield&lt;/span&gt;                                                               
+    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="nf"&gt;.current&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;                                              
+  &lt;span class="k"&gt;rescue&lt;/span&gt;                                                                
+    &lt;span class="n"&gt;rollback&lt;/span&gt;                                                            
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="kp"&gt;private&lt;/span&gt;                                                               
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;redis&lt;/span&gt;                                                             
+    &lt;span class="vi"&gt;@redis&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Redis&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;                                                
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;rollback&lt;/span&gt;                                                          
+    &lt;span class="nb"&gt;puts&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;An error occured, rolling back &lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;app_key&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; app-version.&amp;quot;&lt;/span&gt;       
+    &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="nf"&gt;.current&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;previous&lt;/span&gt;                                             
+    &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.del&lt;/span&gt; &lt;span class="n"&gt;previous_version_key&lt;/span&gt;                                      
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+                                                                        
+  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;publish_new_version&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;version&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;                                      
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;use_pubsub&lt;/span&gt;                                                       
+      &lt;span class="n"&gt;redis&lt;/span&gt;&lt;span class="nf"&gt;.publish&lt;/span&gt; &lt;span class="n"&gt;version_key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;version&lt;/span&gt;                                
+    &lt;span class="k"&gt;end&lt;/span&gt;                                                                 
+  &lt;span class="k"&gt;end&lt;/span&gt;                                                                   
+&lt;span class="k"&gt;end&lt;/span&gt;                                                                                                                                     
+&lt;/pre&gt;
+&lt;p&gt;Now that we have Redis storing the current version of our deployed application, we need a way for the client app to read it.&lt;/p&gt;
+
+&lt;h4 id="websockets"&gt;Websockets&lt;/h4&gt;
+&lt;p&gt;Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse &lt;a href="https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302"&gt;built their own solution&lt;/a&gt;. Recently though, a library called socket.io has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.&lt;/p&gt;
+
+&lt;p&gt;Since we’re using Redis as a global store, we can set up a small server that has has the single responsibility of forwarding app version changes to other apps through Redis Pub/Sub and socket.io. This will give us maximum scalability, and won’t impact our main application.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// server.js
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;app&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;express&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)();&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;http&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;http&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;Server&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;app&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;io&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;socket.io&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)(&lt;/span&gt;&lt;span class="nx"&gt;http&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;redis&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;redis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;redisClient&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createClient&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;redisSubscriber&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;redis&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;createClient&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+&lt;span class="c1"&gt;// use socket.io-redis if you need lots of connections. it allows
+// socket.io to work across servers
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;socketIORedis&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;require&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;socket.io-redis&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;adapter&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;socketIORedis&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;host&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;localhost&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="na"&gt;port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;6379&lt;/span&gt; &lt;span class="p"&gt;}));&lt;/span&gt;
+
+&lt;span class="nx"&gt;redisSubscriber&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;subscribe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;frontend-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="nx"&gt;redisSubscriber&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;subscribe&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;iphone-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+&lt;span class="nx"&gt;redisSubscriber&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;message&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;channel&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;channel&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;message&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="nx"&gt;io&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;connection&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;redisClient&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;frontend-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;error&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;emit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;frontend-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;value&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="c1"&gt;// in the real world the following would be an api call that renders json
+&lt;/span&gt;&lt;span class="nx"&gt;app&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;req&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;res&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;res&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;sendFile&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;__dirname&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/index.html&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="nx"&gt;http&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;listen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;3000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
+  &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;listening on *:3000&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight html"&gt;&lt;span class="c"&gt;&amp;lt;!-- index.html --&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;ul&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;versions&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/socket.io/socket.io.js&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script &lt;/span&gt;&lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://code.jquery.com/jquery-1.11.1.js&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;script&amp;gt;&lt;/span&gt;
+  &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;socket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;io&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+
+  &lt;span class="nx"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;frontend-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+    &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;#versions&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;append&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;&amp;lt;li&amp;gt;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;text&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;span class="nt"&gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Here’s what our server looks like in use. The image is a little small, but we have 4 browsers getting a “new version” message sent 3 different ways. The full source code can be found at &lt;a href="https://github.com/cball/socket.io-new-app-version"&gt;cball/socket.io-new-app-version&lt;/a&gt;. It’s a creative name, I know.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;From a deploy rake task looking at the git version&lt;/li&gt;
+  &lt;li&gt;A manual version from redis-cli&lt;/li&gt;
+  &lt;li&gt;A manual version from the ruby redis client&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;img alt="socket.io redis example" src="http://cball.me.s3.amazonaws.com/realtime-app-version/socketio-redis.gif" /&gt;&lt;/p&gt;
+
+&lt;h4 id="polling--response-headers"&gt;Polling &amp;amp; Response Headers&lt;/h4&gt;
+&lt;p&gt;If using socket.io is not an option, we can use polling and a special response header in our API. We can check this value on every request, or make an API call on a preset interval (say every 20 minutes), to get the current value.&lt;/p&gt;
+
+&lt;p&gt;If you want to hear more on this approach, shoot me an email or comment below and I’ll write about it.&lt;/p&gt;
+
+&lt;h4 id="dealing-with-a-new-version"&gt;Dealing with a new version&lt;/h4&gt;
+&lt;p&gt;Now that we’ve done all the hard work, we just have to check the current version of the app and compare it with the new version.&lt;/p&gt;
+
+&lt;p&gt;In our express app, we get the current version on connect. All we need to do is change our ‘frontend-app-version’ socket listener to show a popup when the versions don’t match.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;socket&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;io&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;currentAppVersion&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;socket&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;frontend-app-version&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
+  &lt;span class="nx"&gt;currentAppVersion&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;currentAppVersion&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;currentAppVersion&lt;/span&gt; &lt;span class="o"&gt;!==&lt;/span&gt; &lt;span class="nx"&gt;msg&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="c1"&gt;// show new version alert
+&lt;/span&gt;  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h4 id="there-are-lots-of-good-techniques-here"&gt;There are lots of good techniques here!&lt;/h4&gt;
+&lt;p&gt;Developing this feature gives us lots of good techniques. Here’s what we did:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Wrote a rake task.&lt;/li&gt;
+  &lt;li&gt;Grabbed the git reference that was deployed to production.&lt;/li&gt;
+  &lt;li&gt;Saved current/previous app versions backed by Redis.&lt;/li&gt;
+  &lt;li&gt;If the deploy fails, we roll back the current version and make the previous version the current one.&lt;/li&gt;
+  &lt;li&gt;Published an update via Redis PubSub&lt;/li&gt;
+  &lt;li&gt;Wrote a small Express server that hooks Redis Pub/Sub and socket.io together.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Before implementing this, be sure your app really needs the functionality. Not all apps do. If users typically sit on pages for long periods of time, and you need to ensure users use the most up-to-date version of your app, give real time app versions a try.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Help I have no tests!</title>
     <link rel="alternate" href="http://cball.me/help-i-have-no-tests/"/>
@@ -691,258 +911,6 @@
 
 &lt;h4 id="always-find-ways-to-improve"&gt;Always find ways to improve&lt;/h4&gt;
 &lt;p&gt;Our entire industry revolves around learning and staying up-to-date. Leveling up is all about taking small, consistent steps in order to improve your craft. And sometimes, those steps don't have anything to do with code. If you've reached a plateau, want to increase your productivity, or find yourself easily distracted, give Pomodoro a try. Let me know if it helps you!&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Go Code Spelunking</title>
-    <link rel="alternate" href="http://cball.me/go-code-spelunking/"/>
-    <id>http://cball.me/go-code-spelunking/</id>
-    <published>2014-04-07T04:00:00Z</published>
-    <updated>2014-04-07T19:25:04-04:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr /&gt;
-&lt;p&gt;Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;Code Spelunking (a fancy way to say reading and understanding source code) is an great way to level up quickly. Think about it - your favorite open source library is a pool of knowledge from a talented community that has been improved over time. Learn from it!&lt;/p&gt;
-
-&lt;p&gt;Let's look at two specific ways this can help you as a programmer. First, it can give you a proper way to structure an unknown concept. Second, it can teach you ways to use your favorite language in ways you didn't think of. Let's look specifically at &lt;strong&gt;adding configuration to a ruby gem&lt;/strong&gt;.&lt;/p&gt;
-
-&lt;h3 id="adding-configuration-to-a-ruby-gem"&gt;Adding Configuration to a Ruby Gem&lt;/h3&gt;
-
-&lt;p&gt;Lets assume you've written a ruby gem that does something awesome when a branch is pushed to git. You as the developer make it happen:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
-  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Ship it. Then you realize that you're only really supposed to do awesome stuff when the master branch is pushed to:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
-  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="kp"&gt;private&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="sr"&gt;/master/&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;git_branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:git&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="ss"&gt;:branch&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="nf"&gt;.to_s.strip&lt;/span&gt;
-      &lt;span class="n"&gt;git_branch&lt;/span&gt;&lt;span class="nf"&gt;.sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/^origin\//&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Glory. Next, let's say you want to add custom data to an internal dashboard when other developers push code (for sake of argument, assume your company runs its own git server instead of using GitHub). The dashboard is on a separate app, so you add your newly created gem to it. But now, you've got a problem… one app should do_awesome_stuff when master is involved and the other should do _awesome_stuff all the time.&lt;/p&gt;
-
-&lt;p&gt;This is a perfect time for to add configuration to your gem. Rather than asking StackOverflow, lets look at some gems that we know have quality code and see how they do configuration. Not only will that give us a correct answer, but also a chance to look at how others have a approached this problem in open-source libraries that get a lot of use by the community.&lt;/p&gt;
-
-&lt;h4 id="example-clearance-simplified"&gt;Example: Clearance (simplified)&lt;/h4&gt;
-&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Clearance&lt;/span&gt;
-  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Configuration&lt;/span&gt;
-    &lt;span class="kp"&gt;attr_writer&lt;/span&gt; &lt;span class="ss"&gt;:allow_sign_up&lt;/span&gt;
-
-    &lt;span class="kp"&gt;attr_accessor&lt;/span&gt; &lt;span class="p"&gt;\&lt;/span&gt;
-      &lt;span class="ss"&gt;:cookie_domain&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-      &lt;span class="ss"&gt;:cookie_expiration&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-      &lt;span class="ss"&gt;:cookie_path&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-      &lt;span class="c1"&gt;#...&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;initialize&lt;/span&gt;
-      &lt;span class="vi"&gt;@allow_sign_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
-      &lt;span class="vi"&gt;@cookie_expiration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cookies&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="nf"&gt;.year.from_now.utc&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
-      &lt;span class="vi"&gt;@cookie_path&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;
-      &lt;span class="c1"&gt;#...&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_model&lt;/span&gt;
-      &lt;span class="vi"&gt;@user_model&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;User&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;allow_sign_up?&lt;/span&gt;
-      &lt;span class="vi"&gt;@allow_sign_up&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;user_id_parameter&lt;/span&gt;
-      &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="si"&gt;#{&lt;/span&gt;&lt;span class="n"&gt;user_model&lt;/span&gt;&lt;span class="nf"&gt;.model_name.singular&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;_id&amp;quot;&lt;/span&gt;&lt;span class="nf"&gt;.to_sym&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;
-    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Configuration&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
-    &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;h4 id="example-carrierwave-simplified"&gt;Example: Carrierwave (simplified)&lt;/h4&gt;
-&lt;pre class="highlight ruby"&gt;&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CarrierWave&lt;/span&gt;
-
-  &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Uploader&lt;/span&gt;
-    &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;Configuration&lt;/span&gt;
-      &lt;span class="kp"&gt;extend&lt;/span&gt; &lt;span class="no"&gt;ActiveSupport&lt;/span&gt;&lt;span class="o"&gt;::&lt;/span&gt;&lt;span class="no"&gt;Concern&lt;/span&gt;
-
-      &lt;span class="n"&gt;included&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt;
-        &lt;span class="n"&gt;class_attribute&lt;/span&gt; &lt;span class="ss"&gt;:_storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:_cache_storage&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:instance_writer&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="kp"&gt;false&lt;/span&gt;
-
-        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:root&lt;/span&gt;
-        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:base_path&lt;/span&gt;
-        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:asset_host&lt;/span&gt;
-        &lt;span class="n"&gt;add_config&lt;/span&gt; &lt;span class="ss"&gt;:permissions&lt;/span&gt;
-        &lt;span class="c1"&gt;#...&lt;/span&gt;
-
-       	&lt;span class="c1"&gt;# set default values&lt;/span&gt;
-        &lt;span class="n"&gt;reset_config&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-      &lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;ClassMethods&lt;/span&gt;
-
-        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;nil&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;
-            &lt;span class="nb"&gt;self&lt;/span&gt;&lt;span class="nf"&gt;._storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="nf"&gt;.is_a?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="no"&gt;Symbol&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;?&lt;/span&gt; &lt;span class="nb"&gt;eval&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;storage_engines&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;storage&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;storage&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-          &lt;span class="n"&gt;_storage&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="n"&gt;alias_method&lt;/span&gt; &lt;span class="ss"&gt;:storage&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;:storage&lt;/span&gt;
-
-        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;add_config&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;name&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-          &lt;span class="nb"&gt;class_eval&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&amp;lt;-&lt;/span&gt;&lt;span class="no"&gt;RUBY&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__FILE__&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kp"&gt;__LINE__&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="sh"&gt;
-            #... a bunch of methods that get added to class
-&lt;/span&gt;&lt;span class="no"&gt;          RUBY&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-
-        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
-          &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="nb"&gt;self&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-
-        &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;reset_config&lt;/span&gt;
-          &lt;span class="n"&gt;configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-            &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0644&lt;/span&gt;
-            &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.directory_permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0755&lt;/span&gt;
-            &lt;span class="c1"&gt;#...&lt;/span&gt;
-          &lt;span class="k"&gt;end&lt;/span&gt;
-        &lt;span class="k"&gt;end&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;In both of these examples, the api that the developer using the gem interacts with is the same:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;span class="no"&gt;Clearance&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.allow_sign_up&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kp"&gt;true&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.cookie_domain&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.example.com&amp;#39;&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight ruby"&gt;&lt;span class="no"&gt;CarrierWave&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0666&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.directory_permissions&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mo"&gt;0777&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;:file&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;After looking at both libraries, you decide you like the &lt;strong&gt;clearance&lt;/strong&gt; implementation for the following reasons:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Does not rely on &lt;code&gt;ActiveSupport::Concern&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;Uses mostly &lt;code&gt;attr_accessor&lt;/code&gt; combined with methods when more logic is needed&lt;/li&gt;
-  &lt;li&gt;Seems simpler (this is subjective)&lt;/li&gt;
-  &lt;li&gt;You have no need for reset config logic&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Keeping this approach in mind, you flush out your Git configuration object:&lt;/p&gt;
-
-&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# lib/cool_git_gem/configuration.rb&lt;/span&gt;
-&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
-  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Configuration&lt;/span&gt;
-    
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;awesome_branches&lt;/span&gt;
-      &lt;span class="vi"&gt;@awesome_branches&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="sr"&gt;/.*/&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;awesome_branches&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="vi"&gt;@awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;items_to_regex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="kp"&gt;private&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;items_to_regex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="nf"&gt;.respond_to?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="ss"&gt;:map&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;branches&lt;/span&gt;&lt;span class="nf"&gt;.map&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="no"&gt;Regexp&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;)}&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-    
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;
-    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;||=&lt;/span&gt; &lt;span class="no"&gt;Configuration&lt;/span&gt;&lt;span class="nf"&gt;.new&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configuration&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="vi"&gt;@configuration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;config&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-
-  &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nc"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="nf"&gt;configure&lt;/span&gt;
-    &lt;span class="k"&gt;yield&lt;/span&gt; &lt;span class="n"&gt;configuration&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-
-&lt;span class="c1"&gt;# lib/cool_git_gem.rb&lt;/span&gt;
-&lt;span class="k"&gt;module&lt;/span&gt; &lt;span class="nn"&gt;CoolGitGem&lt;/span&gt;
-  &lt;span class="k"&gt;class &lt;/span&gt;&lt;span class="nc"&gt;Git&lt;/span&gt;
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;push_received&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-        &lt;span class="n"&gt;do_awesome_stuff&lt;/span&gt;
-      &lt;span class="k"&gt;end&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="kp"&gt;private&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;branch_should_do_awesome_stuff?&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configuration.awesome_branches.any?&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="n"&gt;branch&lt;/span&gt; &lt;span class="o"&gt;=~&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-
-    &lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nf"&gt;parsed_git_branch&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-      &lt;span class="n"&gt;git_branch&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;data&lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;:git&lt;/span&gt;&lt;span class="o"&gt;][&lt;/span&gt;&lt;span class="ss"&gt;:branch&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="nf"&gt;.to_s.strip&lt;/span&gt;
-      &lt;span class="n"&gt;git_branch&lt;/span&gt;&lt;span class="nf"&gt;.sub&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/^origin\//&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;end&lt;/span&gt;
-  &lt;span class="k"&gt;end&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-
-&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 1&lt;/span&gt;
-&lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="sx"&gt;%w(master)&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-
-&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 2&lt;/span&gt;
-&lt;span class="c1"&gt;# nothing needed, matches any branch by default&lt;/span&gt;
-
-&lt;span class="c1"&gt;# config/initializers/cool_git_gem.rb - app 3&lt;/span&gt;
-&lt;span class="no"&gt;CoolGitGem&lt;/span&gt;&lt;span class="nf"&gt;.configure&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="nf"&gt;.awesome_branches&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.*-dev&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="sr"&gt;/crazy/&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
-&lt;span class="k"&gt;end&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;And just like that, anyone can add arrays of regex's or regex strings to match branch names. We also now have a really great structure to store configuration as our gem grows.&lt;/p&gt;
-
-&lt;p&gt;Using this technique, I'll bet you understand your new config object far better than you would have by just consulting StackOverflow and doing the copy/paste approach.&lt;/p&gt;
-
 </content>
   </entry>
 </feed>

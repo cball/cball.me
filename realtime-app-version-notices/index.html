@@ -1,0 +1,233 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Realtime App Version Notices with socket.io and Redis</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="If you’ve been on a site powered by Discourse, you may have seen the following notification:
+
+
+
+How and why did they do this?
+
+One of the built-in benefits of rendering frontend templates server-side is that you are guaranteed users will be using the..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/realtime-app-version/realtime-app-version-notices.jpg" name="og:image" /><meta content="Realtime App Version Notices with socket.io and Redis" name="og:title" /><meta content="http://cball.me/realtime-app-version-notices/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="realtime-app-version-notices realtime-app-version-notices_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/realtime-app-version-notices/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/realtime-app-version/realtime-app-version-notices.jpg" /></a><div class="date"><div class="month">Sep</div><div class="day">24</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/realtime-app-version-notices/">Realtime App Version Notices with socket.io and Redis</a></h2><div class="date subtitle">September 24, 2014</div><hr />
+
+<p>If you’ve been on a site powered by <a href="http://www.discourse.org/">Discourse</a>, you may have seen the following notification:</p>
+
+<p><img alt="discourse update" src="http://cball.me.s3.amazonaws.com/discourse_update.png" /></p>
+
+<p>How and why did they do this?</p>
+
+<p>One of the built-in benefits of rendering frontend templates server-side is that you are guaranteed users will be using the most recent version of your application. Since most actions require a refresh from the server, the user usually gets an updated template the next time they click on something.</p>
+
+<p>If you’re using a client-side framework, however, this is not the case. Your app may have loaded everything it needs from the backend API and might go a very long time without requesting anything new from the server. Or, your user might leave the app open in a tab so they can come back to it at lunchtime. </p>
+
+<p>Even if you’re not using a client-side framework, this situation can happen if part of your application makes ajax requests to get updated information but stays on the page otherwise.</p>
+
+<p>How can we show users that there is a new version of the app available?</p>
+
+<h4 id="determine-the-current-version-of-the-app">Determine the current version of the app</h4>
+<p>There are many ways to figure out the current version of your application.</p>
+
+<p>If you’re using ember with ember-cli you could grab the version of your application.js using information from the <code>broccoli-asset-rev</code> plugin.</p>
+
+<p>If your client-side application is being served from within Rails, you could use <code>Rails.application.assets.digest</code>.</p>
+
+<p>The method I like best is to use a <code>deploy task</code> to set an application version using git. Assuming you use the same or similar deployment scripts across your apps, it gives a universal way to access app version information regardless of the language the app is using. This of course assumes that all of your application use git for source control.</p>
+
+<h4 id="store-the-current-version-somewhere-globally-accessible">Store the current version somewhere globally accessible</h4>
+<p>We use Redis quite a bit at <a href="http://echobind.com">echobind</a>. Redis is a great (fast!) key value store and has client libraries for many different languages. This makes it a great candidate to hold our global app version. Since we’re looking at real time notifications, we’ll also use the <a href="http://redis.io/topics/pubsub">Pub/Sub</a> functionality.</p>
+
+<h4 id="example-ruby-deploy-task-backed-by-redis">Example Ruby deploy task backed by Redis</h4>
+<pre class="highlight ruby"><span class="c1"># Rakefile</span>
+<span class="nb">require</span> <span class="s1">&#39;./app_version&#39;</span>                    
+                                           
+<span class="n">desc</span> <span class="s1">&#39;deploys the app&#39;</span>                     
+<span class="n">task</span> <span class="ss">:deploy</span> <span class="k">do</span>                            
+  <span class="n">app_version</span> <span class="o">=</span> <span class="no">AppVersion</span><span class="nf">.new</span> <span class="s2">&quot;frontend&quot;</span>  
+                                           
+  <span class="n">app_version</span><span class="nf">.update_to</span> <span class="n">version_from_git</span> <span class="k">do</span>
+    <span class="c1"># deploy production                    </span>
+    <span class="sb">`divshot push production`</span>           
+  <span class="k">end</span>                                      
+<span class="k">end</span>                                        
+                                           
+<span class="k">def </span><span class="nf">version_from_git</span>                       
+  <span class="sb">`git rev-parse HEAD`</span><span class="nf">.strip</span>               
+<span class="k">end</span>
+</pre>
+<pre class="highlight ruby"><span class="c1"># app_version.rb</span>
+<span class="nb">require</span> <span class="s1">&#39;redis&#39;</span>                                                         
+                                                                        
+<span class="k">class </span><span class="nc">AppVersion</span>                                                        
+  <span class="kp">attr_reader</span> <span class="ss">:app_key</span><span class="p">,</span> <span class="ss">:use_pubsub</span><span class="p">,</span> <span class="ss">:version_key</span><span class="p">,</span> <span class="ss">:previous_version_key</span>
+                                                                        
+  <span class="k">def </span><span class="nf">initialize</span><span class="p">(</span><span class="n">app_key</span><span class="p">,</span> <span class="n">use_pubsub</span><span class="o">=</span><span class="kp">true</span><span class="p">)</span>                              
+    <span class="vi">@app_key</span> <span class="o">=</span> <span class="n">app_key</span>                                                  
+    <span class="vi">@use_pubsub</span> <span class="o">=</span> <span class="n">use_pubsub</span>                                            
+    <span class="vi">@version_key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">app_key</span><span class="si">}</span><span class="s2">-app-version&quot;</span>                             
+    <span class="vi">@previous_version_key</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">app_key</span><span class="si">}</span><span class="s2">-app-version-prev&quot;</span>               
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">current</span>                                                           
+    <span class="n">redis</span><span class="nf">.get</span> <span class="n">version_key</span>                                               
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">current</span><span class="o">=</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>                                                 
+    <span class="nb">puts</span> <span class="s2">&quot;Setting </span><span class="si">#{</span><span class="n">app_key</span><span class="si">}</span><span class="s2"> app-version to </span><span class="si">#{</span><span class="n">version</span><span class="si">}</span><span class="s2">.&quot;</span>                
+    <span class="n">redis</span><span class="nf">.set</span> <span class="n">version_key</span><span class="p">,</span> <span class="n">version</span>                                      
+    <span class="n">publish_new_version</span> <span class="n">version</span>                                         
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">previous</span>                                                          
+    <span class="n">redis</span><span class="nf">.get</span> <span class="n">previous_version_key</span>                                      
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">previous</span><span class="o">=</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>                                                
+    <span class="n">redis</span><span class="nf">.set</span> <span class="n">previous_version_key</span><span class="p">,</span> <span class="n">version</span>                             
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">update_to</span><span class="p">(</span><span class="n">version</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">block</span><span class="p">)</span>                                        
+    <span class="nb">self</span><span class="nf">.previous</span> <span class="o">=</span> <span class="n">current</span>                                             
+    <span class="k">yield</span>                                                               
+    <span class="nb">self</span><span class="nf">.current</span> <span class="o">=</span> <span class="n">version</span>                                              
+  <span class="k">rescue</span>                                                                
+    <span class="n">rollback</span>                                                            
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="kp">private</span>                                                               
+                                                                        
+  <span class="k">def </span><span class="nf">redis</span>                                                             
+    <span class="vi">@redis</span> <span class="o">||=</span> <span class="no">Redis</span><span class="nf">.new</span>                                                
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">rollback</span>                                                          
+    <span class="nb">puts</span> <span class="s2">&quot;An error occured, rolling back </span><span class="si">#{</span><span class="n">app_key</span><span class="si">}</span><span class="s2"> app-version.&quot;</span>       
+    <span class="nb">self</span><span class="nf">.current</span> <span class="o">=</span> <span class="n">previous</span>                                             
+    <span class="n">redis</span><span class="nf">.del</span> <span class="n">previous_version_key</span>                                      
+  <span class="k">end</span>                                                                   
+                                                                        
+  <span class="k">def </span><span class="nf">publish_new_version</span><span class="p">(</span><span class="n">version</span><span class="p">)</span>                                      
+    <span class="k">if</span> <span class="n">use_pubsub</span>                                                       
+      <span class="n">redis</span><span class="nf">.publish</span> <span class="n">version_key</span><span class="p">,</span> <span class="n">version</span>                                
+    <span class="k">end</span>                                                                 
+  <span class="k">end</span>                                                                   
+<span class="k">end</span>                                                                                                                                     
+</pre>
+<p>Now that we have Redis storing the current version of our deployed application, we need a way for the client app to read it.</p>
+
+<h4 id="websockets">Websockets</h4>
+<p>Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse <a href="https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302">built their own solution</a>. Recently though, a library called socket.io has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.</p>
+
+<p>Since we’re using Redis as a global store, we can set up a small server that has has the single responsibility of forwarding app version changes to other apps through Redis Pub/Sub and socket.io. This will give us maximum scalability, and won’t impact our main application.</p>
+
+<pre class="highlight javascript"><span class="c1">// server.js
+</span><span class="kd">var</span> <span class="nx">app</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;express&#39;</span><span class="p">)();</span>
+<span class="kd">var</span> <span class="nx">http</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;http&#39;</span><span class="p">).</span><span class="nx">Server</span><span class="p">(</span><span class="nx">app</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">io</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;socket.io&#39;</span><span class="p">)(</span><span class="nx">http</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">redis</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;redis&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">redisClient</span> <span class="o">=</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">createClient</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">redisSubscriber</span> <span class="o">=</span> <span class="nx">redis</span><span class="p">.</span><span class="nx">createClient</span><span class="p">();</span>
+
+<span class="c1">// use socket.io-redis if you need lots of connections. it allows
+// socket.io to work across servers
+</span><span class="kd">var</span> <span class="nx">socketIORedis</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;socket.io-redis&#39;</span><span class="p">);</span>
+<span class="nx">io</span><span class="p">.</span><span class="nx">adapter</span><span class="p">(</span><span class="nx">socketIORedis</span><span class="p">({</span> <span class="na">host</span><span class="p">:</span> <span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="na">port</span><span class="p">:</span> <span class="mi">6379</span> <span class="p">}));</span>
+
+<span class="nx">redisSubscriber</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;frontend-app-version&#39;</span><span class="p">);</span>
+<span class="nx">redisSubscriber</span><span class="p">.</span><span class="nx">subscribe</span><span class="p">(</span><span class="s1">&#39;iphone-app-version&#39;</span><span class="p">);</span>
+
+<span class="nx">redisSubscriber</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;message&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">channel</span><span class="p">,</span> <span class="nx">message</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">io</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="nx">channel</span><span class="p">,</span> <span class="nx">message</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">io</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;connection&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">socket</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">redisClient</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;frontend-app-version&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">error</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">socket</span><span class="p">.</span><span class="nx">emit</span><span class="p">(</span><span class="s1">&#39;frontend-app-version&#39;</span><span class="p">,</span> <span class="nx">value</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">});</span>
+
+<span class="c1">// in the real world the following would be an api call that renders json
+</span><span class="nx">app</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">req</span><span class="p">,</span> <span class="nx">res</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">res</span><span class="p">.</span><span class="nx">sendFile</span><span class="p">(</span><span class="nx">__dirname</span> <span class="o">+</span> <span class="s1">&#39;/index.html&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">http</span><span class="p">.</span><span class="nx">listen</span><span class="p">(</span><span class="mi">3000</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;listening on *:3000&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+</pre>
+<pre class="highlight html"><span class="c">&lt;!-- index.html --&gt;</span>
+<span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;versions&quot;</span><span class="nt">&gt;&lt;/ul&gt;</span>
+
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;/socket.io/socket.io.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://code.jquery.com/jquery-1.11.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">();</span>
+
+  <span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;frontend-app-version&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#versions&#39;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;&lt;li&gt;&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(</span><span class="nx">msg</span><span class="p">));</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span>
+</pre>
+<p>Here’s what our server looks like in use. The image is a little small, but we have 4 browsers getting a “new version” message sent 3 different ways. The full source code can be found at <a href="https://github.com/cball/socket.io-new-app-version">cball/socket.io-new-app-version</a>. It’s a creative name, I know.</p>
+
+<ul>
+  <li>From a deploy rake task looking at the git version</li>
+  <li>A manual version from redis-cli</li>
+  <li>A manual version from the ruby redis client</li>
+</ul>
+
+<p><img alt="socket.io redis example" src="http://cball.me.s3.amazonaws.com/realtime-app-version/socketio-redis.gif" /></p>
+
+<h4 id="polling--response-headers">Polling &amp; Response Headers</h4>
+<p>If using socket.io is not an option, we can use polling and a special response header in our API. We can check this value on every request, or make an API call on a preset interval (say every 20 minutes), to get the current value.</p>
+
+<p>If you want to hear more on this approach, shoot me an email or comment below and I’ll write about it.</p>
+
+<h4 id="dealing-with-a-new-version">Dealing with a new version</h4>
+<p>Now that we’ve done all the hard work, we just have to check the current version of the app and compare it with the new version.</p>
+
+<p>In our express app, we get the current version on connect. All we need to do is change our ‘frontend-app-version’ socket listener to show a popup when the versions don’t match.</p>
+
+<pre class="highlight javascript"><span class="kd">var</span> <span class="nx">socket</span> <span class="o">=</span> <span class="nx">io</span><span class="p">();</span>
+<span class="kd">var</span> <span class="nx">currentAppVersion</span><span class="p">;</span>
+
+<span class="nx">socket</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;frontend-app-version&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">msg</span><span class="p">){</span>
+  <span class="nx">currentAppVersion</span> <span class="o">||</span> <span class="p">(</span><span class="nx">currentAppVersion</span> <span class="o">=</span> <span class="nx">msg</span><span class="p">);</span>
+  <span class="k">if</span><span class="p">(</span><span class="nx">currentAppVersion</span> <span class="o">!==</span> <span class="nx">msg</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// show new version alert
+</span>  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<h4 id="there-are-lots-of-good-techniques-here">There are lots of good techniques here!</h4>
+<p>Developing this feature gives us lots of good techniques. Here’s what we did:</p>
+
+<ul>
+  <li>Wrote a rake task.</li>
+  <li>Grabbed the git reference that was deployed to production.</li>
+  <li>Saved current/previous app versions backed by Redis.</li>
+  <li>If the deploy fails, we roll back the current version and make the previous version the current one.</li>
+  <li>Published an update via Redis PubSub</li>
+  <li>Wrote a small Express server that hooks Redis Pub/Sub and socket.io together.</li>
+</ul>
+
+<p>Before implementing this, be sure your app really needs the functionality. Not all apps do. If users typically sit on pages for long periods of time, and you need to ensure users use the most up-to-date version of your app, give real time app versions a try.</p>
+<ul class="nav tags nav-pills"><li><a href="/topics/development/">/<span class="name">development</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join for free</a></div></div><div id="article-nav"><div class="pull-left"><a href="/help-i-have-no-tests/">&laquo; Help I have no tests!</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div><div class="row"><div class="col-md-12"><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a><p>Founder / Lead Developer</p></div></div></div></div><footer><ul class="list-unstyled"><li><a href="/newsletter">Free updates</a></li><li class="separator">&mdash;</li><li><a href="/contact">Contact</a></li><li class="separator">&mdash;</li><li><a href="/about">Built by Chris</a></li></ul></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46757526-1', 'auto');
+ga('send', 'pageview');</script></body></html>
