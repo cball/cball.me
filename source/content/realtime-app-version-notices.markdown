@@ -116,7 +116,7 @@ end
 Now that we have Redis storing the current version of our deployed application, we need a way for the client app to read it.
 
 #### Websockets
-Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse [built their own solution](https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302). Recently though, a library called socket.io has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.
+Websockets sound great in theory, but bring overhead and complication. For this reason, Discourse [built their own solution](https://meta.discourse.org/t/why-does-discourse-not-use-web-sockets/18302). Recently though, a library called [socket.io](http://socket.io/) has improved quite a bit, and now does a great job of fixing most these issues. So if you’re thinking of using websockets, use socket.io. If you looked at this library pre 1.0 its worth looking at it again.
 
 Since we’re using Redis as a global store, we can set up a small server that has has the single responsibility of forwarding app version changes to other apps through Redis Pub/Sub and socket.io. This will give us maximum scalability, and won’t impact our main application.
 
