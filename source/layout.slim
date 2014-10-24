@@ -44,21 +44,16 @@ html
         #main.col-md-10.col-md-offset-1
           = yield
 
-      .row
-        .col-md-12
-          .echobind.center
-            = link_to image_tag('echobind.png'), 'http://echobind.com', target: '_blank'
-            p Founder / Lead Developer
-
     footer
       ul.list-unstyled
         li
-          = link_to 'Free updates', '/newsletter'
-        li.separator &mdash;
-        li
-          = link_to 'Contact', '/contact'
-        li.separator &mdash;
-        li
-          = link_to 'Built by Chris', '/about'
+          = link_to 'Built by @cball_', 'http://twitter.com/cball_'
+
+      .echobind.center
+          = link_to image_tag('echobind.png'), 'http://echobind.com', target: '_blank'
+
+      p.centered
+        | All content &copy;2014 Chris Ball
+
 
     = partial 'javascript'
