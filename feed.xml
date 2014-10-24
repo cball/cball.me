@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/i18n-in-practice/"/>
     <id>http://cball.me/i18n-in-practice/</id>
     <published>2014-10-24T17:00:00Z</published>
-    <updated>2014-10-24T13:23:56-04:00</updated>
+    <updated>2014-10-24T14:44:37-04:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -80,7 +80,7 @@
 &lt;h4 id="i18n-example-in-emberjs"&gt;I18n example in ember.js&lt;/h4&gt;
 &lt;p&gt;Since it’s not built into the framework, using I18n in ember is a bit less straightforward. There is an existing library called &lt;a href="https://github.com/jamesarosen/ember-i18n"&gt;ember-i18n&lt;/a&gt; that has been around for a while and works well, though as of 10/24/14 does not support ember canary (what will be 1.9).&lt;/p&gt;
 
-&lt;p&gt;I just finished building a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:&lt;/p&gt;
+&lt;p&gt;I wanted to see if I could build a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:&lt;/p&gt;
 
 &lt;ol&gt;
   &lt;li&gt;Create a simple I18n class that handles fetching a key and interpolating strings.&lt;/li&gt;
