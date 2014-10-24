@@ -71,7 +71,7 @@ click I18n.t('songs.favorite')
 #### I18n example in ember.js
 Since it’s not built into the framework, using I18n in ember is a bit less straightforward. There is an existing library called [ember-i18n](https://github.com/jamesarosen/ember-i18n) that has been around for a while and works well, though as of 10/24/14 does not support ember canary (what will be 1.9).
 
-I just finished building a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:
+I wanted to see if I could build a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:
 
 1. Create a simple I18n class that handles fetching a key and interpolating strings.
 1. Add an initializer that injects the class as a singleton throughout the app.
