@@ -5,10 +5,242 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-09-24T23:18:00Z</updated>
+  <updated>2014-10-24T17:00:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>I18n in Practice</title>
+    <link rel="alternate" href="http://cball.me/i18n-in-practice/"/>
+    <id>http://cball.me/i18n-in-practice/</id>
+    <published>2014-10-24T17:00:00Z</published>
+    <updated>2014-10-24T13:23:56-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;In &lt;a href="/not-using-i18n-you-probably-should-be"&gt;part 1&lt;/a&gt; of this series on using I18n, we looked at reasons to use I18n in your apps, even if you only need to support a single language.&lt;/p&gt;
+
+&lt;p&gt;Now, let’s look at how to use I18n in that context using both &lt;a href="#i18n-rails"&gt;Rails&lt;/a&gt; and &lt;a href="#i18n-ember"&gt;ember.js&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name="i18n-rails"&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="i18n-example-in-rails"&gt;I18n example in Rails&lt;/h4&gt;
+</summary>
+    <content type="html">&lt;hr /&gt;
+
+&lt;p&gt;In &lt;a href="/not-using-i18n-you-probably-should-be"&gt;part 1&lt;/a&gt; of this series on using I18n, we looked at reasons to use I18n in your apps, even if you only need to support a single language.&lt;/p&gt;
+
+&lt;p&gt;Now, let’s look at how to use I18n in that context using both &lt;a href="#i18n-rails"&gt;Rails&lt;/a&gt; and &lt;a href="#i18n-ember"&gt;ember.js&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;a name="i18n-rails"&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="i18n-example-in-rails"&gt;I18n example in Rails&lt;/h4&gt;
+&lt;p&gt;Using I18n Rails is &lt;a href="http://guides.rubyonrails.org/i18n.html"&gt;very well documented&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;To get the benefits we discussed in &lt;a href="/not-using-i18n-you-probably-should-be"&gt;part 1&lt;/a&gt;, you can use the built in lazy lookup that Rails provides:&lt;/p&gt;
+
+&lt;pre class="highlight erb"&gt;&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="c1"&gt;# app/views/favorite_songs/new.html.erb &lt;/span&gt;&lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;form_for&lt;/span&gt; &lt;span class="vi"&gt;@favorite_song&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="nf"&gt;.submit&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;end&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight yaml"&gt;&lt;span class="c1"&gt;# config/locales/en.yml&lt;/span&gt;
+&lt;span class="s"&gt;en&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;helpers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="s"&gt;submit&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+     &lt;span class="s"&gt;create&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="s"&gt;Create&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;a&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;%{model}&amp;quot;&lt;/span&gt;
+     &lt;span class="s"&gt;update&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="s"&gt;Update&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;%{model}&amp;quot;&lt;/span&gt;
+     &lt;span class="s"&gt;favorite_song&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="s"&gt;create&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="s"&gt;Add&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;to&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;Favorites&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# spec/features/user_favorites_song_spec.rb&lt;/span&gt;
+&lt;span class="n"&gt;click&lt;/span&gt; &lt;span class="no"&gt;I18n&lt;/span&gt;&lt;span class="nf"&gt;.t&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;helpers.submit.favorite_song.create&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;One advantage to using the lazy lookup structure is that you can have a global fallback string of “Create a song” or “Create a playlist”, and you can add more specific values like “Add to Favorites” where required.&lt;/p&gt;
+
+&lt;p&gt;Or, if you prefer to be explicit and store your translations in whatever grouping makes sense to you, you can do that too:&lt;/p&gt;
+
+&lt;pre class="highlight erb"&gt;&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="c1"&gt;# app/views/favorite_songs/new.html.erb &lt;/span&gt;&lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;form_for&lt;/span&gt; &lt;span class="vi"&gt;@song&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="o"&gt;|&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="o"&gt;|&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+  &lt;span class="cp"&gt;&amp;lt;%=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="nf"&gt;.submit&lt;/span&gt; &lt;span class="n"&gt;t&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;songs.favorite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;span class="cp"&gt;&amp;lt;%&lt;/span&gt; &lt;span class="k"&gt;end&lt;/span&gt; &lt;span class="cp"&gt;%&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight yaml"&gt;&lt;span class="c1"&gt;# config/locales/en.yml&lt;/span&gt;
+&lt;span class="s"&gt;en&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+  &lt;span class="s"&gt;songs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="s"&gt;favorite&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;&lt;/span&gt;&lt;span class="s"&gt;Add&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;to&lt;/span&gt;&lt;span class="nv"&gt; &lt;/span&gt;&lt;span class="s"&gt;Favorites&amp;quot;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight ruby"&gt;&lt;span class="c1"&gt;# spec/features/user_favorites_song_spec.rb&lt;/span&gt;
+&lt;span class="n"&gt;click&lt;/span&gt; &lt;span class="no"&gt;I18n&lt;/span&gt;&lt;span class="nf"&gt;.t&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;songs.favorite&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;a name="i18n-ember"&gt;&lt;/a&gt;&lt;/p&gt;
+
+&lt;h4 id="i18n-example-in-emberjs"&gt;I18n example in ember.js&lt;/h4&gt;
+&lt;p&gt;Since it’s not built into the framework, using I18n in ember is a bit less straightforward. There is an existing library called &lt;a href="https://github.com/jamesarosen/ember-i18n"&gt;ember-i18n&lt;/a&gt; that has been around for a while and works well, though as of 10/24/14 does not support ember canary (what will be 1.9).&lt;/p&gt;
+
+&lt;p&gt;I just finished building a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a simple I18n class that handles fetching a key and interpolating strings.&lt;/li&gt;
+  &lt;li&gt;Add an initializer that injects the class as a singleton throughout the app.&lt;/li&gt;
+  &lt;li&gt;Add a Handlebars helper that calls the injected class to get translations.&lt;/li&gt;
+  &lt;li&gt;Add the actual translations.&lt;/li&gt;
+  &lt;li&gt;Use them in your templates with or without bindings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;//app/utils/i18n.js
+&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;ember&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;translations&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../translations/en&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nb"&gt;Object&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;currentLocale&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="na"&gt;defaultLocale&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;en&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+
+  &lt;span class="na"&gt;t&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;keyWithPrefix&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;_translationPrefix&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;string&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;translations&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;keyWithPrefix&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;assert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Missing translation: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;keyWithPrefix&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;string&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;_interpolate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;string&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt;
+
+
+  &lt;span class="na"&gt;_interpolate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;typeof&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;undefined&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="nx"&gt;hash&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;hash&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="p"&gt;{};&lt;/span&gt;
+
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sr"&gt;/\{\{(.*?)\}\}/g&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;match&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;hash&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;match&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;||&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+    &lt;span class="p"&gt;});&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt;
+
+  &lt;span class="na"&gt;_translationPrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;currentLocale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;.&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;property&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;currentLocale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/initializers/i18n-setup.js
+&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../utils/i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;initialize&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;container&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;application&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;register&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;util:i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;route&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;util:i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;controller&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;util:i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="nx"&gt;application&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;inject&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;helper&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;util:i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;i18n-setup.js&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+  &lt;span class="na"&gt;initialize&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;initialize&lt;/span&gt;
+&lt;span class="p"&gt;};&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/helpers/i18n-t.js
+&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;ember&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Handlebars&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;makeBoundHelper&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;i18n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;t&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;key&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;options&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// app/translations/en.js
+&lt;/span&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;ember&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nb"&gt;Object&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;create&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;en&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="na"&gt;favoriteSongs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="na"&gt;create&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Add to {{crazy}} Favorites&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="na"&gt;destroy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Remove from Favorites&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      &lt;span class="na"&gt;testing&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;My {{crazy}} Favorites&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! app/templates/index.hbs }}&lt;/span&gt;
+create: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;favoriteSongs.create&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt; &lt;span class="nt"&gt;&amp;lt;br&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;favoriteSongs.create&amp;#39;&lt;/span&gt; &lt;span class="nv"&gt;crazy&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;howCrazy&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
+
+&lt;span class="nt"&gt;&amp;lt;button&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;swap-locale&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;action&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;swapLocale&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;&lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;swapLocale&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/button&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Now, in your tests you can use it like so (in the actual library I plan to add a test helper to avoid having to call &lt;code&gt;I18n.create()&lt;/code&gt;):&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="kr"&gt;import&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt; &lt;span class="nx"&gt;from&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;../../utils/i18n&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;App&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;i18n&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Acceptance: UserDoesStuff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="na"&gt;setup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;App&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;startApp&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+    &lt;span class="nx"&gt;i18n&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;I18n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;create&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+  &lt;span class="p"&gt;},&lt;/span&gt;
+  &lt;span class="na"&gt;teardown&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;run&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;App&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;destroy&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="nx"&gt;test&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;visiting /&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;                                      
+  &lt;span class="nx"&gt;visit&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+                                                                     
+  &lt;span class="nx"&gt;andThen&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;equal&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;find&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;#swap-locale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;text&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt; &lt;span class="nx"&gt;i18n&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;t&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;swapLocale&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;    
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;The full source code for the proof of concept app is available at &lt;a href="https://github.com/cball/ember-cli-i18n-example"&gt;cball/ember-cli-i18n-example&lt;/a&gt;. Using this will get much simpler once you don’t manually have to put all the pieces together. I will update this post when I get things a little further along.&lt;/p&gt;
+
+&lt;p&gt;Happy I18n’ing!&lt;/p&gt;
+
+</content>
+  </entry>
+  <entry>
+    <title>Not using I18n? You probably should be.</title>
+    <link rel="alternate" href="http://cball.me/not-using-i18n-you-probably-should-be/"/>
+    <id>http://cball.me/not-using-i18n-you-probably-should-be/</id>
+    <published>2014-10-24T17:00:00Z</published>
+    <updated>2014-10-24T13:23:56-04:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;I18n is an acronym for internationalization. It is a part of most frameworks, and is used in applications to translate words or phrases to other languages. Instead of writing the phrase “My favorite songs”, you make a call to the I18n library to fetch...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr /&gt;
+
+&lt;p&gt;I18n is an acronym for internationalization. It is a part of most frameworks, and is used in applications to translate words or phrases to other languages. Instead of writing the phrase “My favorite songs”, you make a call to the I18n library to fetch the phrase based on a key (my.favorite.songs for example).&lt;/p&gt;
+
+&lt;p&gt;“But my app only needs to support English, why should I do this?” In this first part, we will look at some great reasons why, and then in &lt;a href="/i18n-in-practice"&gt;part 2&lt;/a&gt;, we will take a look at examples in both Rails and ember.js.&lt;/p&gt;
+
+&lt;h4 id="avoid-string-duplication-and-change-easily"&gt;Avoid string duplication, and change easily.&lt;/h4&gt;
+&lt;p&gt;Think about how many sections of your app have buttons that say “Create” or “Save”. Let’s say your designer decides that the buttons will convert better if they are specific to each action. Buttons that favorite songs should say “Add to Favorites” instead of “Create”. Wouldn’t it be easier to go change the button text in one place rather than searching the entire project for “Create” and then trying to determine if it was a button that favorited songs?&lt;/p&gt;
+
+&lt;p&gt;Using I18n gives us exactly that - a single place that can be referenced anywhere in the app that provides the necessary text. To make the example change above, all you’d need to do is search your I18n file(s) for the key of 'songs.favorite' and change value to “Add to Favorites”. If after running some A/B tests, your designer was incorrect, its just as easy to change back.&lt;/p&gt;
+
+&lt;h4 id="keep-your-tests-working-if-things-change"&gt;Keep your tests working if things change.&lt;/h4&gt;
+&lt;p&gt;Taking the above example a step further, if you’re not using I18n, as soon as you change the necessary buttons to “Add to Favorites” your acceptance tests will break.&lt;/p&gt;
+
+&lt;p&gt;Using I18n in both the app and in the tests will allow you to update strings without having to immediately change your tests after doing so. Less work is a good thing.&lt;/p&gt;
+
+&lt;h4 id="if-you-ever-need-to-add-additional-language-support-youre-ready"&gt;If you ever need to add additional language support, you’re ready.&lt;/h4&gt;
+&lt;p&gt;Admittedly, you may not ever need more than one language in your app. But, by using I18n from the start, if there ever is a need all you’ll need to do is: &lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Create a new 18n file for the new language.&lt;/li&gt;
+  &lt;li&gt;Have it translated. Please don’t blindly copy/paste from google translate… you could offend someone.&lt;/li&gt;
+  &lt;li&gt;Make minor css updates if the language has long strings.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;hr /&gt;
+
+&lt;h4 id="tldr-use-i18n-translations"&gt;TLDR; Use I18n translations!&lt;/h4&gt;
+&lt;p&gt;Using I18n even when you’re only supporting one language will help remove code duplication and reduce test churn when updating phrases throughout your app. &lt;/p&gt;
+
+&lt;p&gt;It may seem unnecessary at first, but the benefits will be clear the first time you try different text on a button, or change wording around. It’s also really nice if you later have to add additional language support and already have the groundwork done.&lt;/p&gt;
+
+&lt;h4 id="i18n-in-practice"&gt;I18n in practice&lt;/h4&gt;
+&lt;p&gt;Check out &lt;a href="/i18n-in-practice"&gt;part 2&lt;/a&gt; of this post, to see how using I18n as described above works in both &lt;a href="/i18n-in-practice#i18n-rails"&gt;Rails&lt;/a&gt; and &lt;a href="/i18n-in-practice#i18n-ember"&gt;ember.js&lt;/a&gt;.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Realtime App Version Notices with socket.io and Redis</title>
     <link rel="alternate" href="http://cball.me/realtime-app-version-notices/"/>
@@ -803,114 +1035,6 @@
 &lt;p&gt;With adapters, Ember Data gives you a wonderful mechanism for incrementally upgrading an API version in an application, or even using a different API backend on a per-model basis.&lt;/p&gt;
 
 &lt;p&gt;If you need to make a non-RESTful call in an application using Ember Data, reach for &lt;code&gt;adapter.ajax&lt;/code&gt;.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Book Some Janitor Time</title>
-    <link rel="alternate" href="http://cball.me/book-some-janitor-time/"/>
-    <id>http://cball.me/book-some-janitor-time/</id>
-    <published>2014-04-24T03:11:00Z</published>
-    <updated>2014-04-23T22:52:41-04:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr /&gt;
-&lt;p&gt;If your team works in an office, you probably have a janitor that comes in to clean it. It might happen daily or weekly, but chances are that it happens. What if you applied that same mindset to your codebase?</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;If your team works in an office, you probably have a janitor that comes in to clean it. It might happen daily or weekly, but chances are that it happens. What if you applied that same mindset to your codebase?&lt;/p&gt;
-
-&lt;p&gt;Most startups have something in common; a &lt;em&gt;massive&lt;/em&gt; feature backlog. No matter how much you work, and how productive you are, this will continue to grow. Over time, you will find that your team "has no time to make x better" because there are "too many features that have been promised to business/the client/the stakeholder". &lt;/p&gt;
-
-&lt;p&gt;Or maybe you've just spent a few weeks on a feature, only to get to the very end of it and find you need a little bit of refactoring to make it perfect. Only, you've already missed your deadline so you can't afford the time. In a perfect world, you should always add that last refactor or tweak to make each feature great, but we all know that there are times when you just can't.&lt;/p&gt;
-
-&lt;p&gt;So, how do we find the time for these tweaks, fix-ups, or a chance to try out something that may improve app performance? By booking some janitor time.&lt;/p&gt;
-
-&lt;p&gt;Here are a few ways I've found that work (substitute Friday for whatever day makes sense at your company).&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;
-    &lt;h4 id="option-1-every-developer-every-friday"&gt;Option 1: Every developer, every Friday&lt;/h4&gt;
-    &lt;p&gt;While this option is the best, its also the least realistic for most companies since nothing except high priority bugs will happen on Fridays. A hard sell, but if your company will allow you go for this.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;h4 id="option-2-every-developer-9am-12pm-friday-12-day"&gt;Option 2: Every developer, 9am-12pm Friday (1/2 day)&lt;/h4&gt;
-    &lt;p&gt;Similar to option above, just without allocating the entire day.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;h4 id="option-3-one-developer-every-friday"&gt;Option 3: One developer, every Friday&lt;/h4&gt;
-    &lt;p&gt;The key to making this option work is to add rotation. You can keep the same day and rotate developers, or rotate both days and developers.&lt;/p&gt;
-  &lt;/li&gt;
-  &lt;li&gt;
-    &lt;h4 id="option-4-every-developer-first-few-hours-of-the-day"&gt;Option 4: Every developer, first few hours of the day&lt;/h4&gt;
-    &lt;p&gt;This is the lowest slice of time I recommend allocating. Any lower, and chances are you'll be hitting your stride just as you have to stop and switch contexts.&lt;/p&gt;
-  &lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="ok-the-time-is-booked-what-do-we-work-on"&gt;Ok, the time is booked. What do we work on?&lt;/h3&gt;
-&lt;p&gt;First, develop a small queue of items other developers could address. I like to use Trello for planning things like this. Anytime you get an idea, toss it in the queue and someone can pick it up if they don't know what to work on during their janitor time.&lt;/p&gt;
-
-&lt;p&gt;Here are a few examples to get you started:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;strong&gt;Review your most recent feature&lt;/strong&gt;. If there is any refactoring that can be done to increase readability or simplify the code, do it now.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Check for n+1 queries&lt;/strong&gt;. If you use Ruby, use a gem like &lt;a href="https://github.com/flyerhzm/bullet"&gt;bullet&lt;/a&gt; or a service like &lt;a href="http://skylight.io"&gt;skylight.io&lt;/a&gt; to help you. Kocking out 4-5 of these will drastically improve the performance of your app, especially if they are all on one page.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;[Insert process that everyone always complains about]&lt;/strong&gt;. Recently, I was working with a team that had a custom process for preparing a seed database for tests. This is fine. However, if you didn't specify the test environment, it would blow away your development database, which isn't so fine. Total time to fix it? 45 seconds. &lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Find your slowest loading page&lt;/strong&gt; and make it render faster. Don't just think queries either, look at iterating in templates, etc. Anything you can accomplish here is a win.&lt;/li&gt;
-  &lt;li&gt;&lt;strong&gt;Implement a CDN&lt;/strong&gt;, add far-future expire headers, and gzip responses. People often forget this, but it has massive performance benefits.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id="try-it-out"&gt;Try it out&lt;/h3&gt;
-&lt;p&gt;I've found this to be a great way to make sure you allocate time for code cleanup. Remember: "I'll come back to that" will never come. Future you will thank you because you're protecting everyone from a landslide of technical debt and slow applications.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>One Way to be Insanely Productive as a Developer</title>
-    <link rel="alternate" href="http://cball.me/one-way-to-be-insanely-productive-as-a-developer/"/>
-    <id>http://cball.me/one-way-to-be-insanely-productive-as-a-developer/</id>
-    <published>2014-04-14T12:30:00Z</published>
-    <updated>2014-04-15T16:31:45-04:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr /&gt;
-&lt;p&gt;Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming.</summary>
-    <content type="html">&lt;hr /&gt;
-&lt;p&gt;Most of us are easily distracted. It's very tempting to check email, browse your Twitter feed, or poke around on Reddit. Over time, I've found that you can still do all of those things, you just have to timebox them. The biggest productivity boost I've found actually has nothing to do with programming.&lt;/p&gt;
-
-&lt;h3 id="the-pomodoro-technique"&gt;The Pomodoro Technique&lt;/h3&gt;
-&lt;p&gt;You may have heard of &lt;strong&gt;The Pomodoro Technique&lt;/strong&gt;. It's been around since the 1980's. The name is the Italian word for tomato - and apparently the first physical timers made for this technique were kitchen timers shaped like tomatoes. But, enough history. Let's talk about how it can help you.&lt;/p&gt;
-
-&lt;h4 id="get-an-app"&gt;Get an app&lt;/h4&gt;
-&lt;p&gt;I've tried a few different ones both on my phone and my laptop. Out of them, my favorite is called &lt;a href="http://martakostova.github.io/timer/"&gt;Timer - Personal Time Manager&lt;/a&gt;. You can compile it yourself, or grab it from the App Store.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="Timer Screenshot" class="no-resize" src="http://cball.me.s3.amazonaws.com/timer-icon.png" /&gt;&lt;/p&gt;
-
-&lt;h4 id="work-for-25-minutes"&gt;Work for 25 minutes&lt;/h4&gt;
-&lt;p&gt;Some people like to make their initial session a planning section, but I already know the first thing I want to work on each day, so I just hop right to it.&lt;/p&gt;
-
-&lt;p&gt;Here's the hard part - force yourself to shut down email, Twitter, or anything else thats not work and might distract you. Concentrate on your task for 25 minutes. Trust me, its enough time to get in the zone and crank away. When your time is up, your app will tell you you're done. You're ready for a break! Just resist the urge to plow through and keep working.&lt;/p&gt;
-
-&lt;h4 id="take-a-5-minute-break"&gt;Take a 5 minute break&lt;/h4&gt;
-&lt;p&gt;One your 25 minute work cycle is up you get a 5 minute break. During my 5 minute break, I do a few things. I will check email and see if anything is really important that I need to address. I'll catch up on Twitter, saving anything that looks interesting to Instapaper for later reading. I'll also walk around a bit, which I highly, highly recommend. A little movement a few times an hour works wonders. Again, your app will tell you when the break is up and ask if you're ready for the next work cycle.&lt;/p&gt;
-
-&lt;p&gt;Feel free to change anything else you want, but try to use the default break settings. Lots of research went into the suggested times, and I'm willing to bet their reasons for choosing a timeframe are better than mine.&lt;/p&gt;
-
-&lt;h4 id="repeat-this-cycle-4-times"&gt;Repeat this cycle 4 times&lt;/h4&gt;
-&lt;p&gt;On the fourth cycle of timers and breaks, your 5 minute break turns into a 10 minute break. During this break, I try to go get a snack, water, or coffee, and like before I walk around a bit. I will also catch up on email or twitter, or maybe read an article I saved during one of my previous breaks.&lt;/p&gt;
-
-&lt;p&gt;After the long break, congratulate yourself. You've just gone through 2 hours and 5 minutes of your day and maintained intense concentration while doing it.&lt;/p&gt;
-
-&lt;h4 id="take-a-lunch"&gt;Take a lunch!&lt;/h4&gt;
-&lt;p&gt;I can't even count how many developers I know that either do not take lunch or do so at their desks while continuing to work. Once you see how much you can accomplish in the first 4 hours of your day, I'll bet you can afford to take some time to sit and relax away from the machine. Please do this!&lt;/p&gt;
-
-&lt;h4 id="try-to-not-work-more-than-8-hours"&gt;Try to not work more than 8 hours&lt;/h4&gt;
-&lt;p&gt;It's very hard sometimes for us as programmers to stop working. Again, you should be making a lot of progress and shouldn't have any trouble put your work to rest until the next morning.&lt;/p&gt;
-
-&lt;h4 id="dont-try-to-fit-a-minimum-number-of-pomodoros-per-day"&gt;Don't try to fit a minimum number of Pomodoros per day&lt;/h4&gt;
-&lt;p&gt;Sometimes, things come up. Maybe you have meetings to go to (though let's hope those are limited), or maybe you're just having an off day. It's ok, and it happens. &lt;/p&gt;
-
-&lt;h4 id="always-find-ways-to-improve"&gt;Always find ways to improve&lt;/h4&gt;
-&lt;p&gt;Our entire industry revolves around learning and staying up-to-date. Leveling up is all about taking small, consistent steps in order to improve your craft. And sometimes, those steps don't have anything to do with code. If you've reached a plateau, want to increase your productivity, or find yourself easily distracted, give Pomodoro a try. Let me know if it helps you!&lt;/p&gt;
 </content>
   </entry>
 </feed>

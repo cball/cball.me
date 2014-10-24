@@ -1,0 +1,198 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>I18n in Practice</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="In part 1 of this series on using I18n, we looked at reasons to use I18n in your apps, even if you only need to support a single language.
+
+Now, let’s look at how to use I18n in that context using both Rails and ember.js.
+
+
+
+I18n example in Rails" name="description" /><meta content="http://cball.me.s3.amazonaws.com/i18n2.jpg" name="og:image" /><meta content="I18n in Practice" name="og:title" /><meta content="http://cball.me/i18n-in-practice/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="i18n-in-practice i18n-in-practice_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/i18n-in-practice/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/i18n2.jpg" /></a><div class="date"><div class="month">Oct</div><div class="day">24</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/i18n-in-practice/">I18n in Practice</a></h2><div class="date subtitle">October 24, 2014</div><hr />
+
+<p>In <a href="/not-using-i18n-you-probably-should-be">part 1</a> of this series on using I18n, we looked at reasons to use I18n in your apps, even if you only need to support a single language.</p>
+
+<p>Now, let’s look at how to use I18n in that context using both <a href="#i18n-rails">Rails</a> and <a href="#i18n-ember">ember.js</a>.</p>
+
+<p><a name="i18n-rails"></a></p>
+
+<h4 id="i18n-example-in-rails">I18n example in Rails</h4>
+<p>Using I18n Rails is <a href="http://guides.rubyonrails.org/i18n.html">very well documented</a>.</p>
+
+<p>To get the benefits we discussed in <a href="/not-using-i18n-you-probably-should-be">part 1</a>, you can use the built in lazy lookup that Rails provides:</p>
+
+<pre class="highlight erb"><span class="cp">&lt;%</span> <span class="c1"># app/views/favorite_songs/new.html.erb </span><span class="cp">%&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_for</span> <span class="vi">@favorite_song</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="nf">.submit</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</pre>
+<pre class="highlight yaml"><span class="c1"># config/locales/en.yml</span>
+<span class="s">en</span><span class="p">:</span>
+  <span class="s">helpers</span><span class="p">:</span>
+    <span class="s">submit</span><span class="p">:</span>
+     <span class="s">create</span><span class="p">:</span> <span class="s2">&quot;</span><span class="s">Create</span><span class="nv"> </span><span class="s">a</span><span class="nv"> </span><span class="s">%{model}&quot;</span>
+     <span class="s">update</span><span class="p">:</span> <span class="s2">&quot;</span><span class="s">Update</span><span class="nv"> </span><span class="s">%{model}&quot;</span>
+     <span class="s">favorite_song</span><span class="p">:</span>
+      <span class="s">create</span><span class="p">:</span> <span class="s2">&quot;</span><span class="s">Add</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Favorites&quot;</span>
+</pre>
+<pre class="highlight ruby"><span class="c1"># spec/features/user_favorites_song_spec.rb</span>
+<span class="n">click</span> <span class="no">I18n</span><span class="nf">.t</span><span class="p">(</span><span class="s1">&#39;helpers.submit.favorite_song.create&#39;</span><span class="p">)</span>
+</pre>
+<p>One advantage to using the lazy lookup structure is that you can have a global fallback string of “Create a song” or “Create a playlist”, and you can add more specific values like “Add to Favorites” where required.</p>
+
+<p>Or, if you prefer to be explicit and store your translations in whatever grouping makes sense to you, you can do that too:</p>
+
+<pre class="highlight erb"><span class="cp">&lt;%</span> <span class="c1"># app/views/favorite_songs/new.html.erb </span><span class="cp">%&gt;</span>
+<span class="cp">&lt;%=</span> <span class="n">form_for</span> <span class="vi">@song</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span> <span class="cp">%&gt;</span>
+  <span class="cp">&lt;%=</span> <span class="n">f</span><span class="nf">.submit</span> <span class="n">t</span><span class="p">(</span><span class="s1">&#39;songs.favorite&#39;</span><span class="p">)</span> <span class="cp">%&gt;</span>
+<span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
+</pre>
+<pre class="highlight yaml"><span class="c1"># config/locales/en.yml</span>
+<span class="s">en</span><span class="p">:</span>
+  <span class="s">songs</span><span class="p">:</span>
+    <span class="s">favorite</span><span class="p">:</span> <span class="s2">&quot;</span><span class="s">Add</span><span class="nv"> </span><span class="s">to</span><span class="nv"> </span><span class="s">Favorites&quot;</span>
+</pre>
+<pre class="highlight ruby"><span class="c1"># spec/features/user_favorites_song_spec.rb</span>
+<span class="n">click</span> <span class="no">I18n</span><span class="nf">.t</span><span class="p">(</span><span class="s1">&#39;songs.favorite&#39;</span><span class="p">)</span>
+</pre>
+<hr />
+
+<p><a name="i18n-ember"></a></p>
+
+<h4 id="i18n-example-in-emberjs">I18n example in ember.js</h4>
+<p>Since it’s not built into the framework, using I18n in ember is a bit less straightforward. There is an existing library called <a href="https://github.com/jamesarosen/ember-i18n">ember-i18n</a> that has been around for a while and works well, though as of 10/24/14 does not support ember canary (what will be 1.9).</p>
+
+<p>I just finished building a proof of concept for a more stripped down, more ember-cli integrated library that I hope to simplify and turn into an addon shortly. It’s not quite ready yet, but you can use a similar technique manually as follows:</p>
+
+<ol>
+  <li>Create a simple I18n class that handles fetching a key and interpolating strings.</li>
+  <li>Add an initializer that injects the class as a singleton throughout the app.</li>
+  <li>Add a Handlebars helper that calls the injected class to get translations.</li>
+  <li>Add the actual translations.</li>
+  <li>Use them in your templates with or without bindings.</li>
+</ol>
+
+<pre class="highlight javascript"><span class="c1">//app/utils/i18n.js
+</span><span class="kr">import</span> <span class="nx">Ember</span> <span class="nx">from</span> <span class="s1">&#39;ember&#39;</span><span class="p">;</span>
+<span class="kr">import</span> <span class="nx">translations</span> <span class="nx">from</span> <span class="s1">&#39;../translations/en&#39;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">I18n</span> <span class="o">=</span> <span class="nx">Ember</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+  <span class="na">currentLocale</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>
+  <span class="na">defaultLocale</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span><span class="p">,</span>
+
+  <span class="na">t</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="nx">keyWithPrefix</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;_translationPrefix&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">key</span><span class="p">;</span>
+    <span class="kd">var</span> <span class="nx">string</span> <span class="o">=</span> <span class="nx">translations</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="nx">keyWithPrefix</span><span class="p">);</span>
+    <span class="nx">Ember</span><span class="p">.</span><span class="nx">assert</span><span class="p">(</span><span class="s1">&#39;Missing translation: &#39;</span> <span class="o">+</span> <span class="nx">keyWithPrefix</span><span class="p">,</span> <span class="nx">string</span><span class="p">);</span>
+
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">_interpolate</span><span class="p">(</span><span class="nx">string</span><span class="p">,</span> <span class="nx">options</span><span class="p">.</span><span class="nx">hash</span><span class="p">);</span>
+  <span class="p">},</span>
+
+
+  <span class="na">_interpolate</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">hash</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">typeof</span><span class="p">(</span><span class="nx">hash</span><span class="p">)</span> <span class="o">===</span> <span class="s1">&#39;undefined&#39;</span><span class="p">)</span> <span class="p">{</span> <span class="k">return</span> <span class="nx">key</span><span class="p">;</span> <span class="p">}</span>
+    <span class="nx">hash</span> <span class="o">=</span> <span class="nx">hash</span> <span class="o">||</span> <span class="p">{};</span>
+
+    <span class="k">return</span> <span class="nx">key</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/\{\{(.*?)\}\}/g</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">i</span><span class="p">,</span> <span class="nx">match</span><span class="p">)</span> <span class="p">{</span>
+      <span class="k">return</span> <span class="nx">hash</span><span class="p">[</span><span class="nx">match</span><span class="p">]</span> <span class="o">||</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+    <span class="p">});</span>
+  <span class="p">},</span>
+
+  <span class="na">_translationPrefix</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;currentLocale&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.&#39;</span><span class="p">;</span>
+  <span class="p">}.</span><span class="nx">property</span><span class="p">(</span><span class="s1">&#39;currentLocale&#39;</span><span class="p">)</span>
+<span class="p">});</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">I18n</span><span class="p">;</span>
+</pre>
+<pre class="highlight javascript"><span class="c1">// app/initializers/i18n-setup.js
+</span><span class="kr">import</span> <span class="nx">I18n</span> <span class="nx">from</span> <span class="s1">&#39;../utils/i18n&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="kd">var</span> <span class="nx">initialize</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">container</span><span class="p">,</span> <span class="nx">application</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">application</span><span class="p">.</span><span class="nx">register</span><span class="p">(</span><span class="s1">&#39;util:i18n&#39;</span><span class="p">,</span> <span class="nx">I18n</span><span class="p">);</span>
+  <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;route&#39;</span><span class="p">,</span> <span class="s1">&#39;i18n&#39;</span><span class="p">,</span> <span class="s1">&#39;util:i18n&#39;</span><span class="p">);</span>
+  <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;controller&#39;</span><span class="p">,</span> <span class="s1">&#39;i18n&#39;</span><span class="p">,</span> <span class="s1">&#39;util:i18n&#39;</span><span class="p">);</span>
+  <span class="nx">application</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;helper&#39;</span><span class="p">,</span> <span class="s1">&#39;i18n&#39;</span><span class="p">,</span> <span class="s1">&#39;util:i18n&#39;</span><span class="p">);</span>
+<span class="p">};</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="p">{</span>
+  <span class="na">name</span><span class="p">:</span> <span class="s1">&#39;i18n-setup.js&#39;</span><span class="p">,</span>
+  <span class="na">initialize</span><span class="p">:</span> <span class="nx">initialize</span>
+<span class="p">};</span>
+</pre>
+<pre class="highlight javascript"><span class="c1">// app/helpers/i18n-t.js
+</span><span class="kr">import</span> <span class="nx">Ember</span> <span class="nx">from</span> <span class="s1">&#39;ember&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nx">Handlebars</span><span class="p">.</span><span class="nx">makeBoundHelper</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">i18n</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="nx">key</span><span class="p">,</span> <span class="nx">options</span><span class="p">);</span>
+<span class="p">});</span>
+</pre>
+<pre class="highlight javascript"><span class="c1">// app/translations/en.js
+</span><span class="kr">import</span> <span class="nx">Ember</span> <span class="nx">from</span> <span class="s1">&#39;ember&#39;</span><span class="p">;</span>
+
+<span class="kr">export</span> <span class="k">default</span> <span class="nx">Ember</span><span class="p">.</span><span class="nb">Object</span><span class="p">.</span><span class="nx">create</span><span class="p">({</span>
+  <span class="na">en</span><span class="p">:</span> <span class="p">{</span>
+    <span class="na">favoriteSongs</span><span class="p">:</span> <span class="p">{</span>
+      <span class="na">create</span><span class="p">:</span> <span class="s2">&quot;Add to {{crazy}} Favorites&quot;</span><span class="p">,</span>
+      <span class="na">destroy</span><span class="p">:</span> <span class="s2">&quot;Remove from Favorites&quot;</span><span class="p">,</span>
+      <span class="na">testing</span><span class="p">:</span> <span class="s2">&quot;My {{crazy}} Favorites&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+</pre>
+<pre class="highlight handlebars"><span class="c">{{! app/templates/index.hbs }}</span>
+create: <span class="k">{{</span><span class="nv">i18n-t</span> <span class="s1">&#39;favoriteSongs.create&#39;</span><span class="k">}}</span> <span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+with binding: <span class="k">{{</span><span class="nv">i18n-t</span> <span class="s1">&#39;favoriteSongs.create&#39;</span> <span class="nv">crazy</span><span class="o">=</span><span class="nv">howCrazy</span><span class="k">}}</span>
+
+<span class="nt">&lt;button</span> <span class="na">id=</span><span class="s">&quot;swap-locale&quot;</span> <span class="k">{{</span><span class="nv">action</span> <span class="s1">&#39;swapLocale&#39;</span><span class="k">}}</span><span class="nt">&gt;</span><span class="k">{{</span><span class="nv">i18n-t</span> <span class="s1">&#39;swapLocale&#39;</span><span class="k">}}</span><span class="nt">&lt;/button&gt;</span>
+</pre>
+<p>Now, in your tests you can use it like so (in the actual library I plan to add a test helper to avoid having to call <code>I18n.create()</code>):</p>
+
+<pre class="highlight javascript"><span class="kr">import</span> <span class="nx">I18n</span> <span class="nx">from</span> <span class="s1">&#39;../../utils/i18n&#39;</span><span class="p">;</span>
+
+<span class="kd">var</span> <span class="nx">App</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">i18n</span><span class="p">;</span>
+
+<span class="nx">module</span><span class="p">(</span><span class="s1">&#39;Acceptance: UserDoesStuff&#39;</span><span class="p">,</span> <span class="p">{</span>
+  <span class="na">setup</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">App</span> <span class="o">=</span> <span class="nx">startApp</span><span class="p">();</span>
+    <span class="nx">i18n</span> <span class="o">=</span> <span class="nx">I18n</span><span class="p">.</span><span class="nx">create</span><span class="p">();</span>
+  <span class="p">},</span>
+  <span class="na">teardown</span><span class="p">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">Ember</span><span class="p">.</span><span class="nx">run</span><span class="p">(</span><span class="nx">App</span><span class="p">,</span> <span class="s1">&#39;destroy&#39;</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="nx">test</span><span class="p">(</span><span class="s1">&#39;visiting /&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>                                      
+  <span class="nx">visit</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">);</span>
+                                                                     
+  <span class="nx">andThen</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">equal</span><span class="p">(</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;#swap-locale&#39;</span><span class="p">).</span><span class="nx">text</span><span class="p">(),</span> <span class="nx">i18n</span><span class="p">.</span><span class="nx">t</span><span class="p">(</span><span class="s1">&#39;swapLocale&#39;</span><span class="p">));</span>
+  <span class="p">});</span>    
+<span class="p">});</span>
+</pre>
+<p>The full source code for the proof of concept app is available at <a href="https://github.com/cball/ember-cli-i18n-example">cball/ember-cli-i18n-example</a>. Using this will get much simpler once you don’t manually have to put all the pieces together. I will update this post when I get things a little further along.</p>
+
+<p>Happy I18n’ing!</p>
+
+<ul class="nav tags nav-pills"><li><a href="/topics/i18n/">/<span class="name">i18n</span>/</a></li><li><a href="/topics/development/">/<span class="name">development</span>/</a></li><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li><li><a href="/topics/rails/">/<span class="name">rails</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join Level Up</a></div></div><div id="article-nav"><div class="pull-left"><a href="/realtime-app-version-notices/">&laquo; Realtime App Version Notice...</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div></div><footer><ul class="list-unstyled"><li><a href="http://twitter.com/cball_">Built by @cball_</a></li></ul><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a></div><p class="centered">All content &copy;2014 Chris Ball</p></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46757526-1', 'auto');
+ga('send', 'pageview');</script></body></html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Not using I18n? You probably should be.</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="I18n is an acronym for internationalization. It is a part of most frameworks, and is used in applications to translate words or phrases to other languages. Instead of writing the phrase “My favorite songs”, you make a call to the I18n library to fetch..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/i18n.jpg" name="og:image" /><meta content="Not using I18n? You probably should be." name="og:title" /><meta content="http://cball.me/not-using-i18n-you-probably-should-be/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /></head><body class="not-using-i18n-you-probably-should-be not-using-i18n-you-probably-should-be_index"><header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1"><div class="row"><div class="home col-md-2"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><div class="col-md-10"><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Newsletter</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/not-using-i18n-you-probably-should-be/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/i18n.jpg" /></a><div class="date"><div class="month">Oct</div><div class="day">24</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/not-using-i18n-you-probably-should-be/">Not using I18n? You probably should be.</a></h2><div class="date subtitle">October 24, 2014</div><hr />
+
+<p>I18n is an acronym for internationalization. It is a part of most frameworks, and is used in applications to translate words or phrases to other languages. Instead of writing the phrase “My favorite songs”, you make a call to the I18n library to fetch the phrase based on a key (my.favorite.songs for example).</p>
+
+<p>“But my app only needs to support English, why should I do this?” In this first part, we will look at some great reasons why, and then in <a href="/i18n-in-practice">part 2</a>, we will take a look at examples in both Rails and ember.js.</p>
+
+<h4 id="avoid-string-duplication-and-change-easily">Avoid string duplication, and change easily.</h4>
+<p>Think about how many sections of your app have buttons that say “Create” or “Save”. Let’s say your designer decides that the buttons will convert better if they are specific to each action. Buttons that favorite songs should say “Add to Favorites” instead of “Create”. Wouldn’t it be easier to go change the button text in one place rather than searching the entire project for “Create” and then trying to determine if it was a button that favorited songs?</p>
+
+<p>Using I18n gives us exactly that - a single place that can be referenced anywhere in the app that provides the necessary text. To make the example change above, all you’d need to do is search your I18n file(s) for the key of 'songs.favorite' and change value to “Add to Favorites”. If after running some A/B tests, your designer was incorrect, its just as easy to change back.</p>
+
+<h4 id="keep-your-tests-working-if-things-change">Keep your tests working if things change.</h4>
+<p>Taking the above example a step further, if you’re not using I18n, as soon as you change the necessary buttons to “Add to Favorites” your acceptance tests will break.</p>
+
+<p>Using I18n in both the app and in the tests will allow you to update strings without having to immediately change your tests after doing so. Less work is a good thing.</p>
+
+<h4 id="if-you-ever-need-to-add-additional-language-support-youre-ready">If you ever need to add additional language support, you’re ready.</h4>
+<p>Admittedly, you may not ever need more than one language in your app. But, by using I18n from the start, if there ever is a need all you’ll need to do is: </p>
+
+<ol>
+  <li>Create a new 18n file for the new language.</li>
+  <li>Have it translated. Please don’t blindly copy/paste from google translate… you could offend someone.</li>
+  <li>Make minor css updates if the language has long strings.</li>
+</ol>
+
+<hr />
+
+<h4 id="tldr-use-i18n-translations">TLDR; Use I18n translations!</h4>
+<p>Using I18n even when you’re only supporting one language will help remove code duplication and reduce test churn when updating phrases throughout your app. </p>
+
+<p>It may seem unnecessary at first, but the benefits will be clear the first time you try different text on a button, or change wording around. It’s also really nice if you later have to add additional language support and already have the groundwork done.</p>
+
+<h4 id="i18n-in-practice">I18n in practice</h4>
+<p>Check out <a href="/i18n-in-practice">part 2</a> of this post, to see how using I18n as described above works in both <a href="/i18n-in-practice#i18n-rails">Rails</a> and <a href="/i18n-in-practice#i18n-ember">ember.js</a>.</p>
+<ul class="nav tags nav-pills"><li><a href="/topics/i18n/">/<span class="name">i18n</span>/</a></li><li><a href="/topics/development/">/<span class="name">development</span>/</a></li><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li><li><a href="/topics/rails/">/<span class="name">rails</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join Level Up</a></div></div><div id="article-nav"><div class="pull-left"><a href="/realtime-app-version-notices/">&laquo; Realtime App Version Notice...</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div></div><footer><ul class="list-unstyled"><li><a href="http://twitter.com/cball_">Built by @cball_</a></li></ul><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a></div><p class="centered">All content &copy;2014 Chris Ball</p></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46757526-1', 'auto');
+ga('send', 'pageview');</script></body></html>
