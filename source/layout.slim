@@ -16,9 +16,10 @@ html
 
     = stylesheet_link_tag "//cloud.typography.com/6222872/746702/css/fonts.css", media: "all"
     = stylesheet_link_tag "application", media: "all"
+    = stylesheet_link_tag "print", media: 'print'
 
   body class=page_classes
-    header
+    header.hidden-print
       .container
         .row
           .col-md-10.col-md-offset-1
@@ -45,7 +46,7 @@ html
           = yield
 
     footer
-      ul.list-unstyled
+      ul.list-unstyled.hidden-print
         li
           = link_to 'Built by @cball_', 'http://twitter.com/cball_'
 

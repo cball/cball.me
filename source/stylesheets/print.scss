@@ -1,0 +1,33 @@
+@media print {
+  .post-body {
+    border: none;
+    padding: 0;
+  }
+
+  article {
+    margin-top: 0;
+    font-size: 14px;
+    padding: 1em 1.5em;
+    border: 0;
+  }
+
+  a[href]:after {
+    display: none;
+  }
+
+  a.show-link[href]:after {
+    display: inline;
+  }
+
+  .job {
+    margin-bottom: 4em;
+  }
+
+  h2 {
+    font-size: 24px;
+  }
+
+  .echobind {
+    margin-bottom: 0.4em;
+  }
+}
