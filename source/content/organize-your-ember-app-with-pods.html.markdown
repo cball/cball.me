@@ -75,5 +75,5 @@ Ember-cli makes it easy to move to a pod-based structure as you have time by fal
 
 While not implemented yet, the current plan in Ember 2.0 is to render a *component* rather than a *controller* when entering a route. This change also advocates using a pod-based structure for these routable components, and may become the default.
 
-See [The Road to Ember 2.0 RFC](https://github.com/emberjs/rfcs/pull/15) for more informatiorn (search for pod).
+See [The Road to Ember 2.0 RFC](https://github.com/emberjs/rfcs/pull/15) for more information (search for pod).
 
