@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/organize-your-ember-app-with-pods/"/>
     <id>http://cball.me/organize-your-ember-app-with-pods/</id>
     <published>2014-11-17T16:25:00Z</published>
-    <updated>2014-11-17T11:22:52-05:00</updated>
+    <updated>2014-11-17T11:58:25-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -86,7 +86,7 @@
 
 &lt;p&gt;While not implemented yet, the current plan in Ember 2.0 is to render a &lt;em&gt;component&lt;/em&gt; rather than a &lt;em&gt;controller&lt;/em&gt; when entering a route. This change also advocates using a pod-based structure for these routable components, and may become the default.&lt;/p&gt;
 
-&lt;p&gt;See &lt;a href="https://github.com/emberjs/rfcs/pull/15"&gt;The Road to Ember 2.0 RFC&lt;/a&gt; for more informatiorn (search for pod).&lt;/p&gt;
+&lt;p&gt;See &lt;a href="https://github.com/emberjs/rfcs/pull/15"&gt;The Road to Ember 2.0 RFC&lt;/a&gt; for more information (search for pod).&lt;/p&gt;
 
 </content>
   </entry>
