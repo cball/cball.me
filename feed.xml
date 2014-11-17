@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/organize-your-ember-app-with-pods/"/>
     <id>http://cball.me/organize-your-ember-app-with-pods/</id>
     <published>2014-11-17T16:25:00Z</published>
-    <updated>2014-11-17T11:58:25-05:00</updated>
+    <updated>2014-11-17T16:34:49-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -95,7 +95,7 @@
     <link rel="alternate" href="http://cball.me/i18n-in-practice/"/>
     <id>http://cball.me/i18n-in-practice/</id>
     <published>2014-10-24T17:00:00Z</published>
-    <updated>2014-10-24T14:44:37-04:00</updated>
+    <updated>2014-11-17T16:33:23-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -281,7 +281,7 @@ with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t
     <link rel="alternate" href="http://cball.me/not-using-i18n-you-probably-should-be/"/>
     <id>http://cball.me/not-using-i18n-you-probably-should-be/</id>
     <published>2014-10-24T17:00:00Z</published>
-    <updated>2014-11-17T08:43:57-05:00</updated>
+    <updated>2014-11-17T16:33:23-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -327,7 +327,7 @@ with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t
     <link rel="alternate" href="http://cball.me/realtime-app-version-notices/"/>
     <id>http://cball.me/realtime-app-version-notices/</id>
     <published>2014-09-24T23:18:00Z</published>
-    <updated>2014-09-24T19:40:48-04:00</updated>
+    <updated>2014-11-17T16:33:23-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -547,7 +547,7 @@ with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t
     <link rel="alternate" href="http://cball.me/help-i-have-no-tests/"/>
     <id>http://cball.me/help-i-have-no-tests/</id>
     <published>2014-09-16T04:00:00Z</published>
-    <updated>2014-09-16T00:40:31-04:00</updated>
+    <updated>2014-11-17T16:33:23-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -695,7 +695,7 @@ with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t
     <link rel="alternate" href="http://cball.me/understanding-loading-substates-in-ember/"/>
     <id>http://cball.me/understanding-loading-substates-in-ember/</id>
     <published>2014-09-05T12:50:00Z</published>
-    <updated>2014-09-05T10:25:01-04:00</updated>
+    <updated>2014-11-17T16:33:23-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
