@@ -15,6 +15,7 @@ html
       script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"
 
     = stylesheet_link_tag "//cloud.typography.com/6222872/746702/css/fonts.css", media: "all"
+    = stylesheet_link_tag "//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css", media: "all"
     = stylesheet_link_tag "application", media: "all"
     = stylesheet_link_tag "print", media: 'print'
 
@@ -46,7 +47,7 @@ html
     footer
       ul.list-unstyled.hidden-print
         li
-          = link_to 'Built by @cball_', 'http://twitter.com/cball_'
+          = link_to 'Built by <i class="fa fa-twitter"></i> cball_', 'http://twitter.com/cball_'
 
       .echobind.center
           = link_to image_tag('echobind.png'), 'http://echobind.com', target: '_blank'
