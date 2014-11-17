@@ -1,5 +1,6 @@
 talks:
   1:
+    icon: 'ember-icon.png'
     title: Real World Fixtures
     event: Boston Ember Meetup
     location: Boston, MA
@@ -7,3 +8,17 @@ talks:
     description: <p>A talk from the August 2014 Boston Ember Meetup about using HTTP mocks during the development of Ember applications. Using HTTP mocks will allow you to keep the same adapters you're used to using, predict app behavior, ensure proper handling of ajax errors, and even drive the API spec for your app. They are extremely helpful for building out the front-end before moving on to implementing the API.</p><p>This is the first talk I've ever given, so go easy!</p><p>My talk starts at 1hr 7min in the video.</p>
     speakerdeck_id: d45610f006bb0132098a4ec2e24a2701
     youtube_id: jSKZkHN3fIE
+  2:
+    icon: 'ember-icon.png'
+    title: Embracing Conventions - Loading and Error Substates
+    event: Ember.js Philly
+    location: Philadelphia, PA
+    date: '2014-12-02'
+    description: <p>Ember is built around conventions. Conventions are great for developers because they can leverage framework decisions to help eliminate a lot of boilerplate or repetitive code. Loading and Error Substates can and should be used in your Ember applications to provide user feedback for these common states.</p><p>We’ll look at examples of nested templates and built-in event hooks. Leveraging tools in Chrome, we’ll simulate using an app on a slow connection to see how important and easy this type feedback is.</p>
+  3:
+    icon: 'ember-ruby-icon.png'
+    title: Don't Worry Ruby, We Still Love You
+    event: Boston.rb
+    location: Boston, MA
+    date: '2015-2-10'
+    description: "<p>With the rise of client-side frameworks you might wonder if your days using Ruby are numbered. You came to Ruby for its expressiveness and beauty. You don't want to leave that completely behind.</p><p>Luckily, you don't have to. With a nod to the Single Responsibility Principle we all love, this talk looks at how to leverage a front-end framework like Ember.js to handle application state at the UI layer and leave Ruby or Rails to do what it does best — everything else.</p><p>Something to keep in mind: that everything else is the heart of your entire app.</p>"

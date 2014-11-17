@@ -1,0 +1,94 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Organize Your Ember App with Pods</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="You may have seen references to pods when reading up on Ember and ember-cli. What the heck are pods? Simply put, pods are a way of grouping files in your project by feature (ex: Task) rather than by type (ex: controllers). According to the ember-cli..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/pods.png" name="og:image" /><meta content="Organize Your Ember App with Pods" name="og:title" /><meta content="http://cball.me/organize-your-ember-app-with-pods/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /></head><body class="organize-your-ember-app-with-pods organize-your-ember-app-with-pods_index"><header class="hidden-print"><div class="container"><div class="row"><div class="col-md-12"><div class="home"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/newsletter">Posts</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/organize-your-ember-app-with-pods/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/pods.png" /></a><div class="date"><div class="month">Nov</div><div class="day">17</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/organize-your-ember-app-with-pods/">Organize Your Ember App with Pods</a></h2><div class="date subtitle">November 17, 2014</div><hr />
+
+<p>You may have seen references to pods when reading up on Ember and ember-cli. What the heck are pods? Simply put, pods are a way of grouping files in your project by feature (ex: Task) rather than by type (ex: controllers). According to the ember-cli documentation, “As your app gets bigger, a feature-driven structure may be better. Splitting your application by functionality/resource would give you more power and control to scale and maintain it”.</p>
+
+<p>And the best part? You don’t have to decide to go with this structure right away. Thanks to ember-cli conventions, when a pod structure is specified but the necessary file is not found, the Resolver (how ember-cli looks up files) will fall back to the default naming structure. Let’s look at how use pods, and how this convention will allow us to move an existing app to a pod-based naming structure.</p>
+
+<h4 id="use-pods-of-features-for-better-organization">Use pods of features for better organization.</h4>
+<p>By default, a Taco resource might have the following files:</p>
+
+<ul>
+  <li><code>app/controllers/taco.js</code></li>
+  <li><code>app/routes/taco.js</code></li>
+  <li><code>app/models/taco.js</code> </li>
+  <li><code>app/templates/taco.hbs</code></li>
+</ul>
+
+<p>With a pod-based naming convention, the files would be located at: </p>
+
+<ul>
+  <li><code>app/taco/controller.js</code></li>
+  <li><code>app/taco/route.js</code></li>
+  <li><code>app/taco/model.js</code></li>
+  <li><code>app/taco/template.hbs</code></li>
+</ul>
+
+<p>As your application grows, you will end up with lots of controllers, with quite a few of them living under app/controllers. The same goes for templates and routes. While you can always wildcard search your project to open files, it can be really convenient having a route, controller, and template for a resource/feature located under the same directory.</p>
+
+<h4 id="use-podmoduleprefix-to-specify-the-root-folder-for-pods">Use podModulePrefix to specify the root folder for pods.</h4>
+<p>podModulePrefix is an optional configuration setting in ember-cli that specifies the root folder for all pods. It can be set in environment.js.</p>
+
+<pre class="highlight javascript"><span class="c1">// config/environment.js
+</span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">environment</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">ENV</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="na">modulePrefix</span><span class="p">:</span> <span class="s1">&#39;app&#39;</span><span class="p">,</span>
+    <span class="na">podModulePrefix</span><span class="p">:</span> <span class="s1">&#39;app/pods&#39;</span>
+    <span class="na">environment</span><span class="p">:</span> <span class="nx">environment</span><span class="p">,</span>
+    <span class="na">baseURL</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
+    <span class="na">locationType</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span>
+<span class="c1">//...
+</span></pre>
+<p>With this in place, we can begin incrementally moving files from the default folder structure into pods. If you don’t specify <code>podModulePrefix</code>, the Resolver will look for pods under <code>app/</code>.</p>
+
+<pre class="highlight shell"><span class="gp">&gt; </span>mv app/controllers/taco.js app/pods/taco/controller.js
+<span class="gp">&gt; </span>mv app/routes/taco.js app/pods/taco/route.js
+<span class="gp">&gt; </span>mv app/templates/taco.hbs app/pods/taco/template.hbs
+</pre>
+<p>Going forward, just pass <code>--pod</code> to <code>ember generate</code> when generating new files.</p>
+
+<pre class="highlight shell"><span class="gp">&gt; </span>ember g route taco/cheese --pod
+  create app/pods/taco/cheese/route.js
+  create app/pods/taco/cheese/template.hbs
+  create tests/unit/routes/taco/cheese-test.js
+
+<span class="gp">&gt; </span>ember g component hot-sauce --pod
+  create app/pods/components/hot-sauce/component.js
+  create app/pods/components/hot-sauce/template.hbs
+  create tests/unit/components/hot-sauce-test.js
+</pre>
+<h4 id="to-pod-or-not-to-pod-its-up-to-you">To pod or not to pod? It’s up to you.</h4>
+<p>Using a pod-based folder structure is optional, as is specifying a root folder for pods. Using pods can help keep a large project organized, but if you don’t like it you can still use the default and organize your files by type.</p>
+
+<p>Ember-cli makes it easy to move to a pod-based structure as you have time by falling back to a type-based naming structure if the pod structure is not present.</p>
+
+<h4 id="pods-may-become-the-default-for-routable-components-in-ember-20">Pods may become the default for Routable Components in Ember 2.0.</h4>
+
+<p>While not implemented yet, the current plan in Ember 2.0 is to render a <em>component</em> rather than a <em>controller</em> when entering a route. This change also advocates using a pod-based structure for these routable components, and may become the default.</p>
+
+<p>See <a href="https://github.com/emberjs/rfcs/pull/15">The Road to Ember 2.0 RFC</a> for more informatiorn (search for pod).</p>
+
+<ul class="nav tags nav-pills"><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li><li><a href="/topics/development/">/<span class="name">development</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join Level Up</a></div></div><div id="article-nav"><div class="pull-left"><a href="/i18n-in-practice/">&laquo; I18n in Practice</a></div><div class="pull-right"></div></div></div><div id="comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'cballme'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+     var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+     dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+     (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+     })();
+  </script>
+
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+</article></div></div></div><footer><ul class="list-unstyled hidden-print"><li><a href="http://twitter.com/cball_">Built by @cball_</a></li></ul><div class="echobind center"><a target="_blank" href="http://echobind.com"><img src="/images/echobind.png" /></a></div><p class="centered">All content &copy;2014 Chris Ball</p></footer><script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script><script src="/javascripts/application.js" type="text/javascript"></script><script type="text/javascript">// google analytics
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+ga('create', 'UA-46757526-1', 'auto');
+ga('send', 'pageview');</script></body></html>
