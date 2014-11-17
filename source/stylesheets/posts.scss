@@ -1,4 +1,5 @@
 @import 'variables';
+
 pre {
   background: none;
   border: none;
@@ -30,10 +31,16 @@ article {
   min-height: 300px;
 
   h2.title {
-    margin: 12px 0 0 0;
+    margin: 36px 0 0 0;
 
     a {
       color: #333;
+    }
+
+    @media (min-width: 768px) {
+      & {
+        margin-top: 12px;
+      }
     }
   }
 
@@ -100,6 +107,8 @@ article {
 }
 
 .post-body {
+  position: relative;
+
   img {
     display:block;width:600px;max-width:100%;margin: 20px auto;
 
@@ -190,4 +199,40 @@ article {
 .topic-title {
   text-align: center;
   margin-bottom: 1em;
+}
+
+.by {
+  top: -26px;
+  position: absolute;
+  right: 0;
+  left: 0;
+  text-align: center;
+
+  img {
+    display: inline-block;
+    margin: 0;
+    width: 43px;
+    border-radius: 50%;
+    border: 1px solid #aaa;
+  }
+
+  .twitter {
+    color: #aaa;
+    font-size: 13px;
+
+    .fa-twitter {
+      font-size: 14px;
+    }
+  }
+
+
+  @media (min-width: 768px) {
+    & {
+      top: -36px;
+
+      img {
+        width: 60px;
+      }
+    }
+  }
 }
