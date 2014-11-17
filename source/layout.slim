@@ -22,23 +22,21 @@ html
     header.hidden-print
       .container
         .row
-          .col-md-10.col-md-offset-1
-            .row
-              .home.col-md-2
-                a href="/"
-                  span.title Level Up
-                  span.name = " by Chris Ball "
+          .col-md-12
+            .home
+              a href="/"
+                span.title Level Up
+                span.name = " by Chris Ball "
 
-              .col-md-10
-                ul.nav.nav-pills
-                  li
-                    = link_to 'About', '/about'
-                  li
-                    = link_to 'Newsletter', '/newsletter'
-                  li
-                    = link_to 'Talks', '/talks'
-                  li
-                    = link_to 'Contact', '/contact'
+            ul.nav.nav-pills
+              li
+                = link_to 'About', '/about'
+              li
+                = link_to 'Posts', '/newsletter'
+              li
+                = link_to 'Talks', '/talks'
+              li
+                = link_to 'Contact', '/contact'
 
     .container
       .row

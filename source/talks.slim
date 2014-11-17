@@ -2,17 +2,22 @@
 title: Talks
 ---
 
+- talks = YAML.load_file(File.open('source/talks.yml'))['talks'].values.sort_by{|t| t['date']}.reverse
+- upcomming = talks.select{|t| Date.parse(t['date']) > Date.today}
+- past = talks.select{|t| Date.parse(t['date']) <= Date.today}
+
 article
   .post-body
     h2 Talks
 
-    p A list of my talks at conferences or meetups. I know, I know. It's a pretty massive list right now at 1 talk strong, but that will change soon.
+    p A list of my talks at conferences or meetups.
 
+    h4 Upcoming
     ul.talk-list
-      - talks = YAML.load_file(File.open('source/talks.yml'))['talks'].values
-      - talks.each do |talk|
-        - url = "/talk/#{talk['title'].parameterize}"
+      - upcomming.each do |talk|
+        = partial 'talk', locals: { talk: talk }
 
-        li
-          = link_to talk['title'], url, class: 'talk-link'
-          span.year = Date.parse(talk['date']).strftime('%Y')
+    h4 Past
+    ul.talk-list
+      - past.each do |talk|
+        = partial 'talk', locals: { talk: talk }

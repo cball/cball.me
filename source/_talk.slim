@@ -1,0 +1,6 @@
+- url = "/talk/#{talk['title'].parameterize}"
+
+li
+  = image_tag talk['icon'], class: 'talk-icon'
+  = link_to talk['title'], url, class: 'talk-link'
+  span.year = Date.parse(talk['date']).strftime('%b %Y')

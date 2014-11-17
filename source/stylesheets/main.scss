@@ -56,6 +56,12 @@ header {
     text-align: center;
   }
 
+  @media (min-width: 768px) {
+    .home {
+      position: absolute;
+    }
+  }
+
   .title {
     font-weight: bold;
     font-size: 24px;
