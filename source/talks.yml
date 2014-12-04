@@ -14,7 +14,9 @@ talks:
     event: Ember.js Philly
     location: Philadelphia, PA
     date: '2014-12-02'
-    description: <p>Ember is built around conventions. Conventions are great for developers because they can leverage framework decisions to help eliminate a lot of boilerplate or repetitive code. Loading and Error Substates can and should be used in your Ember applications to provide user feedback for these common states.</p><p>We’ll look at examples of nested templates and built-in event hooks. Leveraging tools in Chrome, we’ll simulate using an app on a slow connection to see how important and easy this type feedback is.</p>
+    description: <p>Ember is built around conventions. Conventions are great for developers because they can leverage framework decisions to be productive and eliminate a lot of boilerplate or repetitive code.</p><p>Loading and Error Substates can and should be used in your Ember applications to provide user feedback for these common states. We’ll look at examples of nested templates and built-in event hooks. Using http-mocks, we’ll look at how to handle errors and simulate using an app on a slow connection to see how important and easy this type feedback is.</p><p>The repo that was used for demos is available here:<br/>
+      <a href="https://github.com/cball/loading-error-substates-example">https://github.com/cball/loading-error-substates-example</a></p>
+    speakerdeck_id: 2af065b05d230132dc3742fea7eb20a3
   3:
     icon: 'ember-ruby-icon.png'
     title: Don't Worry Ruby, We Still Love You
