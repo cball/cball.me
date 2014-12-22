@@ -5,10 +5,137 @@
   <id>http://cball.me/</id>
   <link href="http://cball.me/"/>
   <link href="http://cball.me/feed.xml" rel="self"/>
-  <updated>2014-11-17T16:25:00Z</updated>
+  <updated>2014-12-22T14:40:00Z</updated>
   <author>
     <name>Chris Ball</name>
   </author>
+  <entry>
+    <title>Bring some ES6 Awesome with esnext</title>
+    <link rel="alternate" href="http://cball.me/bring-some-es6-awesome-with-esnext/"/>
+    <id>http://cball.me/bring-some-es6-awesome-with-esnext/</id>
+    <published>2014-12-22T14:40:00Z</published>
+    <updated>2014-12-22T09:39:28-05:00</updated>
+    <author>
+      <name>Chris Ball</name>
+    </author>
+    <summary type="html">&lt;hr&gt;&lt;p&gt;ES6 is the next version of JavaScript. &lt;a href="https://github.com/esnext/esnext"&gt;esnext&lt;/a&gt; is a library that allows you to ES6 functions today.&lt;/p&gt;
+
+&lt;p&gt;What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration...&lt;/p&gt;</summary>
+    <content type="html">&lt;hr /&gt;
+
+&lt;p&gt;ES6 is the next version of JavaScript. &lt;a href="https://github.com/esnext/esnext"&gt;esnext&lt;/a&gt; is a library that allows you to ES6 functions today.&lt;/p&gt;
+
+&lt;p&gt;What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration thanks to &lt;a href="https://github.com/stefanpenner/ember-cli/pull/2452"&gt;this Pull Request&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Let’s look at three top features and some benefits provided by esnext that might eliminate the need to add CoffeeScript to your next project.&lt;/p&gt;
+
+&lt;h3 id="arrow-functions"&gt;Arrow Functions&lt;/h3&gt;
+&lt;p&gt;If you’ve used CoffeeScript, arrow functions should be familiar. Typing the word function all of the time can get annoying. Using the fat arrow, you can use a much nicer syntax for writing functions.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// The es6 way using esnext
+&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="na"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I am eating &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+
+&lt;span class="c1"&gt;// Compiled output
+&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="na"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;I am eating &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;When using functions that change the scope of this (such as &lt;code&gt;forEach&lt;/code&gt;) you may have seen the following pattern:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// this is common, but don’t do it.
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Since &lt;code&gt;this&lt;/code&gt; inside an arrow function is the same as this in surrounding code, we can make the above example better: &lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;“I can already do that with CoffeeScript” you might say. True, but compare the code you end up with. Which do you think is easier to debug?&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// compiled JavaScript output with esnext
+&lt;/span&gt;&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+
+&lt;span class="c1"&gt;// compiled CoffeeScript output
+&lt;/span&gt;&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;};&lt;/span&gt;
+&lt;span class="p"&gt;})(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;&lt;em&gt;One caveat to note&lt;/em&gt;: because Ember extends the &lt;code&gt;function&lt;/code&gt; prototype to provide the &lt;code&gt;property&lt;/code&gt; and &lt;code&gt;observes&lt;/code&gt; keywords, you can’t use the fat arrow with a &lt;code&gt;property&lt;/code&gt; or &lt;code&gt;observes&lt;/code&gt; declaration. For those, you’ll still need to use the &lt;code&gt;function&lt;/code&gt; keyword.&lt;/p&gt;
+
+&lt;p&gt;For standard functions you’re good to go.&lt;/p&gt;
+
+&lt;h3 id="template-strings"&gt;Template Strings&lt;/h3&gt;
+&lt;p&gt;One of the things that has always bothered me is the lack of string concatenation in JavaScript. ES6 Template Strings fix that:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// standard JavaScript
+&lt;/span&gt;&lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Controller&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;food&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;I am getting &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+  &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;property&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;food&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+
+&lt;span class="c1"&gt;// the es6 way
+&lt;/span&gt;&lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Controller&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
+  &lt;span class="na"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;food&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="nx"&gt;I&lt;/span&gt; &lt;span class="nx"&gt;am&lt;/span&gt; &lt;span class="nx"&gt;getting&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;
+  &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;property&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;food&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;Template strings can even span multiple lines.&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// invalid in standard JavaScript
+&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;what kind
+of &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;nounFromUser&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot; do you
+drive?&amp;quot;&lt;/span&gt;
+
+&lt;span class="c1"&gt;// es6 template string
+&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="nx"&gt;what&lt;/span&gt; &lt;span class="nx"&gt;kind&lt;/span&gt;
+&lt;span class="nx"&gt;of&lt;/span&gt; &lt;span class="nx"&gt;$&lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;&lt;span class="nx"&gt;nounFromUser&lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; &lt;span class="nx"&gt;you&lt;/span&gt;
+&lt;span class="nx"&gt;drive&lt;/span&gt;&lt;span class="p"&gt;?&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;They have some &lt;a href="http://mozintern.wordpress.com/2014/07/31/ecmascript-6-template-strings-2/"&gt;other powerful features&lt;/a&gt; too.&lt;/p&gt;
+
+&lt;h3 id="destructuring"&gt;Destructuring&lt;/h3&gt;
+&lt;p&gt;Destructuring is great when you need to set variables that have the same name as object properties. For example, say you need to configure options for a graph:&lt;/p&gt;
+
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// standard JavaScript
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;graphWidth&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;graphWidth&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="nx"&gt;graphHeight&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;graphHeight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="nx"&gt;marginTop&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;marginTop&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;span class="nx"&gt;marginBottom&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;marginBottom&lt;/span&gt;
+
+&lt;span class="c1"&gt;// the es6 way
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;graphWidth&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;graphHeight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;marginTop&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;marginBottom&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;h3 id="coffeescript-can-already-do-this-why-use-es6esnext"&gt;CoffeeScript can already do this. Why use ES6/esnext?&lt;/h3&gt;
+&lt;ol&gt;
+  &lt;li&gt;The source code you write will look almost identical to the compiled output. Any differences are easy to follow. As a developer, this makes your life much easier when debugging an issue in your app!&lt;/li&gt;
+  &lt;li&gt;Your file size will be smaller.&lt;/li&gt;
+  &lt;li&gt;You won’t have to deal with unexpected implicit returns. For example, actions in Ember will bubble if you return a truthy value from them. Because CoffeeScript has an implicit return from the last line in a function, it is very easy to accidentally write code that will bubble up to parent controllers/routes.&lt;/li&gt;
+  &lt;li&gt;If you extract a piece of your app to an addon, you will benefit from more community collaboration by using JavaScript.&lt;/li&gt;
+  &lt;li&gt;ES6 module imports/exports are available without using backticks. &lt;/li&gt;
+  &lt;li&gt;Your code will be somewhat future proof. Since a core focus of esnext is api compatibility, when ES6 is available natively in all major browsers, the esnext library should be able to be removed and the code will continue to work. CoffeeScript has features that will keep it from fully adopting ES6, and it will likely require a rewrite.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by esnext, you probably won’t miss CoffeeScript at all.&lt;/p&gt;
+</content>
+  </entry>
   <entry>
     <title>Organize Your Ember App with Pods</title>
     <link rel="alternate" href="http://cball.me/organize-your-ember-app-with-pods/"/>
@@ -688,346 +815,6 @@ with binding: &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;i18n-t
 
 &lt;h4 id="making-it-better"&gt;Making it better&lt;/h4&gt;
 &lt;p&gt;These strategies should help you start to take hold of projects you come across that have less than ideal test suites. Often the biggest hurdle is just knowing where to start.&lt;/p&gt;
-</content>
-  </entry>
-  <entry>
-    <title>Understanding Loading Substates in Ember</title>
-    <link rel="alternate" href="http://cball.me/understanding-loading-substates-in-ember/"/>
-    <id>http://cball.me/understanding-loading-substates-in-ember/</id>
-    <published>2014-09-05T12:50:00Z</published>
-    <updated>2014-11-17T16:33:23-05:00</updated>
-    <author>
-      <name>Chris Ball</name>
-    </author>
-    <summary type="html">&lt;hr&gt;&lt;p&gt;Ember applications (and client-side applications in general) respond quickly to user interaction. In a perfect world, the API powering your application also responds quickly, but unfortunately most of us don’t live in a perfect world.&lt;/p&gt;
-
-&lt;p&gt;Ember has a...&lt;/p&gt;</summary>
-    <content type="html">&lt;hr /&gt;
-
-&lt;p&gt;Ember applications (and client-side applications in general) respond quickly to user interaction. In a perfect world, the API powering your application also responds quickly, but unfortunately most of us don’t live in a perfect world.&lt;/p&gt;
-
-&lt;p&gt;Ember has a few different loading behaviors built-in to help us deal with this situation:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;a href="#nested-loading-templates"&gt;Nested loading templates&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href="#loading-event"&gt;A loading event in routes&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;I’ll also show you how to &lt;a href="#manual"&gt;use loading templates manually&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;The &lt;a href="http://emberjs.com/guides/routing/loading-and-error-substates/"&gt;guides for loading substates&lt;/a&gt; are excellent, so read through those if you haven’t already. Instead of just reiterating what the guides say, I'd like to try to show you visual examples using a real world application.&lt;/p&gt;
-
-&lt;h4 id="our-example-app"&gt;Our example app&lt;/h4&gt;
-
-&lt;p&gt;Let’s assume we are building a Rdio clone (all Rdio screenshots are copyright them and not me) and we want to add a loading state to each section of the album page.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="rdio UI" src="http://cball.me.s3.amazonaws.com/loading-substates/1-interface.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Our album template is divided into the following sections:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="rdio sections" src="http://cball.me.s3.amazonaws.com/loading-substates/2-template-sections.png" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Here’s what our router and models might look like:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// router.js
-&lt;/span&gt;&lt;span class="nx"&gt;App&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Router&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;map&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/album/:album_id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;},&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;resource&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{});&lt;/span&gt;
-  &lt;span class="p"&gt;});&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/album.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;title&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;reviews&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;hasMany&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;review&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;async&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt; &lt;span class="p"&gt;}),&lt;/span&gt;
-  &lt;span class="na"&gt;activities&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;hasMany&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activity&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="na"&gt;async&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt; &lt;span class="p"&gt;})&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/review.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;body&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;album&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;belongsTo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// models/activity.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Model&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;attr&lt;/span&gt;&lt;span class="p"&gt;(),&lt;/span&gt;
-  &lt;span class="na"&gt;album&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;DS&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;belongsTo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Since we are &lt;em&gt;nesting our UI&lt;/em&gt; (comments and activity appears within the album template) &lt;em&gt;our routes are also nested&lt;/em&gt;. We want Ember to automatically generate index routes for both activities and reviews. We don't need any other route actions, so we’ll just pass an empty function as the second argument to this.resource.&lt;/p&gt;
-
-&lt;p&gt;Also note that we're using &lt;code&gt;async: true&lt;/code&gt; for the hasMany associations.&lt;/p&gt;
-
-&lt;p&gt;&lt;a name="nested-loading-templates"&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id="using-nested-loading-templates"&gt;Using nested loading templates&lt;/h4&gt;
-&lt;p&gt;To start things off, let’s add our application template, index template, and a top-level loading template. The loading template will automatically render when a route’s &lt;code&gt;beforeModel/model/afterModel&lt;/code&gt; hook returns an unresolved promise, and then automatically render the route’s normal template in its place when the promise resolves.&lt;/p&gt;
-
-&lt;p&gt;You might have noticed that by default any of these hooks will pause a transition while the promise resolves. Once we define a loading template it will become an eager transition (meaning it will transition immediately instead of waiting for promises in our model hooks to resolve). You’ll know when a route is using an eager transition because the URL will update right away.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/application.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;wrapper&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;h2&amp;gt;&lt;/span&gt;Rdio Clone&lt;span class="nt"&gt;&amp;lt;/h2&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;sidebar&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;h4&amp;gt;&lt;/span&gt;playlists&lt;span class="nt"&gt;&amp;lt;/h4&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;ul&amp;gt;&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&lt;/span&gt;Cool Playlist&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;main&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;outlet&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/index.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;h3&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;top-title&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Cool Playlist&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;albums&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt; &lt;span class="nv"&gt;album&lt;/span&gt; &lt;span class="nv"&gt;in&lt;/span&gt; &lt;span class="nv"&gt;model&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-    &lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt; &lt;span class="nv"&gt;album&lt;/span&gt; &lt;span class="nv"&gt;class&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;album&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;img&lt;/span&gt; &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;bind-attr&lt;/span&gt; &lt;span class="nv"&gt;src&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;image&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
-      &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nv"&gt;title&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-    &lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Loading...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Clicking our &lt;em&gt;Load an album&lt;/em&gt; link should look like this:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="root-loading-template" src="http://cball.me.s3.amazonaws.com/loading-substates/3-root-loading-template.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;With this change in place, &lt;em&gt;any route that loads a template into the top level outlet&lt;/em&gt; will transition to our loading template while any of its model hook promises are resolving.&lt;/p&gt;
-
-&lt;p&gt;If you look at the preview, you’ll see that we start at the root of the app. Our loading template renders in two different cases - once while the list of albums is being fetched, and another while a single album is being fetched (the page was reloaded while on the album page). The loading template does not render when navigating from the list of albums to the album view since Ember already has the required data.&lt;/p&gt;
-
-&lt;p&gt;Next, let’s say we want to show a different loading state for other items on the album page. To do this, add an album/loading template.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/album/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching album data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Ember will load our &lt;code&gt;album/loading&lt;/code&gt; template into the outlet inside the album template. That would look like this (again, with a refresh thrown in for good measure):&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="album loading" src="http://cball.me.s3.amazonaws.com/loading-substates/4-album-loading-template.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This looks good, so we move on to adding the review section, but realize both activities and reviews will render into the same outlet. This would be desired behavior if we were using a tabbed interface to show activities and reviews. Since we aren’t, we should use &lt;code&gt;named outlets&lt;/code&gt;. For named outlets to work with loading substates, we’ll need to tell each route the outlet it should render templates into using the &lt;code&gt;renderTemplate&lt;/code&gt; hook.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/album.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;activities&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;section&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;Activity&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;&lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;Load Activity&lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-  &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;outlet&lt;/span&gt; &lt;span class="nv"&gt;activities&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-      
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;id=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;reviews&amp;quot;&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;section&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;h3&amp;gt;&lt;/span&gt;Reviews&lt;span class="nt"&gt;&amp;lt;/h3&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&amp;gt;&lt;/span&gt;&lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;Load Reviews&lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;link-to&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-  &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;outlet&lt;/span&gt; &lt;span class="nv"&gt;reviews&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;  
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities-index.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;modelFor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/activities.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/reviews-index.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;modelFor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;},&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/reviews.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;});&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Now we’re getting closer. The loading, activity, and review templates are rendering into separate areas of the page. Ignoring for a second that loading reviews still removes activities from the UI, we can see that our &lt;code&gt;album/loading&lt;/code&gt; template is being used in both cases.&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="named-outlets" src="http://cball.me.s3.amazonaws.com/loading-substates/5-named-outlets.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;Taking things a step further, we can now add specific loading templates for both activities and reviews. Because we are using named outlets, we again need to specify where the loading templates should render. If you don’t need named outlets, you can omit the loading route code entirely.&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/activities/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;“loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching activity data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-
-&lt;span class="c"&gt;{{! templates/reviews/loading.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching review data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities/loading.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;activities&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt; 
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/reviews/loading.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;renderTemplate&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt; &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;});&lt;/span&gt; 
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;&lt;img alt="separate-loading-templates" src="http://cball.me.s3.amazonaws.com/loading-substates/6-separate-loading-templates.gif" /&gt;&lt;/p&gt;
-
-&lt;p&gt;This is very close to what we need, but we're still not quite there. The UI really needs to load data without changing the URL and without removing the other sections from the page. For that we'll have to manage our loading states manually. But first, let’s discuss the &lt;code&gt;loading event&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;a name="loading-event"&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id="using-the-loading-event"&gt;Using the loading event&lt;/h4&gt;
-&lt;p&gt;If you need to do something more custom than the default loading substate behavior, Ember provides a loading event that is fired on the current route and bubbles upward to your application route.&lt;/p&gt;
-
-&lt;p&gt;To use this hook, define a loading action in the the current route or any of its parents.&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/activities.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loading&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="nx"&gt;alert&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;crazy custom stuff&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;The loading substate behavior in Ember does not kick until the loading action fully bubbles past the ApplicationRoute. If we implement a loading action somewhere and fail to return true (like the example above) the &lt;em&gt;loading substate behavior will not occur&lt;/em&gt;.&lt;/p&gt;
-
-&lt;p&gt;Our Rdio clone will eventually load our activity and review sections when the user scrolls them into view rather than when a user clicks a link. If we want to keep our existing loading template behavior but track when reviews are loaded, we could also use the loading hook. For this to work, we just need to &lt;code&gt;return true&lt;/code&gt; from the loading action (which will cause the event	 to bubble up and eventually the default loading substate to occur). &lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/reviews.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loading&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="nx"&gt;postDataToAnalytics&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews:loaded&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-      &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;&lt;a name="manual"&gt;&lt;/a&gt;&lt;/p&gt;
-
-&lt;h4 id="using-loading-templates-manually"&gt;Using loading templates manually&lt;/h4&gt;
-&lt;p&gt;If you find yourself in a situation where you need loading substate type behavior, but don’t actually want to transition to a new route, you’ll have to manually implement it.&lt;/p&gt;
-
-&lt;p&gt;We can add an action that explicitly renders templates:&lt;/p&gt;
-
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/album.hbs }}&lt;/span&gt;
-&lt;span class="nt"&gt;&amp;lt;a&lt;/span&gt; &lt;span class="na"&gt;href=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;#&amp;quot;&lt;/span&gt; &lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;action&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;loadReviews&amp;#39;&lt;/span&gt; &lt;span class="nv"&gt;model&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;Load Reviews&lt;span class="nt"&gt;&amp;lt;/a&amp;gt;&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// routes/album.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loadReviews&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-      &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews/loading&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="na"&gt;into&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;
-      &lt;span class="p"&gt;});&lt;/span&gt;
-      
-      &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;&lt;span class="nx"&gt;then&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;reviews&lt;/span&gt;&lt;span class="p"&gt;){&lt;/span&gt;
-        &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;render&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews/index&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; 
-          &lt;span class="na"&gt;into&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;album&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-          &lt;span class="na"&gt;outlet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-          &lt;span class="na"&gt;model&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;reviews&lt;/span&gt;
-        &lt;span class="p"&gt;});&lt;/span&gt;
-      &lt;span class="p"&gt;});&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Or we can use &lt;code&gt;PromiseProxyMixin&lt;/code&gt;:&lt;/p&gt;
-
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// controllers/reviews-index.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;ArrayController&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;PromiseProxyMixin&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="na"&gt;setupPromise&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;promise&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;RSVP&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Promise&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(){}));&lt;/span&gt;
-  &lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;on&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;init&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-
-&lt;span class="c1"&gt;// routes/album.js
-&lt;/span&gt;&lt;span class="kr"&gt;export&lt;/span&gt; &lt;span class="k"&gt;default&lt;/span&gt; &lt;span class="nx"&gt;Ember&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;Route&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;extend&lt;/span&gt;&lt;span class="p"&gt;({&lt;/span&gt;
-  &lt;span class="na"&gt;actions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;loadReviews&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-      &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;reviewsController&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;controllerFor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews.index&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-      &lt;span class="nx"&gt;reviewsController&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;set&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;promise&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;album&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;get&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;reviews&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
-    &lt;span class="p"&gt;}&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
-&lt;span class="p"&gt;});&lt;/span&gt;
-&lt;/pre&gt;
-&lt;pre class="highlight handlebars"&gt;&lt;span class="c"&gt;{{! templates/album.hbs }}&lt;/span&gt;
-…
-&lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;render&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;reviews/index&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-…
-
-&lt;span class="c"&gt;{{! templates/reviews/index.hbs }}&lt;/span&gt;
-&lt;span class="k"&gt;{{#if&lt;/span&gt; &lt;span class="nv"&gt;isPending&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;div&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;loader&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;i&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;fa fa-cog fa-spin&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&amp;lt;/i&amp;gt;&lt;/span&gt;
-    &lt;span class="nt"&gt;&amp;lt;p&amp;gt;&lt;/span&gt;Fetching review data...&lt;span class="nt"&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class="k"&gt;{{else}}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;ul&lt;/span&gt; &lt;span class="na"&gt;class=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;reviews&amp;quot;&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
-    &lt;span class="k"&gt;{{#&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-      &lt;span class="nt"&gt;&amp;lt;li&amp;gt;&amp;lt;img&lt;/span&gt; &lt;span class="na"&gt;src=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;http://api.randomuser.me/portraits/thumb/lego/8.jpg&amp;quot;&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;&lt;span class="k"&gt;{{&lt;/span&gt;&lt;span class="nv"&gt;body&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;&lt;span class="nt"&gt;&amp;lt;/li&amp;gt;&lt;/span&gt;
-    &lt;span class="k"&gt;{{/&lt;/span&gt;&lt;span class="nn"&gt;each&lt;/span&gt;&lt;span class="k"&gt;}}&lt;/span&gt;
-  &lt;span class="nt"&gt;&amp;lt;/ul&amp;gt;&lt;/span&gt;
-&lt;span class="k"&gt;{{/if}}&lt;/span&gt;
-&lt;/pre&gt;
-&lt;p&gt;Since we’re now rendering inline controllers in our app, we don’t need any of the named outlet code. Additionally, the promise needs to be resolved on controller init. Otherwise, it would show our loading state immediately since null promises are considered pending.&lt;/p&gt;
-
-&lt;p&gt;With all that said, here’s our final (for now) app with loading states:&lt;/p&gt;
-
-&lt;p&gt;&lt;img alt="promise-proxy-loading" src="http://cball.me.s3.amazonaws.com/loading-substates/7-promise-proxy.gif" /&gt;&lt;/p&gt;
-
-&lt;h4 id="go-forth-and-load"&gt;Go forth and load&lt;/h4&gt;
-
-&lt;p&gt;We took a pretty long route in implementing many approaches just to arrive at manual loading of templates, but in doing so I hope I’ve helped shed some light on this really interesting (and often confusing!) feature in Ember.&lt;/p&gt;
-
-&lt;p&gt;You should now know how to:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;use loading templates&lt;/li&gt;
-  &lt;li&gt;nest loading templates&lt;/li&gt;
-  &lt;li&gt;use loading templates with named outlets&lt;/li&gt;
-  &lt;li&gt;use a loading event&lt;/li&gt;
-  &lt;li&gt;use manual loading states when necessary&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;The jsbin used throughout this post is at &lt;a href="http://jsbin.com/pikoha"&gt;http://jsbin.com/pikoha&lt;/a&gt;.&lt;/p&gt;
 </content>
   </entry>
 </feed>
