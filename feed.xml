@@ -14,7 +14,7 @@
     <link rel="alternate" href="http://cball.me/bring-some-es6-awesome-with-esnext/"/>
     <id>http://cball.me/bring-some-es6-awesome-with-esnext/</id>
     <published>2014-12-22T14:40:00Z</published>
-    <updated>2014-12-22T09:39:28-05:00</updated>
+    <updated>2014-12-22T09:51:39-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -134,6 +134,9 @@ drive?&amp;quot;&lt;/span&gt;
 &lt;/ol&gt;
 
 &lt;p&gt;If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by esnext, you probably won’t miss CoffeeScript at all.&lt;/p&gt;
+
+&lt;p&gt;Update:
+I’ve added a repo with a few examples:&lt;/p&gt;
 </content>
   </entry>
   <entry>
@@ -141,7 +144,7 @@ drive?&amp;quot;&lt;/span&gt;
     <link rel="alternate" href="http://cball.me/organize-your-ember-app-with-pods/"/>
     <id>http://cball.me/organize-your-ember-app-with-pods/</id>
     <published>2014-11-17T16:25:00Z</published>
-    <updated>2014-11-17T16:34:49-05:00</updated>
+    <updated>2015-01-16T12:42:44-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -179,8 +182,8 @@ drive?&amp;quot;&lt;/span&gt;
 &lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// config/environment.js
 &lt;/span&gt;&lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;exports&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;ENV&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="na"&gt;modulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="na"&gt;podModulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app/pods&amp;#39;&lt;/span&gt;
+    &lt;span class="na"&gt;modulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;demo&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="na"&gt;podModulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app/pods&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;baseURL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;locationType&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;auto&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
