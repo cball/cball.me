@@ -10,29 +10,37 @@
     <name>Chris Ball</name>
   </author>
   <entry>
-    <title>Bring some ES6 Awesome with esnext</title>
+    <title>Bring some ES6 Awesome with &lt;del&gt;esnext&lt;/del&gt; Babel</title>
     <link rel="alternate" href="http://cball.me/bring-some-es6-awesome-with-esnext/"/>
     <id>http://cball.me/bring-some-es6-awesome-with-esnext/</id>
     <published>2014-12-22T14:40:00Z</published>
-    <updated>2014-12-22T09:51:39-05:00</updated>
+    <updated>2015-03-04T09:44:44-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
-    <summary type="html">&lt;hr&gt;&lt;p&gt;ES6 is the next version of JavaScript. &lt;a href="https://github.com/esnext/esnext"&gt;esnext&lt;/a&gt; is a library that allows you to ES6 functions today.&lt;/p&gt;
+    <summary type="html">&lt;hr&gt;&lt;p&gt;&lt;strong&gt;Belated Update: 3/4/15&lt;/strong&gt;&lt;/p&gt;
 
-&lt;p&gt;What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration...&lt;/p&gt;</summary>
+&lt;p&gt;esnext was replaced with 6to5, which was recently renamed to &lt;a href="http://babeljs.io"&gt;Babel&lt;/a&gt;. The article below has been updated to reflect the changes.&lt;/p&gt;
+
+&lt;hr&gt;&lt;p&gt;ES6 is the next version of JavaScript. &lt;del&gt;esnext&lt;/del&gt; Babel is a library that allows you to ES6 functions...&lt;/p&gt;</summary>
     <content type="html">&lt;hr /&gt;
 
-&lt;p&gt;ES6 is the next version of JavaScript. &lt;a href="https://github.com/esnext/esnext"&gt;esnext&lt;/a&gt; is a library that allows you to ES6 functions today.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Belated Update: 3/4/15&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;esnext was replaced with 6to5, which was recently renamed to &lt;a href="http://babeljs.io"&gt;Babel&lt;/a&gt;. The article below has been updated to reflect the changes.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;ES6 is the next version of JavaScript. &lt;del&gt;esnext&lt;/del&gt; Babel is a library that allows you to ES6 functions today.&lt;/p&gt;
 
 &lt;p&gt;What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration thanks to &lt;a href="https://github.com/stefanpenner/ember-cli/pull/2452"&gt;this Pull Request&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Let’s look at three top features and some benefits provided by esnext that might eliminate the need to add CoffeeScript to your next project.&lt;/p&gt;
+&lt;p&gt;Let’s look at three top features and some benefits provided by &lt;del&gt;esnext&lt;/del&gt; Babel that might eliminate the need to add CoffeeScript to your next project.&lt;/p&gt;
 
 &lt;h3 id="arrow-functions"&gt;Arrow Functions&lt;/h3&gt;
 &lt;p&gt;If you’ve used CoffeeScript, arrow functions should be familiar. Typing the word function all of the time can get annoying. Using the fat arrow, you can use a much nicer syntax for writing functions.&lt;/p&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// The es6 way using esnext
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// The es6 way
 &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="na"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;=&amp;gt;&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;I am eating &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
@@ -41,18 +49,18 @@
 
 &lt;span class="c1"&gt;// Compiled output
 &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="na"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;I am eating &amp;quot;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-  &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="na"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="err"&gt;“&lt;/span&gt;&lt;span class="nx"&gt;I&lt;/span&gt; &lt;span class="nx"&gt;am&lt;/span&gt; &lt;span class="nx"&gt;eating&lt;/span&gt; &lt;span class="err"&gt;“&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+  &lt;span class="p"&gt;});&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;When using functions that change the scope of this (such as &lt;code&gt;forEach&lt;/code&gt;) you may have seen the following pattern:&lt;/p&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// this is common, but don’t do it.
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// this is common, but es6 handles this for you
 &lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
 &lt;/pre&gt;
 &lt;p&gt;Since &lt;code&gt;this&lt;/code&gt; inside an arrow function is the same as this in surrounding code, we can make the above example better: &lt;/p&gt;
 
@@ -62,10 +70,12 @@
 &lt;/pre&gt;
 &lt;p&gt;“I can already do that with CoffeeScript” you might say. True, but compare the code you end up with. Which do you think is easier to debug?&lt;/p&gt;
 
-&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// compiled JavaScript output with esnext
-&lt;/span&gt;&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-  &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
-&lt;span class="p"&gt;}.&lt;/span&gt;&lt;span class="nx"&gt;bind&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;));&lt;/span&gt;
+&lt;pre class="highlight javascript"&gt;&lt;span class="c1"&gt;// compiled JavaScript output with Babel
+&lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;_this&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;eat&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;food&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;span class="p"&gt;});&lt;/span&gt;
 
 &lt;span class="c1"&gt;// compiled CoffeeScript output
 &lt;/span&gt;&lt;span class="nx"&gt;foods&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;forEach&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;_this&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
@@ -123,20 +133,17 @@ drive?&amp;quot;&lt;/span&gt;
 &lt;span class="c1"&gt;// the es6 way
 &lt;/span&gt;&lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt; &lt;span class="nx"&gt;graphWidth&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;graphHeight&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;marginTop&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nx"&gt;marginBottom&lt;/span&gt; &lt;span class="p"&gt;}&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;config&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;/pre&gt;
-&lt;h3 id="coffeescript-can-already-do-this-why-use-es6esnext"&gt;CoffeeScript can already do this. Why use ES6/esnext?&lt;/h3&gt;
+&lt;h3 id="coffeescript-can-already-do-this-why-use-es6delesnextdel-babel"&gt;CoffeeScript can already do this. Why use ES6/&lt;del&gt;esnext&lt;/del&gt; Babel?&lt;/h3&gt;
 &lt;ol&gt;
   &lt;li&gt;The source code you write will look almost identical to the compiled output. Any differences are easy to follow. As a developer, this makes your life much easier when debugging an issue in your app!&lt;/li&gt;
   &lt;li&gt;Your file size will be smaller.&lt;/li&gt;
   &lt;li&gt;You won’t have to deal with unexpected implicit returns. For example, actions in Ember will bubble if you return a truthy value from them. Because CoffeeScript has an implicit return from the last line in a function, it is very easy to accidentally write code that will bubble up to parent controllers/routes.&lt;/li&gt;
   &lt;li&gt;If you extract a piece of your app to an addon, you will benefit from more community collaboration by using JavaScript.&lt;/li&gt;
   &lt;li&gt;ES6 module imports/exports are available without using backticks. &lt;/li&gt;
-  &lt;li&gt;Your code will be somewhat future proof. Since a core focus of esnext is api compatibility, when ES6 is available natively in all major browsers, the esnext library should be able to be removed and the code will continue to work. CoffeeScript has features that will keep it from fully adopting ES6, and it will likely require a rewrite.&lt;/li&gt;
+  &lt;li&gt;Your code will be somewhat future proof. Since a core focus of &lt;del&gt;esnext&lt;/del&gt; Babel is api compatibility, when ES6 is available natively in all major browsers, the &lt;del&gt;esnext&lt;/del&gt; Babel library should be able to be removed and the code will continue to work. CoffeeScript has features that will keep it from fully adopting ES6, and it will likely require a rewrite.&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by esnext, you probably won’t miss CoffeeScript at all.&lt;/p&gt;
-
-&lt;p&gt;Update:
-I’ve added a repo with a few examples:&lt;/p&gt;
+&lt;p&gt;If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by &lt;del&gt;esnext&lt;/del&gt; Babel, you probably won’t miss CoffeeScript at all.&lt;/p&gt;
 </content>
   </entry>
   <entry>

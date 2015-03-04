@@ -1,17 +1,25 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Bring some ES6 Awesome with esnext</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="ES6 is the next version of JavaScript. esnext is a library that allows you to ES6 functions today.
+<!DOCTYPE html><html><head><meta charset="utf-8" /><meta content="IE=edge" http-equiv="X-UA-Compatible" /><title>Bring some ES6 Awesome with <del>esnext</del> Babel</title><meta content="width=device-width, initial-scale=1" name="viewport" /><meta content="Level up your development skills | Chris Ball" name="og:site_name" /><meta content="blog" name="og:type" /><meta content="Belated Update: 3/4/15
 
-What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/es6-awesome.png" name="og:image" /><meta content="Bring some ES6 Awesome with esnext" name="og:title" /><meta content="http://cball.me/bring-some-es6-awesome-with-esnext/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /></head><body class="bring-some-es6-awesome-with-esnext bring-some-es6-awesome-with-esnext_index"><header class="hidden-print"><div class="container"><div class="row"><div class="col-md-12"><div class="home"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/">Posts</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/bring-some-es6-awesome-with-esnext/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/es6-awesome.png" /></a><div class="date"><div class="month">Dec</div><div class="day">22</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/bring-some-es6-awesome-with-esnext/">Bring some ES6 Awesome with esnext</a></h2><div class="date subtitle">December 22, 2014</div><div class="by"><a target="_blank" class="author" href="http://twitter.com/cball_"><img src="http://www.gravatar.com/avatar/6254dc2b7e4f26b2ab5d05c560834671.png" /><div class="twitter"><div><i class="fa fa-twitter"></i> cball_</div></div></a></div><hr />
+esnext was replaced with 6to5, which was recently renamed to Babel. The article below has been updated to reflect the changes.
 
-<p>ES6 is the next version of JavaScript. <a href="https://github.com/esnext/esnext">esnext</a> is a library that allows you to ES6 functions today.</p>
+ES6 is the next version of JavaScript. esnext Babel is a library that allows you to ES6 functions..." name="description" /><meta content="http://cball.me.s3.amazonaws.com/es6-awesome.png" name="og:image" /><meta content="Bring some ES6 Awesome with <del>esnext</del> Babel" name="og:title" /><meta content="http://cball.me/bring-some-es6-awesome-with-esnext/" name="og:url" /><link href="https://plus.google.com/100884992885084072433" rel="author" /><!--[if lt IE 9]><script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script><script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script><![endif]--><link href="//cloud.typography.com/6222872/746702/css/fonts.css" media="all" rel="stylesheet" type="text/css" /><link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/application.css" media="all" rel="stylesheet" type="text/css" /><link href="/stylesheets/print.css" media="print" rel="stylesheet" type="text/css" /></head><body class="bring-some-es6-awesome-with-esnext bring-some-es6-awesome-with-esnext_index"><header class="hidden-print"><div class="container"><div class="row"><div class="col-md-12"><div class="home"><a href="/"><span class="title">Level Up</span><span class="name"> by Chris Ball </span></a></div><ul class="nav nav-pills"><li><a href="/about">About</a></li><li><a href="/">Posts</a></li><li><a href="/talks">Talks</a></li><li><a href="/contact">Contact</a></li></ul></div></div></div></header><div class="container"><div class="row"><div class="col-md-10 col-md-offset-1" id="main"><article><div class="post-header"><div class="inner"><a href="/bring-some-es6-awesome-with-esnext/"><img class="img-responsive" src="http://cball.me.s3.amazonaws.com/es6-awesome.png" /></a><div class="date"><div class="month">Dec</div><div class="day">22</div><div class="year">2014</div></div></div></div><div class="post-body"><h2 class="title"><a href="/bring-some-es6-awesome-with-esnext/">Bring some ES6 Awesome with <del>esnext</del> Babel</a></h2><div class="date subtitle">December 22, 2014</div><div class="by"><a target="_blank" class="author" href="http://twitter.com/cball_"><img src="http://www.gravatar.com/avatar/6254dc2b7e4f26b2ab5d05c560834671.png" /><div class="twitter"><div><i class="fa fa-twitter"></i> cball_</div></div></a></div><hr />
+
+<p><strong>Belated Update: 3/4/15</strong></p>
+
+<p>esnext was replaced with 6to5, which was recently renamed to <a href="http://babeljs.io">Babel</a>. The article below has been updated to reflect the changes.</p>
+
+<hr />
+
+<p>ES6 is the next version of JavaScript. <del>esnext</del> Babel is a library that allows you to ES6 functions today.</p>
 
 <p>What does this mean if you’re an Ember developer? If you’re using ember-cli 0.1.3 or later, you can use it out of the box without any additional configuration thanks to <a href="https://github.com/stefanpenner/ember-cli/pull/2452">this Pull Request</a>.</p>
 
-<p>Let’s look at three top features and some benefits provided by esnext that might eliminate the need to add CoffeeScript to your next project.</p>
+<p>Let’s look at three top features and some benefits provided by <del>esnext</del> Babel that might eliminate the need to add CoffeeScript to your next project.</p>
 
 <h3 id="arrow-functions">Arrow Functions</h3>
 <p>If you’ve used CoffeeScript, arrow functions should be familiar. Typing the word function all of the time can get annoying. Using the fat arrow, you can use a much nicer syntax for writing functions.</p>
 
-<pre class="highlight javascript"><span class="c1">// The es6 way using esnext
+<pre class="highlight javascript"><span class="c1">// The es6 way
 </span><span class="p">{</span>
   <span class="na">eat</span><span class="p">:</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="o">=&gt;</span> <span class="p">{</span>
     <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;I am eating &#39;</span> <span class="o">+</span> <span class="nx">food</span><span class="p">);</span>
@@ -20,18 +28,18 @@ What does this mean if you’re an Ember developer? If you’re using ember-cli 
 
 <span class="c1">// Compiled output
 </span><span class="p">{</span>
-  <span class="na">eat</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
-    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;I am eating &quot;</span> <span class="o">+</span> <span class="nx">food</span><span class="p">);</span>
-  <span class="p">}</span>
+  <span class="na">eat</span><span class="p">:</span> <span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="err">“</span><span class="nx">I</span> <span class="nx">am</span> <span class="nx">eating</span> <span class="err">“</span> <span class="o">+</span> <span class="nx">food</span><span class="p">);</span>
+  <span class="p">});</span>
 <span class="p">}</span>
 </pre>
 <p>When using functions that change the scope of this (such as <code>forEach</code>) you may have seen the following pattern:</p>
 
-<pre class="highlight javascript"><span class="c1">// this is common, but don’t do it.
+<pre class="highlight javascript"><span class="c1">// this is common, but es6 handles this for you
 </span><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
 <span class="nx">foods</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
   <span class="nx">_this</span><span class="p">.</span><span class="nx">eat</span><span class="p">(</span><span class="nx">food</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="p">});</span>
 </pre>
 <p>Since <code>this</code> inside an arrow function is the same as this in surrounding code, we can make the above example better: </p>
 
@@ -41,10 +49,12 @@ What does this mean if you’re an Ember developer? If you’re using ember-cli 
 </pre>
 <p>“I can already do that with CoffeeScript” you might say. True, but compare the code you end up with. Which do you think is easier to debug?</p>
 
-<pre class="highlight javascript"><span class="c1">// compiled JavaScript output with esnext
-</span><span class="nx">foods</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
-  <span class="k">this</span><span class="p">.</span><span class="nx">eat</span><span class="p">(</span><span class="nx">food</span><span class="p">);</span>
-<span class="p">}.</span><span class="nx">bind</span><span class="p">(</span><span class="k">this</span><span class="p">));</span>
+<pre class="highlight javascript"><span class="c1">// compiled JavaScript output with Babel
+</span><span class="kd">var</span> <span class="nx">_this</span> <span class="o">=</span> <span class="k">this</span><span class="p">;</span>
+
+<span class="nx">foods</span><span class="p">.</span><span class="nx">forEach</span><span class="p">(</span><span class="kd">function</span> <span class="p">(</span><span class="nx">food</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">_this</span><span class="p">.</span><span class="nx">eat</span><span class="p">(</span><span class="nx">food</span><span class="p">);</span>
+<span class="p">});</span>
 
 <span class="c1">// compiled CoffeeScript output
 </span><span class="nx">foods</span><span class="p">.</span><span class="nx">forEach</span><span class="p">((</span><span class="kd">function</span><span class="p">(</span><span class="nx">_this</span><span class="p">)</span> <span class="p">{</span>
@@ -102,20 +112,17 @@ drive?&quot;</span>
 <span class="c1">// the es6 way
 </span><span class="kd">var</span> <span class="p">{</span> <span class="nx">graphWidth</span><span class="p">,</span> <span class="nx">graphHeight</span><span class="p">,</span> <span class="nx">marginTop</span><span class="p">,</span> <span class="nx">marginBottom</span> <span class="p">}</span> <span class="o">=</span> <span class="nx">config</span><span class="p">;</span>
 </pre>
-<h3 id="coffeescript-can-already-do-this-why-use-es6esnext">CoffeeScript can already do this. Why use ES6/esnext?</h3>
+<h3 id="coffeescript-can-already-do-this-why-use-es6delesnextdel-babel">CoffeeScript can already do this. Why use ES6/<del>esnext</del> Babel?</h3>
 <ol>
   <li>The source code you write will look almost identical to the compiled output. Any differences are easy to follow. As a developer, this makes your life much easier when debugging an issue in your app!</li>
   <li>Your file size will be smaller.</li>
   <li>You won’t have to deal with unexpected implicit returns. For example, actions in Ember will bubble if you return a truthy value from them. Because CoffeeScript has an implicit return from the last line in a function, it is very easy to accidentally write code that will bubble up to parent controllers/routes.</li>
   <li>If you extract a piece of your app to an addon, you will benefit from more community collaboration by using JavaScript.</li>
   <li>ES6 module imports/exports are available without using backticks. </li>
-  <li>Your code will be somewhat future proof. Since a core focus of esnext is api compatibility, when ES6 is available natively in all major browsers, the esnext library should be able to be removed and the code will continue to work. CoffeeScript has features that will keep it from fully adopting ES6, and it will likely require a rewrite.</li>
+  <li>Your code will be somewhat future proof. Since a core focus of <del>esnext</del> Babel is api compatibility, when ES6 is available natively in all major browsers, the <del>esnext</del> Babel library should be able to be removed and the code will continue to work. CoffeeScript has features that will keep it from fully adopting ES6, and it will likely require a rewrite.</li>
 </ol>
 
-<p>If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by esnext, you probably won’t miss CoffeeScript at all.</p>
-
-<p>Update:
-I’ve added a repo with a few examples:</p>
+<p>If you’re converting from CoffeeScript, you’ll have to remember to use the word this, add commas in object definitions, parenthesis, and some semicolons. Outside of that, with the ES6 features provided by <del>esnext</del> Babel, you probably won’t miss CoffeeScript at all.</p>
 <ul class="nav tags nav-pills"><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li><li><a href="/topics/ember-cli/">/<span class="name">ember-cli</span>/</a></li><li><a href="/topics/esnext/">/<span class="name">esnext</span>/</a></li><li><a href="/topics/es6/">/<span class="name">es6</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice (almost) every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join Level Up</a></div></div><div id="article-nav"><div class="pull-left"><a href="/organize-your-ember-app-with-pods/">&laquo; Organize Your Ember App wit...</a></div><div class="pull-right"></div></div></div><div id="comments">
   <div id="disqus_thread"></div>
   <script type="text/javascript">
