@@ -32,7 +32,7 @@
 </span><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">environment</span><span class="p">)</span> <span class="p">{</span>
   <span class="kd">var</span> <span class="nx">ENV</span> <span class="o">=</span> <span class="p">{</span>
     <span class="na">modulePrefix</span><span class="p">:</span> <span class="s1">&#39;demo&#39;</span><span class="p">,</span>
-    <span class="na">podModulePrefix</span><span class="p">:</span> <span class="s1">&#39;app/pods&#39;</span><span class="p">,</span>
+    <span class="na">podModulePrefix</span><span class="p">:</span> <span class="s1">&#39;demo/pods&#39;</span><span class="p">,</span>
     <span class="na">environment</span><span class="p">:</span> <span class="nx">environment</span><span class="p">,</span>
     <span class="na">baseURL</span><span class="p">:</span> <span class="s1">&#39;/&#39;</span><span class="p">,</span>
     <span class="na">locationType</span><span class="p">:</span> <span class="s1">&#39;auto&#39;</span><span class="p">,</span>
@@ -56,6 +56,14 @@
   create app/pods/components/hot-sauce/template.hbs
   create tests/unit/components/hot-sauce-test.js
 </pre>
+<hr />
+
+<p><strong>Update 3/4/15:</strong></p>
+
+<p>If you want to enable a pod structure by default without having to specify <code>—pod</code> when using generators, set <code>usePods: true</code> in your <code>.ember-cli</code> file located in the root of your project.</p>
+
+<hr />
+
 <h4 id="to-pod-or-not-to-pod-its-up-to-you">To pod or not to pod? It’s up to you.</h4>
 <p>Using a pod-based folder structure is optional, as is specifying a root folder for pods. Using pods can help keep a large project organized, but if you don’t like it you can still use the default and organize your files by type.</p>
 
@@ -66,7 +74,6 @@
 <p>While not implemented yet, the current plan in Ember 2.0 is to render a <em>component</em> rather than a <em>controller</em> when entering a route. This change also advocates using a pod-based structure for these routable components, and may become the default.</p>
 
 <p>See <a href="https://github.com/emberjs/rfcs/pull/15">The Road to Ember 2.0 RFC</a> for more information (search for pod).</p>
-
 <ul class="nav tags nav-pills"><li><a href="/topics/ember/">/<span class="name">ember</span>/</a></li><li><a href="/topics/development/">/<span class="name">development</span>/</a></li></ul><div class="row"><div class="col-md-8 col-md-offset-2" id="upsell"><h3>Learned something new?</h3><p>Get my best development advice (almost) every week, right in your inbox.</p><a class="btn btn-warning" href="/newsletter/">Join Level Up</a></div></div><div id="article-nav"><div class="pull-left"><a href="/i18n-in-practice/">&laquo; I18n in Practice</a></div><div class="pull-right"><a href="/bring-some-es6-awesome-with-esnext/">Bring some ES6 Awesome with... &raquo;</a></div></div></div><div id="comments">
   <div id="disqus_thread"></div>
   <script type="text/javascript">

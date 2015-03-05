@@ -151,7 +151,7 @@ drive?&amp;quot;&lt;/span&gt;
     <link rel="alternate" href="http://cball.me/organize-your-ember-app-with-pods/"/>
     <id>http://cball.me/organize-your-ember-app-with-pods/</id>
     <published>2014-11-17T16:25:00Z</published>
-    <updated>2015-01-16T12:42:44-05:00</updated>
+    <updated>2015-03-04T20:03:17-05:00</updated>
     <author>
       <name>Chris Ball</name>
     </author>
@@ -190,7 +190,7 @@ drive?&amp;quot;&lt;/span&gt;
 &lt;/span&gt;&lt;span class="nx"&gt;module&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;exports&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
   &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;ENV&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
     &lt;span class="na"&gt;modulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;demo&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="na"&gt;podModulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;app/pods&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &lt;span class="na"&gt;podModulePrefix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;demo/pods&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="nx"&gt;environment&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;baseURL&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;/&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
     &lt;span class="na"&gt;locationType&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;auto&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
@@ -214,6 +214,14 @@ drive?&amp;quot;&lt;/span&gt;
   create app/pods/components/hot-sauce/template.hbs
   create tests/unit/components/hot-sauce-test.js
 &lt;/pre&gt;
+&lt;hr /&gt;
+
+&lt;p&gt;&lt;strong&gt;Update 3/4/15:&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;If you want to enable a pod structure by default without having to specify &lt;code&gt;—pod&lt;/code&gt; when using generators, set &lt;code&gt;usePods: true&lt;/code&gt; in your &lt;code&gt;.ember-cli&lt;/code&gt; file located in the root of your project.&lt;/p&gt;
+
+&lt;hr /&gt;
+
 &lt;h4 id="to-pod-or-not-to-pod-its-up-to-you"&gt;To pod or not to pod? It’s up to you.&lt;/h4&gt;
 &lt;p&gt;Using a pod-based folder structure is optional, as is specifying a root folder for pods. Using pods can help keep a large project organized, but if you don’t like it you can still use the default and organize your files by type.&lt;/p&gt;
 
@@ -224,7 +232,6 @@ drive?&amp;quot;&lt;/span&gt;
 &lt;p&gt;While not implemented yet, the current plan in Ember 2.0 is to render a &lt;em&gt;component&lt;/em&gt; rather than a &lt;em&gt;controller&lt;/em&gt; when entering a route. This change also advocates using a pod-based structure for these routable components, and may become the default.&lt;/p&gt;
 
 &lt;p&gt;See &lt;a href="https://github.com/emberjs/rfcs/pull/15"&gt;The Road to Ember 2.0 RFC&lt;/a&gt; for more information (search for pod).&lt;/p&gt;
-
 </content>
   </entry>
   <entry>
