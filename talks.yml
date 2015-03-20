@@ -22,5 +22,6 @@ talks:
     title: Don't Worry Ruby, We Still Love You
     event: Boston.rb
     location: Boston, MA
-    date: '2015-2-10'
+    date: '2015-3-10'
     description: "<p>With the rise of client-side frameworks you might wonder if your days using Ruby are numbered. You came to Ruby for its expressiveness and beauty. You don't want to leave that completely behind.</p><p>Luckily, you don't have to. With a nod to the Single Responsibility Principle we all love, this talk looks at how to leverage a front-end framework like Ember.js to handle application state at the UI layer and leave Ruby or Rails to do what it does best — everything else.</p><p>Something to keep in mind: that everything else is the heart of your entire app.</p>"
+    speakerdeck_id: 4281565fed084a2da40e9c6c33d83dc8
