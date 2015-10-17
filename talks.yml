@@ -25,3 +25,20 @@ talks:
     date: '2015-3-10'
     description: "<p>With the rise of client-side frameworks you might wonder if your days using Ruby are numbered. You came to Ruby for its expressiveness and beauty. You don't want to leave that completely behind.</p><p>Luckily, you don't have to. With a nod to the Single Responsibility Principle we all love, this talk looks at how to leverage a front-end framework like Ember.js to handle application state at the UI layer and leave Ruby or Rails to do what it does best — everything else.</p><p>Something to keep in mind: that everything else is the heart of your entire app.</p>"
     speakerdeck_id: 4281565fed084a2da40e9c6c33d83dc8
+  4:
+    icon: 'ember-icon.png'
+    title: The Words are Mightier Than the Code
+    event: Ember NYC
+    location: New York, NY
+    date: '2015-8-27'
+    description: "<p>This talk will focus on technical writing in the Ember community and some ways we can help set new standards for quality. Writing content to help others can also help you level-up and expand your skills.</p><p>We'll look at some approaches and patterns and learn to think of our writing as so much more than a blog post or a README.</p>"
+    speakerdeck_id: 6bc3d759473044bdb4d98d16398ecd4a
+  5:
+    icon: 'ember-ruby-icon.png'
+    title: 'Mind the Front-end Gap: Navigating the Path from Rails to Ember'
+    event: Windy City Rails
+    location: Chicago, IL
+    date: '2015-9-18'
+    description: "<p>You’ve heard great things about Ember as a front-end framework and want to give it a try. You’re experienced with Rails but don’t know where to start in this brave new world. This talk will give actionable advice on how to best leverage your Rails experience to help ease your transition to Ember.</p><p>You’ll still use Rails for the API and domain layer, it’s awesome for that. But by leaning on Ember’s strong conventions just like you did with Rails, you’ll find that working on the front-end is much more enjoyable and productive when you’re not jumping through Russian Dolls and sprinkles of JavaScript.</p>"
+    speakerdeck_id: bc516cbf0dfa42019fa4fa6176149387
+    vimeo_id: 140388294
