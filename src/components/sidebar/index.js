@@ -9,16 +9,16 @@ const Sidebar = () => (
     <div style={styles.myInfo}>
       <img src={headshotImage} style={styles.headshot} />
       <div style={styles.name}>Chris Ball</div>
-      <div style={styles.bio}>
-        Managing Partner at @echobind. Maker. Cycling & camping to
-        counter-balance business & code.
+      <div className="bio" style={styles.bio}>
+        Managing Partner at{' '}
+        <a href="https://echobind.com" target="_blank">
+          Echobind
+        </a>. Maker. Cycling & camping to counter-balance business & code.
       </div>
     </div>
 
-    <ul>
-      <li>
-        <Link to="/">Home</Link>
-      </li>
+    <ul className="menu">
+      <li>{/* <Link to="/">Home</Link> */}</li>
     </ul>
 
     <div className="social-icons">

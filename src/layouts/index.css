@@ -626,6 +626,9 @@ pre tt:after {
   }
 }
 
+a {
+}
+
 .container {
   display: flex;
   height: 100vh;
@@ -636,18 +639,22 @@ pre tt:after {
   max-width: 300px;
   background-color: #333;
   color: #fff;
-  padding: 1rem;
+  padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
 }
 
 .sidebar a {
   color: #ccc;
+  text-decoration: none;
+}
+
+.menu a {
   font-size: 18px;
   text-decoration: none;
 }
 
-.sidebar a.active {
+.menu a.active {
   color: #fff;
 }
 
@@ -685,6 +692,7 @@ main {
   background-color: #fff;
   box-shadow: 0 3px 6px 0 rgba(0, 0, 0, 0.06);
   border-radius: 4px;
+  margin-bottom: 0.5rem;
 }
 .card.padding {
   padding: 1rem;
