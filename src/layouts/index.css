@@ -649,6 +649,14 @@ a {
   text-decoration: none;
 }
 
+a {
+  transition: color 0.5s ease;
+}
+
+a:hover {
+  color: #ff665e;
+}
+
 .menu a {
   font-size: 18px;
   text-decoration: none;
@@ -746,4 +754,24 @@ button {
   width: 32px;
   height: 32px;
   margin: 0 1rem;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.year-block {
+  margin-left: 1rem;
+}
+
+.talk-section {
+  text-align: center;
+  padding: 0.5rem;
+  background: #eee;
+  border-radius: 2px;
+}
+
+.talk-section-wrapper {
 }

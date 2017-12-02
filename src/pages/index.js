@@ -1,6 +1,17 @@
 import React from 'react';
 import Link from 'gatsby-link';
+import Talk from '../components/talk';
 import styled from 'styled-components';
+import talks from '../../data/talks';
+import partition from 'lodash.partition';
+import groupBy from 'lodash.groupby';
+
+// sort and group talks
+const today = new Date();
+const sortedTalks = talks.sort((a, b) => b.date - a.date);
+const [upcomingTalks, pastTalks] = partition(sortedTalks, t => t.date > today);
+const groupedPastTalks = groupBy(pastTalks, t => t.date.getFullYear());
+const years = Object.keys(groupedPastTalks).sort((a, b) => b - a);
 
 const IndexPage = () => (
   <div>
@@ -8,168 +19,34 @@ const IndexPage = () => (
       <Title>TALKS</Title>
     </div>
     <div className="card padding">
-      <h3>Upcoming</h3>
-      <p>(none yet!)</p>
-      {/* <Link to="/page-2/">Go to page 2</Link> */}
-      <h3>2017</h3>
-      <ul>
-        <li>
-          <div>
-            <a href="https://infinite.red/ChainReactConf/2017">Chain React</a> -
-            From Idea to App Store: A Guide to Shipping React Native Apps
-          </div>
-          <div>
-            <a href="">Video</a>
-            -
-            <a
-              href="https://speakerdeck.com/cball/from-idea-to-app-store-a-guide-to-shipping-react-native-apps"
-              target="_blank"
-            >
-              Slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="https://twitter.com/reactnativebos">React Native Boston</a>{' '}
-            - From Idea to "Hey It Works": Building an app with React Native
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/from-idea-to-hey-it-works-building-an-app-with-react-native"
-              target="_blank"
-            >
-              Slides
-            </a>
-          </div>
-        </li>
-      </ul>
+      <div className="talk-section-wrapper" style={{ marginBottom: '1.5rem' }}>
+        <h3 className="talk-section">Upcoming</h3>
+        {upcomingTalks.length === 0 && (
+          <ul className="year-block">
+            <li>(none scheduled yet!)</li>
+          </ul>
+        )}
+        {upcomingTalks.map(t => <Talk talk={t} />)}
+      </div>
 
-      <h3>2016</h3>
-      <ul>
-        <li>
-          <div>
-            <span>Boston Frontend - Betting on React Native</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/betting-on-react-native"
-              target="_blank"
-            >
-              Slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="">Boston Ember</a> -{' '}
-            <span>ember addon deep dive: modifying the build process</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/ember-addon-deep-dive-modifying-the-build-process"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="">EmberConf</a> -{' '}
-            <span>Cross-Pollinating Communities: We all Win</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/cross-pollinating-communities-we-all-win"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="">Ember Bangalore</a> -{' '}
-            <span>Living in a Component World</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/living-in-a-component-world"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-      </ul>
+      <div classname="talk-section-wrapper">
+        {years.map((year, index) => {
+          const talks = groupedPastTalks[year];
 
-      <h3>2015</h3>
-      <ul>
-        <li>
-          <div>
-            <a href="">Windy City Rails</a> -{' '}
-            <span>
-              Mind the Front-end Gap: Navigating the Path from Rails to Ember
-            </span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/mind-the-front-end-gap-navigating-the-path-from-rails-to-ember"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="">Ember NYC</a> -{' '}
-            <span>The Words are Mightier Than the Code.</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/the-words-are-mightier-than-the-code"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-      </ul>
-
-      <h3>2014</h3>
-      <ul>
-        <li>
-          <div>
-            <a href="">Ember.js Philly</a> -{' '}
-            <span>
-              Embracing Ember Conventions: Loading and Error Substates
-            </span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/embracing-ember-conventions-loading-and-error-substates"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-        <li>
-          <div>
-            <a href="">Boston Ember</a> - <span>Real World Fixtures</span>
-          </div>
-          <div>
-            <a
-              href="https://speakerdeck.com/cball/real-world-fixtures"
-              target="_blank"
-            >
-              slides
-            </a>
-          </div>
-        </li>
-      </ul>
+          return (
+            <div key={index} style={{ marginBottom: '1rem' }}>
+              <h3 className="talk-section">{year}</h3>
+              <ul className="year-block">
+                {talks.map((t, i) => (
+                  <li key={i}>
+                    <Talk talk={t} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })}
+      </div>
     </div>
   </div>
 );
@@ -183,7 +60,6 @@ const Content = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 0;
-  // text-align: center;
 `;
 
 export default IndexPage;
