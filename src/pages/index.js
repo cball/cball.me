@@ -57,7 +57,7 @@ const Content = styled.div`
   justify-content: center;
   text-align: center;
 `;
-const Title = styled.h1`
+const Title = styled.h3`
   font-size: 24px;
   margin-bottom: 0;
   text-align: center;
