@@ -11,7 +11,7 @@ import styles from '../styles/index';
 const today = new Date();
 const sortedTalks = talks.sort((a, b) => b.date - a.date);
 const [upcomingTalks, pastTalks] = partition(sortedTalks, t => t.date > today);
-const groupedPastTalks = groupBy(pastTalks, t => t.date.getFullYear());
+const groupedPastTalks = groupBy(pastTalks, t => t.date.year());
 const years = Object.keys(groupedPastTalks).sort((a, b) => b - a);
 
 const IndexPage = () => (
@@ -30,7 +30,7 @@ const IndexPage = () => (
         {upcomingTalks.map(t => <Talk talk={t} />)}
       </div>
 
-      <div classname="talk-section-wrapper">
+      <div className="talk-section-wrapper">
         {years.map((year, index) => {
           const talks = groupedPastTalks[year];
 
