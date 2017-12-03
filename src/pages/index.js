@@ -1,10 +1,11 @@
 import React from 'react';
 import Link from 'gatsby-link';
 import Talk from '../components/talk';
-import styled from 'styled-components';
 import talks from '../../data/talks';
 import partition from 'lodash.partition';
 import groupBy from 'lodash.groupby';
+
+import styles from '../styles/index';
 
 // sort and group talks
 const today = new Date();
@@ -16,7 +17,7 @@ const years = Object.keys(groupedPastTalks).sort((a, b) => b - a);
 const IndexPage = () => (
   <div>
     <div className="card padding">
-      <Title>Conference and Meetup Talks</Title>
+      <div className={styles.title}>Conference and Meetup Talks</div>
     </div>
     <div className="card padding">
       <div className="talk-section-wrapper" style={{ marginBottom: '1.5rem' }}>
@@ -50,17 +51,5 @@ const IndexPage = () => (
     </div>
   </div>
 );
-
-const Content = styled.div`
-  flex: 1;
-  flex-direction: column;
-  justify-content: center;
-  text-align: center;
-`;
-const Title = styled.h3`
-  font-size: 24px;
-  margin-bottom: 0;
-  text-align: center;
-`;
 
 export default IndexPage;
