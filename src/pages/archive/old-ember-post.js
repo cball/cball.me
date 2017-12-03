@@ -2,7 +2,7 @@ import React from 'react';
 
 const OldEmberPost = () => {
   const cachedUrl = `http://webcache.googleusercontent.com/search?q=cache:${
-    document.referrer
+    document ? document.referrer : 'http://cball.me'
   }`;
 
   return (
