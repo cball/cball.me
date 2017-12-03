@@ -1,6 +1,6 @@
 module.exports = {
   siteMetadata: {
-    title: `Gatsby Default Starter`,
+    title: `Chris Ball - Speaker, Maker, Entreprenuer.`
   },
-  plugins: [`gatsby-plugin-react-helmet`],
-}
+  plugins: [`gatsby-plugin-react-helmet`, `gatsby-plugin-netlify`]
+};

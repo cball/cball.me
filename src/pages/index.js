@@ -16,7 +16,7 @@ const years = Object.keys(groupedPastTalks).sort((a, b) => b - a);
 const IndexPage = () => (
   <div>
     <div className="card padding">
-      <Title>TALKS</Title>
+      <Title>Conference and Meetup Talks</Title>
     </div>
     <div className="card padding">
       <div className="talk-section-wrapper" style={{ marginBottom: '1.5rem' }}>
@@ -60,6 +60,7 @@ const Content = styled.div`
 const Title = styled.h1`
   font-size: 24px;
   margin-bottom: 0;
+  text-align: center;
 `;
 
 export default IndexPage;

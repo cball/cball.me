@@ -7,7 +7,9 @@ import styles from './styles';
 const Sidebar = () => (
   <div className="sidebar" style={styles.sidebar}>
     <div style={styles.myInfo}>
-      <img src={headshotImage} style={styles.headshot} />
+      <Link to="/">
+        <img src={headshotImage} style={styles.headshot} />
+      </Link>
       <div style={styles.name}>Chris Ball</div>
       <div className="bio" style={styles.bio}>
         Managing Partner at{' '}
