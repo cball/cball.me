@@ -27,7 +27,7 @@ const IndexPage = () => (
             <li>(none scheduled yet!)</li>
           </ul>
         )}
-        {upcomingTalks.map(t => <Talk talk={t} />)}
+        {upcomingTalks.reverse().map(t => <Talk talk={t} />)}
       </div>
 
       <div className="talk-section-wrapper">

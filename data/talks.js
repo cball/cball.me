@@ -94,5 +94,15 @@ export default [
     slides: 'https://speakerdeck.com/cball/betting-on-react-native',
     video: null,
     date: moment('2017-02-22').utc()
+  },
+  {
+    location: 'React Native Boston',
+    title: 'Exchanging App Data with Nearby Users',
+    date: moment('2018-02-08').utc()
+  },
+  {
+    location: 'Boston Ember',
+    title: "There's an GraphQL in your Ember!",
+    date: moment('2018-02-21').utc()
   }
 ];
