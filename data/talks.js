@@ -95,11 +95,11 @@ export default [
     video: null,
     date: moment('2017-02-22').utc()
   },
-  {
-    location: 'React Native Boston',
-    title: 'Exchanging App Data with Nearby Users',
-    date: moment('2018-02-08').utc()
-  },
+  // {
+  //   location: 'React Native Boston',
+  //   title: 'Exchanging App Data with Nearby Users',
+  //   date: moment('2018-03-22').utc()
+  // },
   {
     location: 'Boston Ember',
     title: "There's an GraphQL in your Ember!",
