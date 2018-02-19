@@ -102,7 +102,7 @@ export default [
   // },
   {
     location: 'Boston Ember',
-    title: "There's an GraphQL in your Ember!",
+    title: "There's a GraphQL in your Ember!",
     date: moment('2018-02-21').utc()
   }
 ];
