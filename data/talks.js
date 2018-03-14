@@ -104,5 +104,10 @@ export default [
     location: 'Boston Ember',
     title: "There's a GraphQL in your Ember!",
     date: moment('2018-02-21').utc()
+  },
+  {
+    location: 'Portland ReactJS',
+    title: "Boosting Team Productivity with CLIs",
+    date: moment('2018-03-13').utc()
   }
 ];
