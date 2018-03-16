@@ -102,12 +102,19 @@ export default [
   // },
   {
     location: 'Boston Ember',
-    title: "There's a GraphQL in your Ember!",
-    date: moment('2018-02-21').utc()
+    title: 'Ember & GraphQL',
+    date: moment('2018-02-21').utc(),
+    locationLink: 'https://www.meetup.com/boston-ember-js/',
+    slides: 'https://speakerdeck.com/cball/graphql-and-ember',
+    video: null
   },
   {
     location: 'Portland ReactJS',
-    title: "Boosting Team Productivity with CLIs",
-    date: moment('2018-03-13').utc()
+    title: 'Boosting Team Productivity with CLIs',
+    date: moment('2018-03-13').utc(),
+    locationLink: 'https://www.meetup.com/Portland-ReactJS',
+    slides:
+      'https://speakerdeck.com/cball/boosting-team-productivity-with-clis',
+    video: null
   }
 ];
