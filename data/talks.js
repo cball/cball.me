@@ -116,5 +116,13 @@ export default [
     slides:
       'https://speakerdeck.com/cball/boosting-team-productivity-with-clis',
     video: null
+  },
+  {
+    location: 'Boston ReactJS',
+    title: 'Team productivity++ with conventions and CLIs',
+    date: moment('2018-04-03').utc(),
+    locationLink: 'https://www.meetup.com/ReactJS-Boston/events/248512859/',
+    slides: null,
+    video: null
   }
 ];
