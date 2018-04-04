@@ -110,7 +110,7 @@ export default [
   },
   {
     location: 'Portland ReactJS',
-    title: 'Boosting Team Productivity with CLIs',
+    title: 'Boosting Team Productivity with CLIs ⚡️',
     date: moment('2018-03-13').utc(),
     locationLink: 'https://www.meetup.com/Portland-ReactJS',
     slides:
@@ -122,7 +122,7 @@ export default [
     title: 'Team productivity++ with conventions and CLIs',
     date: moment('2018-04-03').utc(),
     locationLink: 'https://www.meetup.com/ReactJS-Boston/events/248512859/',
-    slides: null,
+    slides: 'https://speakerdeck.com/cball/team-productivity-plus-plus-with-conventions-and-clis',
     video: null
   }
 ];
