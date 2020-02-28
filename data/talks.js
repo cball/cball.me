@@ -124,5 +124,13 @@ export default [
     locationLink: 'https://www.meetup.com/ReactJS-Boston/events/248512859/',
     slides: 'https://speakerdeck.com/cball/team-productivity-plus-plus-with-conventions-and-clis',
     video: null
+  },
+  {
+    location: 'MagnoliaJS',
+    title: 'How to Supercharge Teams with Carefully Crafted Conventions',
+    date: moment('2020-04-15').utc(),
+    locationLink: 'https://ti.to/magnoliajs/magnoliajs2020',
+    slides: null,
+    video: null
   }
 ];
