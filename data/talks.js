@@ -132,5 +132,13 @@ export default [
     locationLink: 'https://ti.to/magnoliajs/magnoliajs2020',
     slides: null,
     video: null
+  },
+    {
+    location: 'Next.js Conf',
+    title: 'Next.js: A Framework For Frameworks',
+    date: moment('2020-10-27').utc(),
+    locationLink: 'https://nextjs.org/conf',
+    slides: "https://speakerdeck.com/cball/next-dot-js-a-framework-for-frameworks",
+    video: null
   }
 ];
