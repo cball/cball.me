@@ -15,7 +15,7 @@
     "lodash.groupby": "^4.6.0",
     "lodash.partition": "^4.6.0",
     "mdi-react": "^2.0.46-hotfix.0",
-    "moment": "^2.19.3",
+    "moment": "^2.29.4",
     "react-emotion": "^8.0.12"
   },
   "keywords": [
